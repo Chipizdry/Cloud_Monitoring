@@ -1,0 +1,15 @@
+{
+  "title": "TAC4300CT COR Bridge polling",
+  "description": "Modbus Input Registers (FC 04H, Float32 big-endian) for TAC4300CT three-phase energy meter via COR Bridge.",
+  "interval_ms": 1000,
+   "commands": [
+    { "suffix": "phases",     "function_code": 4, "start_address": 0,    "count": 30 },
+    { "suffix": "angles",     "function_code": 4, "start_address": 30,   "count": 30 },
+    { "suffix": "aggregates", "function_code": 4, "start_address": 60,   "count": 10 },
+    { "suffix": "load",       "function_code": 4, "start_address": 78,   "count": 6  },
+    { "suffix": "energy32",   "function_code": 4, "start_address": 1024, "count": 56 },
+    { "suffix": "energy_float", "function_code": 4, "start_address": 1280, "count": 56 }
+  ]
+}
+
+

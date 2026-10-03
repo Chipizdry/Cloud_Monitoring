@@ -1,0 +1,39 @@
+{
+  "title": "COR FW-001-20Kw-Q COR Bridge polling",
+  "description": "PI30 polling preset for COR FW-001-20Kw-Q. Background polling includes FWDCSTATUS, FWMSTATUS, FWGSTATUS and FWSTATUS.",
+  "interval_ms": 3000,
+  "commands": [
+    {
+      "suffix": "fw_dc_status",
+      "label": "Flywheel DC status",
+      "command_type": "pi30",
+      "pi30_command": "FWDCSTATUS"
+    },
+    {
+      "suffix": "fw_motor_status",
+      "label": "Flywheel motor status",
+      "command_type": "pi30",
+      "pi30_command": "FWMSTATUS"
+    },
+    {
+      "suffix": "fw_generator_status",
+      "label": "Flywheel generator status",
+      "command_type": "pi30",
+      "pi30_command": "FWGSTATUS"
+    },
+    {
+      "suffix": "fw_status",
+      "label": "Flywheel system status",
+      "command_type": "pi30",
+      "pi30_command": "FWSTATUS"
+    }
+  ],
+  "manual_commands": [
+    {
+      "suffix": "fw_set",
+      "label": "Flywheel set params",
+      "command_type": "pi30",
+      "pi30_command": "FWSET"
+    }
+  ]
+}

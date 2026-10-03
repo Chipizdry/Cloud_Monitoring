@@ -1,0 +1,117 @@
+
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+      <!-- Fallback для старых браузеров -->
+    <link rel="alternate icon" href="/static/favicon.png" type="image/png">
+      
+      <!-- Для Safari -->
+    <link rel="mask-icon"  href="/static/favicon.svg" color="#291161"> 
+    <link rel="stylesheet" href="/static/COR_Energy/monitoring.css">
+    <link rel="stylesheet" href="/static/COR_ID_css/styles.css">
+    <link rel="stylesheet" href="/static/COR_ID_css/modal.css">
+  
+    <title>COR-Devices</title>
+
+   
+</head>
+<body>
+    <div class="energy-container">
+        <div class="navigation-container">
+            <button class="link-button" onclick="goBack('/static/COR_ID/mainscreen.html')" data-translate="back-link-text">&lt;&lt;&lt;назад&lt;&lt;&lt;</button>         
+        </div>
+        <div id="error" class="error" style="display: none;"></div>
+
+        <div class="header-row">
+            <h1>Устройства</h1>
+        </div>
+        <div id="table-container" style="display: none;" class="objects-table-container">
+            <table id="devices-table" class="objects-table">
+                <thead>
+                    <tr>
+                        <th>Имя</th>
+                       <th>Device ID</th>
+                        <th>Владелец</th>
+                        <th>Активно</th>
+                        <th>Последний онлайн</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+ <!-- Модальное окно для шаринга устройства -->
+        <div id="shareDeviceModal" class="modal" style="display: none;">
+            <div class="modal-header">
+                <div class="modal-buttons">
+                    <button class="modal-button close" id="closeShareDevice">✖</button>
+                </div>
+                <h3 class="modal-title" style="margin-top:30; color:#291161;font-size: 17px;">Доступ</h3>
+            </div>
+
+            <div class="modal-content">
+           
+            </div>
+        </div>
+
+    <script>
+
+     // Загружаем данные при загрузке страницы
+        document.addEventListener('DOMContentLoaded', async () => {
+          await checkToken();
+
+            const closeBtn = document.getElementById('closeShareDevice');
+            if (closeBtn) {
+                closeBtn.onclick = () => closeModal('shareDeviceModal');
+            }
+
+            const devices = await fetchDevices();
+            renderTable(devices);
+            connectDeviceStatusesWS();
+        });
+               
+        function editDevice(id) {
+            alert(`Редактирование устройства с ID: ${id}`);
+            // Здесь можно реализовать переход на страницу редактирования
+        }
+        
+        function addDevice() {
+            const modal = document.getElementById('addObjectModal');
+            modal.style.display = 'block';
+        }
+
+        function handleStop(device) {
+            console.log("Остановить:", device.id);
+            // TODO запрос остановки объекта
+        }
+
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.style.display = 'none';
+        }
+
+
+        function closeAllMenus() {
+        document.querySelectorAll('.actions-menu.visible')
+            .forEach(menu => menu.classList.remove('visible'));
+        }
+
+        document.addEventListener('click', () => closeAllMenus());
+     
+        // Функция для обновления данных (можно вызвать из консоли или по кнопке)
+        function refreshData() {
+            fetchDevices();
+        }
+        
+    
+
+    </script>
+    <script src="/static/COR_ID_Js/config.js"></script>
+    <script src="/static/COR_ID_Js/general_fun.js"></script>
+    <script src="/static/COR_ID_Js/devices.js"></script>
+</body>
+</html>

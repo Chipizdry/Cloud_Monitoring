@@ -1,0 +1,236 @@
+
+
+
+
+
+
+
+
+
+        {    "layout": "energy_meter",
+             "battery": {
+                "enabled": true,
+                "modalId": "batteryModal",
+                "title": "Маховик",
+                "maxPower": 20000,
+
+                "blocks": [
+                    {
+                        "type": "fieldList",
+                        "title": "Датчики температуры",
+                        "fields": [
+                        { "label": "Температура 1", "unit": "°C", "source": "temp1" },
+                        { "label": "Температура 2", "unit": "°C", "source": "temp2" },
+                        { "label": "Температура 3", "unit": "°C", "source": "temp3" },
+                        { "label": "Температура 4", "unit": "°C", "source": "temp4" }
+                    ]
+                    },
+
+                    {
+                        "type": "fieldList",
+                        "title": "Параметры вращения",
+                        "fields": [
+                        { "label": "Скорость", "unit": "об/мин", "source": "speed" },
+                        { "label": "ШИМ", "unit": "%", "source": "pwmPercent" },
+                        { "label": "Частота ШИМ", "unit": "Гц", "source": "freqHz" },
+                        { "label": "ARR (период таймера)", "unit": "", "source": "timerArr" },
+                        { "label": "PWM (raw)", "unit": "ед.", "source": "pwmRaw" }
+                    ]
+                    }
+                  
+                ],
+                   "controls": [
+                {
+                   
+                    "saveAction": "save"
+                }]
+            },
+
+            "grid": {
+                "enabled": false,
+                "modalId": "GridSettingsModal",
+                "title": "Сеть",
+                "maxPower": 20000,
+                "blocks": [
+                    {
+                        "type": "phaseTable",
+                        "phases": 3,
+
+                        "rows": [
+                            {
+                                "label": "Напряжение",
+                                "unit": "V",
+                                "source": ["inputVoltageL1", "inputVoltageL2", "inputVoltageL3"]
+                            },
+                            {
+                                "label": "Ток",
+                                "unit": "A",
+                                "source": ["inputCurrentL1", "inputCurrentL2", "inputCurrentL3"]
+                            },
+                            {
+                                "label": "Мощность",
+                                "unit": "W",
+                                "source": ["inputPowerL1", "inputPowerL2", "inputPowerL3"]
+                            }
+                        ]
+                    },
+
+                    {
+                        "type": "fieldList",
+                        "fields": [
+                            {
+                                "label": "Общая мощность",
+                                "unit": "W",
+                                "source": "inputPowerTotal"
+                            },
+                            {
+                                "label": "Частота",
+                                "unit": "Hz",
+                                "source": "inputFrequency"
+                            }
+
+                        ]
+                    },
+
+                    {
+                        "type": "slider",
+                        "label": "Ограничение отдачи в сеть",
+                        "min": -100000,
+                        "max": 100000,
+                        "step": 100,
+                        "source": "gridFeedLimit",
+                        "saveAction": "saveAcSetpoint"
+                    }
+                ]
+            },   
+
+            "load": {
+                "enabled": true,
+                "modalId": "loadSettingsModal",
+                "title": "Нагрузка",
+                "maxPower": 20000,
+                   "blocks": [
+                    {
+                        "type": "phaseTable",
+                        "phases": 3,
+                        "rows": [
+                            {
+                                "label": "Напряжение",
+                                "unit": "V",
+                                "source": ["LoadPhaseVoltageA", "LoadPhaseVoltageB", "LoadPhaseVoltageC"]
+                            },
+                            {
+                                "label": "Ток",
+                                "unit": "A",
+                                "source": ["LoadPhaseCurrentA", "LoadPhaseCurrentB", "LoadPhaseCurrentC"]
+                            },
+                            {
+                                "label": "Мощность",
+                                "unit": "W",
+                                "source": ["LoadPhasePowerA", "LoadPhasePowerB", "LoadPhasePowerC"]
+                            }
+                        ]
+                    },
+
+                    {
+                        "type": "fieldList",
+                        "fields": [
+                            {
+                                "label": "Общая мощность",
+                                "unit": "W",
+                                "source": "LoadTotalPower"
+                            },
+                            {
+                                "label": "Частота",
+                                "unit": "Hz",
+                                "source": "LoadFrequency"
+                            }
+
+                        ]
+                    }
+
+                  
+                ]
+            },
+
+            "solar": {
+                "enabled": true,
+                "modalId": "SolarModal",
+                "title": "Солнечные панели",
+                "maxPower": 20000,
+                "mppt": true
+            },
+
+            "inverter": {
+                "enabled": true,
+                "modalId": "inverterModal",
+                "title": "Инвертор",
+                "maxPower": 20000
+            },
+
+            "generator": {
+                "enabled": true,
+
+
+                "modalId": "GeneratorModal",
+                "title": "Генератор",
+                "maxPower": 20000,
+                "blocks": [
+                    {
+                        "type": "phaseTable",
+                        "phases": 3,
+
+                        "rows": [
+                            {
+                                "label": "Напряжение",
+                                "unit": "V",
+                                "source": ["GenPhaseVoltageA", "GenPhaseVoltageB", "GenPhaseVoltageC"]
+                            },
+                            {
+                                "label": "Ток",
+                                "unit": "A",
+                                "source": ["GenPhaseCurrentA", "GenPhaseCurrentB", "GenPhaseCurrentC"]
+                            },
+                            {
+                                "label": "Мощность",
+                                "unit": "W",
+                                "source": ["GenPhasePowerA", "GenPhasePowerB", "GenPhasePowerC"]
+                            }
+                        ]
+                    },
+
+                    {
+                        "type": "fieldList",
+                        "fields": [
+                            {
+                                "label": "Общая мощность",
+                                "unit": "W",
+                                "source": "GenTotalPower"
+                            }
+
+                        ]
+                    }
+
+                  
+                ]
+            },
+
+                    
+    "hooks": {
+        "batteryOpenHandler": "startBatteryServicePolling",
+        "batteryCloseHandler": "stopBatteryServicePolling"
+    },
+    "protocols": {
+
+        "cor_bridge": {
+        "label": "COR-Bridge",
+        "show": ["agent_id" , "slave_id"]
+        }
+    },
+    "monitoring": {
+        "cor_bridge": "MonitoringTAC4300CTCorBridge"
+}
+}
+
+        
+

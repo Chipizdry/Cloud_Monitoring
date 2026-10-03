@@ -1,0 +1,391 @@
+
+
+
+  /* Основные стили для контейнера и таблицы */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.admin-container {
+    width: fit-content !important;
+    min-width: 400px;
+    max-width: 95vw;
+    overflow-x: auto;
+    transition: width 0.3s ease;
+    box-sizing: border-box;
+    padding: 20px;
+    background: white;
+    border-radius: 30px;
+}
+
+h1 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #333;
+}
+
+
+/* Стили для таблицы */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px; /* Уменьшенный шрифт */
+    margin-top: 8px;
+  
+   /* table-layout: auto; /* Динамическая ширина колонок */
+}
+
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 4px;
+    text-align: left;
+    white-space: nowrap; /* Исключаем перенос текста */
+}
+
+thead input[type="text"] {
+    width: calc(100% - 8px); /* Поля ввода занимают ширину данных с учётом отступов */
+    max-width: 210px; /* Ограничиваем максимальную ширину */
+    box-sizing: border-box; /* Учитываем padding и border */
+    padding: 4px; /* Минимальные отступы для компактности */
+    font-size: 10px; /* Размер текста для компактности */
+    margin: 0; /* Убираем внешние отступы */
+}
+
+
+thead th {
+    position: relative; /* Для контроля над содержимым ячеек */
+    padding: 4px; /* Сужаем padding */
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    white-space: nowrap; /* Текст в одной строке */
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+
+
+.date-range {
+display: flex;
+align-items: center;
+gap: 5px;
+}
+
+.date-range input[type="date"] {
+width: 150px;
+}
+
+.date-range span {
+margin: 0 5px;
+}
+
+.delete-icon, .toggle-status-icon  {
+    cursor: pointer;
+    color: #ff4d4d;
+    font-size: 16px; 
+}
+.delete-icon:hover {
+    color: #cc0000;
+}
+
+ /* Стили для пагинации */
+ .pagination {
+    display: flex;                  /* Горизонтально выравниваем */
+    justify-content: center;       /* Центрируем по горизонтали */
+    align-items: center;           /* Центрируем по вертикали */
+    gap: 20px;                     /* Отступы между кнопками */
+    margin-top: 5px;
+}
+.pagination button {
+    padding: 6px 12px;
+    max-width: 100px;
+    height: 40px;
+    font-size: 12px;
+}
+        /* Стили для ячеек с COR-ID */
+.cor-id-cell {
+    cursor: pointer; /* Указатель мыши при наведении */
+    text-decoration: none; /* Убираем подчеркивание по умолчанию */
+}
+
+/* Подчеркивание при наведении */
+.cor-id-cell:hover {
+    text-decoration: underline; /* Подчеркивание при наведении */
+    color: blue; /* Можно изменить цвет текста на синий, если нужно */
+}
+.activity-indicator {
+    background-color: #ccc; /* Цвет фона */
+    border-radius: 50%; /* Делаем круглый */
+    width: 15px; /* Увеличиваем диаметр */
+    height: 15px; /* Увеличиваем диаметр */
+    margin-left: 3px; /* Отступ для отделения от других элементов */
+    border: 2px solid #fff; /* Белая рамка для более четкого видимого круга */
+}
+
+
+.cor-card {
+  /*  background-color: rgba(255, 255, 255, 0.6);*/
+    border-radius: 12px;
+    width: 300px;
+    flex-direction: column;
+}
+
+.cor-text {
+    padding: 10px 30px;
+    font-size: 12px;
+    color: #291161;
+    line-height: 1;
+}
+
+#userTable {
+    table-layout: auto;
+    width: auto;
+    min-width: 100%;
+    border-collapse: collapse;
+}
+
+
+
+#userTable th, #userTable td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 4px;
+    border: 1px solid #ddd;
+}
+
+
+/* Контейнер для чекбоксов */
+.checkbox-container {
+    display: flex;
+    flex-direction: column;
+    padding-left: 20px;
+    margin-top: 25px;
+}
+
+
+/* Кастомные стили для чекбоксов */
+#columnSelectModal input[type="checkbox"],
+#rolesModal input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #7B43F2;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+}
+
+#columnSelectModal input[type="checkbox"]:checked,
+#rolesModal input[type="checkbox"]:checked {
+    background-color: #7B43F2;
+    border-color: #7B43F2;
+}
+
+#columnSelectModal input[type="checkbox"]:checked::after,
+#rolesModal input[type="checkbox"]:checked::after  {
+    content: "✓";
+    position: absolute;
+    color: white;
+    font-size: 14px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+/* Стили для label с чекбоксами */
+#columnSelectModal label,
+#rolesModal label
+ {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    color: #291161; /* Цвет текста как в других элементах */
+    font-size: 14px;
+    transition: color 0.2s;
+}
+
+#columnSelectModal label:hover,
+#rolesModal label:hover  {
+    color: #1a0a4e; /* Темнее при наведении */
+}
+
+
+.roles-icon {
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.2s, color 0.2s;
+}
+
+.roles-icon:hover {
+    transform: scale(1.2);  
+    color: #5B4296;  
+}
+
+.roles-icon:active {
+    transform: scale(1.1);
+    color: #291161; 
+}
+
+
+/* Стили для контейнера ролей */
+#rolesList {
+    display: flex;
+    flex-direction: column;
+    padding: 15px 20px;
+    margin-top: 15px;
+}
+
+/* Стили для контейнера отдельной роли */
+.role-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+/* Стили для иконки состояния роли */
+.role-checkbox-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 15px;
+    height: 15px;
+    border: 2px solid #7B43F2;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* Стили для названия роли */
+.role-name {
+    color: #291161;
+    font-size: 14px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.role-name:hover {
+    color: #1a0a4e;
+    text-decoration: underline;
+}
+
+/* Стили для активной роли (если чекбокс отмечен) */
+.role-container.active .role-checkbox-icon {
+    background-color: #7B43F2;
+    color: white;
+}
+
+/* Стили для неактивной роли */
+.role-container.inactive .role-checkbox-icon {
+    background-color: transparent;
+    color: #7B43F2;
+}
+
+
+/* Стили для вкладок доктора */
+.doctor-tabs {
+    width: 100%;
+    margin-top: 15px;
+}
+
+.tabs-header {
+    display: flex;
+    border: 1px solid #7B43F2;
+    border-radius: 12px;
+    margin: 1px 20px;
+    width: 417px;
+}
+
+
+.tab-btn {
+    padding: 6px 6px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 11px;
+    color: #291161;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s;
+    width: 95px;
+}
+
+.tab-btn.active {
+    border: 2px solid #7B43F2;
+    color: #7B43F2;
+    background-color: #FFFFFF;
+    height: 60px;
+    margin: 0px;
+}
+
+.tab-btn:hover {
+    border: 2px solid #7B43F2;
+    background: none;
+    height: 60px;
+    margin: 0px;
+}
+
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+/* Стили для форм и списков */
+.form-group {
+    margin-bottom: 10px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 3px;
+    font-size: 12px;
+    color: #555;
+}
+
+/*
+.form-group input {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 12px;
+} */
+
+.documents-list, .clinics-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.document-card, .clinic-card {
+    padding: 10px;
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}

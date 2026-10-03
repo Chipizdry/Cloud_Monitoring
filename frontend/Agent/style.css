@@ -1,0 +1,1370 @@
+
+
+
+
+
+
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    background-image:url('../Agent/background.jpg');
+    background-size: cover; /* Масштабирует изображение, чтобы оно покрывало весь экран */
+    background-position: center; /* Центрирует изображение */
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.container {
+    width: 220px; /* Установите фиксированную ширину контейнера */
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.5); /* Белый фон с 70% непрозрачности */
+    text-align: center;
+    align-items: center;
+    display: flex; /* Включаем Flexbox */
+    flex-direction: column; /* Элементы располагаются вертикально */
+    justify-content: center; /* Выравнивание элементов по центру по вертикали */
+}
+
+.header-container {
+    display: flex; /* Используем flexbox для выравнивания */
+    align-items: center; /* Выравниваем элементы по вертикали */
+    justify-content: space-between; /* Распределяем пространство между элементами */
+    margin-bottom: 20px; /* Отступ снизу для разделения с другими элементами */
+    gap: 40px;
+}
+
+.settings-container {
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 90px;
+}
+
+
+#back-link {
+  text-align: left;
+  top: 10px;
+  left: -50px;
+  text-decoration: none;
+  color: #007bff; /* цвет ссылки */
+}
+
+#back-link:hover {
+    text-decoration: underline;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.input-wrapper {
+    position: relative;
+    max-width: 200px;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"],
+input[type="number"]{
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    color: #7f69bd;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: 2px solid #7B43F2; /* Фиолетовый цвет */
+
+}
+
+ .toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 40%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    user-select: none;
+    }
+
+/* Основной цвет placeholder */
+::placeholder {
+    color: #B1A1DA;
+    opacity: 1; /* Убирает полупрозрачность */
+}
+
+/* Для браузеров, использующих `:-ms-input-placeholder` */
+:-ms-input-placeholder {
+    color: #B1A1DA;
+}
+
+/* Для Edge */
+::-ms-input-placeholder {
+    color: #B1A1DA;
+}
+
+
+#message {
+    color: red;
+}
+#messageOk {
+    color:#5B4296;
+}
+button, input[type="submit"], input[type="button"] {
+    padding: 10px;
+    border: none;
+    margin: 10px 0;
+    background-color: #7527B2;
+    color: white;
+    cursor: pointer;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 200px;
+    height: 40px;
+}
+button:hover, input[type="submit"]:hover, input[type="button"]:hover {
+    background-color: #7B43F2;
+}
+
+button:active {
+    background-color: #5F41B2;
+    transform: translateY(2px);
+}
+
+button:disabled {
+    background-color: #D2CAE8;
+    color: #ffffff;
+    cursor: not-allowed;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
+    width: 100%;
+    padding: 1px;
+    box-sizing: border-box;
+}
+#admin-button-container {
+    width: 100%; 
+    max-width: 200px; 
+}
+
+.add-button {
+    padding: 10px;
+    border: 1px solid #7527B2; 
+    margin: 10px 0;
+    background-color: #7527B2;
+    color: white;
+    cursor: pointer;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 220px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 14px;
+    transition: background-color 0.3s, color 0.3s, transform 0.2s;
+    text-decoration: none;
+  }
+  
+  .add-button:hover {
+    background-color: #5f1b91;
+  }
+  
+
+.delete-button {
+    padding: 10px;
+    border: 1px solid #DF1125; 
+    margin: 10px 0;
+    background-color: white;
+    color: #DF1125;
+    cursor: pointer;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 200px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px; /* Отступ между иконкой и текстом */
+    font-size: 13px;
+    transition: background-color 0.3s, color 0.3s, transform 0.2s;
+}
+
+.delete-button:hover {
+    background-color: #ffffff;
+    color: #830714; 
+    transform: translateY(-2px);
+    cursor: pointer;
+}
+
+.delete-button:active {
+    background-color: #ffffff;
+    transform: translateY(2px);
+    color: #c22e3d;
+}
+
+.plus-button {
+    background-color: #7527B2; /* Цвет фона кнопки */
+    color: white; /* Цвет текста */
+    border: none; /* Убираем границу */
+    padding: 10px 5px; /* Внутренние отступы */
+    border-radius: 12px; /* Скругление углов */
+    cursor: pointer; /* Курсор в виде руки */
+    font-size: 13px; /* Размер шрифта */
+    transition: background-color 0.3s, transform 0.2s; /* Плавные переходы */
+    max-width: 100px;
+    height: 40px; /* Фиксированная высота кнопки */
+    display: flex; /* Включаем flexbox для выравнивания текста внутри кнопки */
+    align-items: center; /* Выравниваем текст по вертикали внутри кнопки */
+    justify-content: center; /* Выравниваем текст по горизонтали внутри кнопки */
+}
+
+
+
+.button span {
+    flex-grow: 1;
+    text-align: left;
+    padding-left: 10px;
+    position: relative;
+    top: -10px; /* Немного поднимаем текст */
+}
+
+.button svg {
+    margin-left: 80px; /* Отодвигаем иконку вправо */
+    top: -16px;
+}
+
+.icon-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid white; /* Белая рамка кружка */
+    background-color: transparent; /* Прозрачный фон кружка */
+    color: white; /* Белый плюс */
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .icon-circle span {
+    display: block;
+    transform: translateY(-1px);
+  }
+  
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .icon-button:hover {
+    opacity: 0.7;
+  }
+  .custom-button {
+    padding: 10px;
+    border: none;
+    margin: 10px auto;
+    background-color: white;
+    color: #7527B2;
+    cursor: pointer;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 200px;
+    height: 40px;
+    display: flex;
+    align-items: center; /* Выравнивание по вертикали */
+    justify-content: space-between; /* Распределение пространства между элементами */
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif; /* Подключение шрифта Montserrat */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.icon-left,
+.icon-right {
+    width: 28px; /* Размер иконок */
+    height: 28px;
+    flex-shrink: 0; /* Запрет сжатия иконок */
+}
+
+.button-text {
+    flex-grow: 1; /* Текст занимает всё доступное пространство */
+    text-align: center; /* Центрирование текста */
+    margin: 0 8px; /* Отступы между текстом и иконками */
+}
+
+.custom-button:hover {
+    background-color: #eae8ef;
+}
+
+.custom-button:active {
+    transform: translateY(2px);
+}
+
+.icon-left,
+.icon-right {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+
+h1 {
+    color:#291161;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+
+
+h2 {
+    color:#291161;
+    font-size: 20px;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+
+h3 {
+    color: #291161;
+    margin-bottom: 10px;
+    text-align: center;
+    margin-top: 0px;
+
+}
+
+h4 {
+    color: #291161;
+    font-size: 16px;
+    margin-bottom: 10px;
+    text-align: center;
+    margin-top: -3px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #7f69bd;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 200px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+}
+
+input[type="submit"] {
+    width: 200px;
+    background-color: #D2CAE8; 
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+
+.label-padded {
+    padding-left: 20px;
+    color: #291161;
+    font-size: 13px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+/*
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    min-height: 50px; 
+}  */
+
+.password-container {
+    position: relative;
+    width: 200px;
+}
+
+.password-container input {
+    width: 100%;
+    padding-right: 40px; /* место под глаз */
+}
+
+
+#account .password-container {
+    margin-left: auto;
+    margin-right: auto;
+}
+/*
+.password-input {
+    width: 100%;
+    padding: 12px 45px 12px 15px; /* Увеличиваем отступ справа для иконки */
+ /*   font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px; /* Скругляем углы */
+/*    box-sizing: border-box; /* Учитываем padding в ширине */
+/* } */
+
+.hidden {
+    display: none !important;
+}
+
+
+.message {
+    color: #5B4296;
+    font-size: 14px; /* Уменьшите размер шрифта по необходимости */
+    text-align: center; /* Центрируйте текст */
+    margin-top: 10px; /* Дополнительный отступ сверху для лучшей читаемости */
+    font-weight: bold;
+}
+
+.registration-title, .forgot-password-link {
+    text-align: center;
+}
+
+
+#verificationCodeWindow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 20px;
+}
+input[type="button"].registration-button:hover {
+    background-color: #dc56a8;
+}
+
+a:hover {
+    color: blue; 
+} 
+
+.inactive-button {
+    background-color: gray;
+    color: #3a3838; 
+    cursor: not-allowed; 
+    
+    pointer-events: none;
+}
+
+.inactive-button:hover {
+    background-color: gray;}
+
+
+.error-message {
+    color: red;
+    font-size: 9px;
+    margin-top: 3px; 
+    margin-bottom: 3px; 
+}
+
+
+
+.confirmationMessage {
+    color: #5B4296;
+    font-size: 14px;
+    margin-top: 10px;}
+ 
+ .language-switcher {
+            position: relative;
+            margin-left: center ; /*-109px; /* Отступ справа от панели */
+            /*width: 54px; */
+        }
+
+        #lang-select {
+            display: none; /* Скрытие оригинального select элемента */
+        }
+
+.select2-container--default .select2-selection--single {
+            border: none;
+            height: 36px;
+            padding-left: 1px; /* Отступ слева для иконок */
+            background-repeat: no-repeat;
+            background-position: center left;
+            background-size: 14px; /* Размер иконок */
+            font-size: 10px; /* Уменьшение размера шрифта */
+            border-radius: 12px;
+        }
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 36px; /* Выравнивание текста по вертикали */
+        }
+
+.select2-container--default .select2-selection--single .flag-img {
+            width: 14px; /* Ширина изображения флага */
+            height: auto; /* Автоматическая высота */
+            vertical-align: middle; /* Выравнивание по вертикали */
+            margin-right: 5px; /* Отступ справа от текста */
+            
+        }
+
+        /* Стили для уменьшения размера флагов и текста в выпадающем списке */
+.select2-dropdown .select2-results__option {
+            font-size: 10px;
+        }
+
+.select2-dropdown .select2-results__option .flag-img {
+            width: 14px; /* Уменьшение ширины изображения флага */
+            height: auto; /* Автоматическая высота */
+            vertical-align: middle; /* Выравнивание по вертикали */
+            margin-right: 5px; /* Отступ справа от текста */
+        }  
+
+.link-button {
+    background: none;
+    border: none;
+    color: #7B43F2;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: inherit;
+    }
+
+
+.link-button-left{
+    text-align: left;
+    font-size: 12px;
+    float: left;
+    white-space: nowrap;
+    max-width:60px;width:60px;
+    max-height: 20px;
+    height: 20px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left:25px;
+}    
+
+.link-button:hover {
+     color: darkblue;
+     text-decoration: underline;
+     background: none;
+     border: none;
+
+        }        
+
+.logo {
+    display: flex;
+    justify-content: center; /* Центрирование логотипа */
+    margin-top: 10px; /* Отступ сверху для логотипа */
+      }
+
+/* Стили для рамки вокруг генератора паролей */
+.password-generator {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+/* Уменьшение шрифта для чекбоксов генератора паролей */
+.password-generator label {
+    font-size: 0.9em;
+}
+
+/* Изменение стиля для заголовка "Настройки генератора паролей" */
+.password-generator h3 {
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+/* Уменьшение интервала между элементами */
+.checkbox-group input[type="checkbox"],
+.checkbox-group label {
+    margin-right: 10px;
+}
+
+/* Стили для выпадающих списков */
+select#birth,
+select#user_sex ,
+select#deviceType{
+    width: 200px;
+    padding: 10px;         /* Внутренние отступы */
+    font-size: 14px;
+    color: #5B4296;
+    border: 1px solid #ccc;/* Рамка вокруг */
+    border-radius: 12px;   /* Скругленные углы */
+    box-sizing: border-box;/* Учитываем отступы и границы при расчете ширины */
+    background-color: white;
+    appearance: none;      /* Скрываем стандартный стиль стрелки */
+    margin-bottom: 10px;   /* Отступ снизу для разделения полей */
+}
+
+/* Стили для фокуса на выпадающих списках */
+select#birth:focus,
+select#user_sex:focus,
+select#deviceType:focus
+ {
+    outline: none;         /* Убираем обводку при фокусе */
+    border-color: #7527B2; /* Цвет рамки при фокусе, как у кнопок */
+    background-color: #ffffff; /* Фон при фокусе, как у кнопок */
+    color: #7527B2;          /* Цвет текста при фокусе, как у кнопок */
+    box-shadow: 0 0 5px rgba(117, 39, 178, 0.5); /* Тень для акцента */
+}
+
+/* Стили для выбранной опции в выпадающем списке */
+select#birth option:checked,
+select#user_sex option:checked,
+select#deviceType:checked {
+    background-color: #5B4296; /* Цвет фона выбранной опции */
+    color: white;              /* Цвет текста выбранной опции */
+}
+.hidden {
+    display: none;
+}
+
+#qrCodeContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 160px;
+    height: 160px;
+    margin: 0 auto;
+}
+
+#qrcode {
+    display: block; /* Убираем побочные отступы inline-элементов */
+    margin: 0 auto; /* Центрируем элемент внутри родителя */
+    text-align: center; /* Если в HTML-коде есть текст, он центрируется */
+    max-width: 100%;
+    display: inline-block;
+}
+
+#userCorId.clickable {
+    cursor: pointer; /* Изменяет курсор на "руку" при наведении */
+    color: blue; /* Цвет текста */
+   /* text-decoration: underline; /* Подчеркивание текста */
+}
+
+#userCorId.clickable:hover {
+    color: darkblue; /* Темный цвет при наведении */
+}
+#userCorId {
+    margin-top: 0; /* уменьшенный отступ */
+}
+
+.eye-icon {
+    position: absolute;
+    right: 15px; /* Расстояние от правого края поля */
+    top: 40%; /* Выравнивание по центру по вертикали */
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    color: #5B4296;
+}
+
+.otp-container {
+    display: none;
+    justify-content: center;
+    gap: 5px;
+    margin: 10px 0;
+    width: 200px;
+}
+
+.otp-input {
+    width: 35px;
+    height: 40px;
+    font-size: 14px;
+    text-align: center;
+    border: 2px solid #5B4296;
+    border-radius: 10px;
+    background-color: #ffffff;
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+    max-width: 29px; /* Ограничиваем ширину */
+}
+
+.otp-input:focus {
+    border: 2px solid #5B4296;
+    border-color: #a067ff;
+    background-color: #fff;
+}
+
+
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center; /* Выравнивание по центру по горизонтали */
+    align-items: center; /* Выравнивание по центру по вертикали */
+}
+
+.card {
+    border: 1px solid #ffffff;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 12px;
+    padding: 10px;
+    width: 420px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex; /* Используем flexbox для расположения иконки и контента */
+    gap: 10px; /* Отступ между иконкой и контентом */
+    align-items: center; /* Выравнивание по вертикали */
+    position: relative; /* Для позиционирования звездочки */
+}
+
+
+.session-card {
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 12px;
+    width: 400px;
+    flex-direction: column;
+}
+
+/* Стили для содержимого карточки сессии */
+.session-card .card-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1px 18px 0px 10px;
+    border-radius: 10px;
+    background-color: white;
+    position: relative;
+    font-size: 10px;
+    color: #291161;
+    line-height: 1.1;
+}
+/* Стили для заголовков внутри карточки сессии */
+.session-card .card-content strong {
+    color: #7527B2; /* Цвет заголовков (другой оттенок темы) */
+    font-weight: 600; /* Увеличиваем жирность заголовков */
+}
+
+.card:hover {
+    background-color: rgba(255, 255, 255, 0.8); /* Увеличиваем прозрачность фона */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Увеличиваем тень */
+    transform: translateY(-2px); /* Слегка поднимаем карточку */
+    cursor: pointer; /* Меняем курсор на указатель */
+}
+
+
+.icon-container {
+    display: flex;
+    align-items: center; /* Выравнивание иконки по центру по вертикали */
+    justify-content: center; /* Выравнивание иконки по центру по горизонтали */
+    width: 40px; /* Ширина контейнера для иконки */
+    height: 100%; /* Иконка занимает всю высоту карточки */
+}
+
+.icon-placeholder {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFFFFF; /* Цвет фона для заглушки */
+    border-radius: 50%; /* Круглая форма */
+    font-size: 24px;
+    font-weight: bold; /* Жирный шрифт */
+    color: #291161; /* Цвет текста */
+}
+
+.favicon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%; /* Круглая форма для иконки */
+}
+
+.content {
+    flex: 1; /* Контент занимает оставшееся пространство */
+    display: flex;
+    flex-direction: column;
+    gap: 4px; /* Отступ между заголовком и логином */
+    align-items: flex-start; /* Выравнивание по левому краю */
+}
+
+.card-header h3 {
+    margin: 0;
+    color: #291161;
+    font-size: 17px;
+}
+
+.card-body span {
+    color: #5B4296;
+    font-size: 9px;
+}
+
+.star-container {
+    display: flex;
+    align-items: center; /* Выравнивание звездочки по вертикали */
+    justify-content: flex-end; /* Звездочка справа */
+    margin-left: auto; /* Звездочка прижимается к правому краю */
+}
+
+
+.star svg {
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.star.favorite svg {
+    transform: scale(1.0); /* Увеличение звездочки при активации */
+}
+
+
+.image-frame {
+    width: 200px;
+    height: 200px;
+    border: 1px solid #5B4296;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#placeholder {
+    width: 144px; /* Ширина SVG */
+    height: 144px; /* Высота SVG */
+}
+
+#previewImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: grab;
+    max-width: none; /* Отключаем ограничение по ширине */
+    max-height: none; /* Отключаем ограничение по высоте */
+    display: none;
+}
+
+
+#status {
+    align-items: stretch;
+    flex-direction: column;
+    align-items: center;
+    font-size: 10px;
+    color: #5B4296; 
+    font-family: 'Arial', sans-serif;
+}
+#progressContainer {
+    margin: 0 auto; /* центрирует */
+    max-width: 200px;
+}
+
+/* === Гамбургер === */
+#menuButton {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    font-size: 26px;
+    cursor: pointer;
+    z-index: 1001;
+    background: #7527B2;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+}
+
+/* === Боковая панель === */
+.side-menu {
+    position: fixed;
+    left: -260px;
+    top: 0;
+    width: 280px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    color: white;
+    padding: 20px;
+    transition: left 0.3s;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.side-menu.open {
+    left: 0;
+}
+
+.side-menu h3 {
+    text-align: center;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 25px;
+}
+
+.menu-item {
+    display: block;
+    width: 100%;
+    background: none;
+    border: none;
+    color: #7527B2;
+    text-align: left;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.menu-item:hover {
+    background: #f1f1f1;
+}
+
+.menu-item.active {
+    background: #7527B2;
+    color: white;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* === Анимация === */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* === Для мобильных === */
+@media (max-width: 768px) {
+    .content {
+        margin-left: 0;
+        padding: 15px;
+    }
+}
+
+.uart-mode-box {
+    display: flex;
+    gap: 48px;
+    margin: 8px 0 12px;
+}
+
+.uart-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    line-height: 18px;
+}
+
+.uart-option input[type="radio"] {
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+    margin-top: 1px;
+}
+
+.ip-disabled {
+    opacity: 0.5;
+    background-color: #f0f0f0;
+    color: #888;
+    cursor: not-allowed;
+}
+
+.ip-disabled::placeholder {
+    color: #666;
+}
+
+
+
+.file-upload-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 170px;
+    margin-top: 20px;
+}
+
+.file-input-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+}
+
+.file-btn {
+    padding: 10px;
+    background-color: white !important;
+    color: #7528B2;
+    border: 2px !important;
+    border-color: #7528B2 !important;
+    border-radius: 12px;
+    cursor: pointer;
+    width: 200px;
+}
+
+
+.file-btn:hover {
+    background-color: #7B43F2;
+}
+
+.file-name {
+    font-size: 12px;
+    color: #291161;
+    text-align: center;
+    max-width: 200px;
+    word-break: break-all;
+}
+
+#wifiScanList {
+    max-height: 200px;         /* Ограничение по высоте */
+    overflow-y: auto;          /* Скролл, если сетей много */
+    padding: 0;
+    margin: 5px 0;
+    font-size: 0.9em;
+}
+
+#wifiScanList ul {
+    list-style: none;          /* Без маркеров */
+    padding: 0;
+    margin: 0;
+}
+
+#wifiScanList li {
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 6px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    font-size: 10px;
+    color: #7528b2;
+    transition: background 0.2s;
+}
+
+#wifiScanList li:hover {
+    background-color: #f0f0f0;
+}
+
+/* ============================================================
+ *  TRACEROUTE + DIAGNOSTICS — в едином стиле приложения
+ * ============================================================ */
+
+.traceroute-box,
+.diag-box {
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(117, 39, 178, 0.15);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 8px rgba(117, 39, 178, 0.06);
+    text-align: left;
+}
+
+.traceroute-box h3,
+.diag-box h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #291161;
+    text-align: left;
+}
+
+/* -------- Traceroute -------- */
+
+.traceroute-toolbar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.traceroute-toolbar input {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    padding: 8px 12px;
+    font-size: 13px;
+    border-radius: 10px;
+    border: 1px solid #e0d4f5;
+    color: #291161;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+.traceroute-toolbar input:focus {
+    outline: none;
+    border-color: #7527B2;
+    box-shadow: 0 0 0 3px rgba(117, 39, 178, 0.15);
+}
+
+.traceroute-toolbar button {
+    margin: 0;
+    width: auto;
+    min-width: 110px;
+    max-width: none;
+    height: 36px;
+    padding: 0 14px;
+    font-size: 13px;
+    border-radius: 10px;
+}
+
+.traceroute-output {
+    margin: 0;
+    padding: 10px 12px;
+    min-height: 60px;
+    max-height: 280px;
+    overflow: auto;
+    background: #faf7ff;
+    border: 1px solid #ece2ff;
+    border-radius: 10px;
+    font-family: "JetBrains Mono", "Fira Code", "Consolas", "Menlo", monospace;
+    font-size: 12px;
+    line-height: 1.55;
+    color: #291161;
+    white-space: pre;
+    scrollbar-width: thin;
+}
+
+.traceroute-output:empty::before {
+    content: "Ожидание запуска…";
+    color: #b1a1da;
+    font-style: italic;
+}
+
+.traceroute-output::-webkit-scrollbar { width: 8px; height: 8px; }
+.traceroute-output::-webkit-scrollbar-thumb {
+    background: #d6c8f0;
+    border-radius: 8px;
+}
+.traceroute-output::-webkit-scrollbar-thumb:hover {
+    background: #b9a3e6;
+}
+
+/* -------- Events table -------- */
+
+.diag-header,
+.diag-row {
+    display: grid;
+    grid-template-columns: 52px 68px 68px 1fr;
+    padding: 6px 10px;
+    align-items: center;
+    gap: 8px;
+}
+
+.diag-header {
+    background: rgba(236, 226, 255, 0.6);
+    color: #5B4296;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    border-radius: 8px;
+    margin-bottom: 4px;
+}
+
+.diag-list {
+    max-height: 320px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.diag-list::-webkit-scrollbar { width: 8px; }
+.diag-list::-webkit-scrollbar-thumb {
+    background: #d6c8f0;
+    border-radius: 8px;
+}
+
+.diag-row {
+    border-bottom: 1px solid rgba(117, 39, 178, 0.08);
+    font-size: 11px;
+    transition: background 0.15s;
+}
+.diag-row:last-child { border-bottom: none; }
+.diag-row:hover { background: rgba(117, 39, 178, 0.05); }
+
+.diag-type {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 9.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: #fff;
+    background: #8c6ed4;
+    text-align: center;
+    line-height: 16px;
+    white-space: nowrap;
+}
+
+.diag-type.ws     { background: #7527B2; }
+.diag-type.rx     { background: #7527B2; }
+.diag-type.tx     { background: #f39c12; }
+.diag-type.ping   { background: #3498db; }
+.diag-type.error  { background: #e74c3c; }
+
+.diag-interval,
+.diag-time {
+    color: #7f69bd;
+    font-size: 10.5px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.diag-content { min-width: 0; }
+
+.diag-row .diag-header {
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+    color: #291161;
+    font-size: 11.5px;
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0;
+    cursor: pointer;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.15s;
+}
+.diag-row .diag-header:hover { color: #7527B2; }
+
+.diag-value {
+    margin: 6px 0 0 0;
+    padding: 8px 10px;
+    background: #faf7ff;
+    border: 1px solid #ece2ff;
+    border-radius: 8px;
+    font-family: "JetBrains Mono", "Fira Code", "Consolas", "Menlo", monospace;
+    font-size: 10.5px;
+    line-height: 1.5;
+    color: #5B4296;
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 200px;
+    overflow: auto;
+    text-align: left;
+}
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #fff;
+    color: #5B4296;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 7px 30px 7px 10px;
+    font-size: 11px;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml;utf8,\<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%235B4296'>\<path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    width: 200px;
+}
+
+
+select:hover {
+    border-color: #7527B2;
+}   
+
+select:focus {
+    outline: none;
+    border-color: #7527B2;
+    box-shadow: 0 0 5px rgba(117, 39, 178, 0.5);
+}
+
+#popup-container {
+    position: fixed;
+    top: auto;
+    right: auto;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.popup {
+    min-width: 280px;
+    max-width: 360px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 14px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    animation: slideIn 0.25s ease-out;
+}
+
+.popup h4 {
+    margin: 0 0 6px;
+    font-size: 15px;
+}
+
+.popup.success { background: #11d31b; }
+.popup.error   { background: #ea0606; }
+.popup.warning { background: #ed6c02; }
+.popup.info    { background: #3a90f3; }
+.popup.loading { background: #455a64; }
+
+@keyframes slideIn {
+    from { transform: translateX(40px); opacity: 0; }
+    to   { transform: translateX(0); opacity: 1; }
+}
+
+
+.net-status {
+    margin-bottom: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: #eee;
+    color: #666;
+}
+
+.net-status.up {
+    background: #e6f4ea;
+    color: #09eb3e;
+}
+
+.net-status.down {
+    background: #fdecea;
+    color: #e70c0c;
+}
+
+.net-status.connecting {
+    background: #fff4e5;
+    color: #f45e0d;
+}
+
+.net-status.unknown {
+    background: #eee;
+    color: #777;
+}
+
+.node-title {
+    font-size: 13px;
+    color: #5B4296;
+    font-weight: 500;
+}

@@ -1,0 +1,129 @@
+# build
+#    docker compose --env-file corid_env build --with-dependencies 
+# run
+#    docker compose --env-file corid_env up 
+
+
+name: $CORMONITORING_ENV-cor-monitoring_v2
+
+
+services:
+  fastapi-monitoring:
+    privileged: true
+#    security_opt:
+#      - apparmor:unconfined
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: massivecapybara/cormonitoring_api:latest
+    container_name: $CORMONITORING_ENV-fastapi-monitoring
+    ports:
+      - "$CORMONITORING_API_PORT:8000"
+      - "$CORMONITORING_WEBSOCKET_PORT:45762"  # Отдельный WebSocket сервер
+    depends_on:
+      - prometheus
+      - postgres
+      - redis
+    env_file:
+      - $CORMONITORING_ENV-cormonitoring.cor-medical.ua.env
+#    volumes:
+#      - dicom-storage:/$SCAN_DIR
+    logging:
+      driver: json-file
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
+    command: gunicorn main:app --config /app/gunicorn.conf.py --workers 1 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000 --log-level info --error-logfile - --access-logfile -
+    restart: unless-stopped
+
+
+  redis:
+    image: redis:alpine
+    container_name: $CORMONITORING_ENV-redis-monitoring
+    ports:
+      - $CORMONITORING_REDIS_PORT:6379
+    restart: unless-stopped
+
+
+  postgres:
+    image: postgres:18
+    container_name: $CORMONITORING_ENV-postgres-monitoring
+    env_file:
+      - $CORMONITORING_ENV-cormonitoring.cor-medical.ua.env
+    ports:
+      - $CORMONITORING_POSTGRES_PORT:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    command: postgres -c max_connections=300
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: $CORMONITORING_ENV-prometheus-monitoring
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=7d
+      - --storage.tsdb.retention.size=4GB
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheusdata:/prometheus
+    ports:
+      - $CORMONITORING_PROMETHEUS_PORT:9090
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: $CORMONITORING_ENV-grafana-monitoring
+    ports:
+      - $CORMONITORING_GRAFANA_PORT:3000
+    volumes:
+      - ${PWD}/grafana.ini.$CORMONITORING_ENV:/etc/grafana/grafana.ini
+      - grafana-storage:/var/lib/grafana 
+    depends_on:
+      - loki
+    restart: unless-stopped
+
+  loki:
+    image: grafana/loki:latest
+    container_name: $CORMONITORING_ENV-loki-monitoring
+    ports:
+      - $CORMONITORING_LOKI_PORT:3100
+    command: -config.file=/etc/loki/local-config.yaml
+    user: "0:0"
+    volumes:
+      - ./loki-config.yaml:/etc/loki/loki-config.yaml
+      - ./:/app
+      - loki-data:/wal
+      - compactor-data:/tmp/loki/compactor
+    restart: unless-stopped
+
+  promtail:
+    image: grafana/promtail:latest
+    container_name: $CORMONITORING_ENV-promtail-monitoring
+    ports:
+      - $CORMONITORING_PROMTAIL_PORT:9080
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro 
+      - /var/run/docker.sock:/var/run/docker.sock:ro 
+      - /var/log:/var/log
+      - ./:/app
+      - ./promtail-config.yaml:/etc/promtail/config.yaml
+    command: -config.file=/etc/promtail/config.yaml
+    depends_on:
+      - loki
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  grafana-storage:
+  loki-data:
+  compactor-data:
+  prometheusdata:
+#  dicom-storage:
+#    driver: local
+#    driver_opts:
+#      type: cifs
+#      device: "$SCAN_UNC/$SCAN_UNC_DIR"
+#      o: "username=$SCAN_USER,password=$SCAN_USER"

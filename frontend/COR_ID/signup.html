@@ -1,0 +1,382 @@
+
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="icon" type="image/png" href="/static/favicon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/COR_ID_css/styles.css">
+    <title data-translate="signup-title">Регистрация</title>
+   
+</head>
+<body>
+    <div class="container">
+        <button class="link-button" onclick="window.location.href='/'" data-translate="back-link-text"><<<назад<<<</button>
+        <h1 data-translate="signup-title">Регистрация</h1>
+        <form id="registrationForm">
+
+                <div id="gender-field">
+                    <label for="user_sex" data-translate="gender-label">Пол:</label>
+                    <select id="user_sex" name="user_sex" required>
+                        <option value="" disabled selected data-translate="gender-label">Выберите пол</option>
+                        <option value="M" data-translate="male-option">Мужской</option>
+                        <option value="F" data-translate="female-option">Женский</option>
+                    </select>
+                </div>
+
+                <!-- Поле для выбора года рождения -->
+                <div id="birth-year-field">
+                    <label for="birth" data-translate="birth-year-label">Год рождения:</label>
+                    <select id="birth" name="birth" required>
+                    <option value="" disabled selected data-translate="birth-year-placeholder">Выберите год рождения</option>
+                    </select>
+                </div>
+
+             
+            <label for="email" data-translate="email-label">Электронная почта:</label>
+            <input type="email" id="email" name="email" required>
+            <div id="message" class="message"></div>
+
+            <div class="password-container hidden">
+                <label for="password" data-translate="password-label">Пароль:</label>
+                <div class="input-wrapper">
+                    <input type="password" id="password" name="password" placeholder="Введите пароль"   data-translate="password-placeholder" minlength="5" maxlength="21" required>
+                    <span id="eyeIcon" class="eye-icon" onclick="togglePassword('password', 'eyeIcon')"></span>
+                    <div id="password-message" class="error-message" data-translate="password-message"></div>
+                </div>
+            </div>
+
+            <div class="password-container hidden">
+              <!-- <label for="confirm-password" data-translate="confirm-password-label">Повторите пароль:</label> --> 
+                <div class="input-wrapper">
+                    <input type="password" id="confirm-password" placeholder="Подтвердите пароль"  data-translate="confirm-password-placeholder" minlength="5" maxlength="21" required>
+                    <span id="eyeIcon1" class="eye-icon" onclick="togglePassword('confirm-password', 'eyeIcon1')"></span> 
+                </div>
+            </div>
+
+            <button type="button" id="registration-button" class="hidden" data-translate="signup-button">Зарегистрироваться</button>
+            <button type="button" id="login-button" class="hidden" data-translate="login-button">ВОЙТИ</button>
+            <button type="button" id="sendVerifCode"  data-translate="send-code-email">Отправить код на имейл</button>
+            <div id="messageDivErr" data-translate="error-message" class="hidden"></div>
+            <div id="confirmationMessage" class="confirmationMessage hidden" data-translate="confirmation-message"></div>
+            <div id="verificationCodeWindow" class="hidden">
+                <div class="otp-container">
+                    <input type="text" class="otp-input" maxlength="1">
+                    <input type="text" class="otp-input" maxlength="1">
+                    <input type="text" class="otp-input" maxlength="1">
+                    <input type="text" class="otp-input" maxlength="1">
+                    <input type="text" class="otp-input" maxlength="1">
+                    <input type="text" class="otp-input" maxlength="1">
+                </div>
+                <input type="hidden" id="verificationCodeInput">
+                <input type="button" id="ConfirmationCodeInput" value="Подтвердить" class="hidden" onclick="verifyVerificationCode()" data-translate="confirm-button">
+            </div>
+        </form>
+        <div id="messageOk" class="messageOk"></div>
+    </div>
+  
+    <script src="/static/COR_ID_Js/translation.js"></script>   
+    <script src="/static/COR_ID_Js/general_fun.js"></script>
+    <script src="/static/COR_ID_Js/signup.js"></script>   
+
+    <script>
+        const birthYearSelect = document.getElementById('birth');
+        const currentYear = new Date().getFullYear();
+        for (let year = currentYear; year >= 1900; year--) {
+            const option = document.createElement('option');
+            option.value = year;
+            option.textContent = year;
+            birthYearSelect.appendChild(option);
+        }
+    </script>
+
+
+    <script>
+    
+const urlParams = new URLSearchParams(window.location.search);
+let redirectUrl = urlParams.get('redirectUrl');
+if (redirectUrl == null) {
+// По умолчанию
+redirectUrl = 'https://cor-identity-01s.cor-medical.ua';
+} 
+else {
+redirectUrl = redirectUrl.trim();
+}
+if (redirectUrl !== null) {
+redirectUrl = decodeURIComponent(redirectUrl);
+}
+
+
+document.addEventListener('DOMContentLoaded', function() {
+           // Установка языка при загрузке страницы
+         
+           const userLang = localStorage.getItem('selectedLanguage');
+
+    setLanguage(userLang);
+    console.log('Selected Language from localStorage:', userLang);
+
+    
+    const eyeIcon = document.getElementById('eyeIcon');
+    const eyeIcon1 = document.getElementById('eyeIcon1');
+    updateEyeIcon(eyeIcon, false);
+    updateEyeIcon(eyeIcon1, false);
+    
+    const confirmationMessageDiv = document.getElementById('confirmationMessage');
+    const messageDivErr = document.getElementById('messageDivErr');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirm-password');
+    const form = document.getElementById('registrationForm');
+    const messageDiv = document.getElementById('messageOk');
+    const registrationButton = document.getElementById('registration-button');
+    const loginButton = document.getElementById('login-button');
+    const passwordMessageDiv = document.getElementById('password-message');
+
+    const genderSelect = document.getElementById("user_sex");
+    const birthYearSelect = document.getElementById("birth");
+    const emailInput = document.getElementById("email");
+    const sendCodeButton = document.getElementById("sendVerifCode");
+
+        function checkFormCompletion() {
+            const isGenderSelected = genderSelect.value !== "";
+            const isBirthYearSelected = birthYearSelect.value !== "";
+            const isEmailEntered = emailInput.value.trim() !== "";
+            sendCodeButton.disabled = !(isGenderSelected && isBirthYearSelected && isEmailEntered);
+        }
+            // Отключаем кнопку при загрузке страницы
+        sendCodeButton.disabled = true;
+        // Отслеживание изменений в полях
+        genderSelect.addEventListener("change", checkFormCompletion);
+        birthYearSelect.addEventListener("change", checkFormCompletion);
+        emailInput.addEventListener("input", checkFormCompletion);
+
+
+        let hiddenInput = document.getElementById("verificationCodeInput");
+        let otpInputs = document.querySelectorAll(".otp-input");
+
+    if (otpInputs.length > 0) {
+        // Фокус на первом поле при загрузке
+        otpInputs[0].disabled = false;
+        otpInputs[0].focus();
+
+        otpInputs.forEach((input, index) => {
+            input.addEventListener("input", (e) => {
+                if (e.inputType === "deleteContentBackward") {
+                    // Если удаляем, фокус уходит назад
+                    if (index > 0) otpInputs[index - 1].focus();
+                } else {
+                    // Перемещаемся к следующему полю
+                    if (index < otpInputs.length - 1 && input.value !== "") {
+                        otpInputs[index + 1].disabled = false;
+                        otpInputs[index + 1].focus();
+                    }
+                }
+                updateHiddenInput();
+            });
+        });
+
+        function updateHiddenInput() {
+            let code = Array.from(otpInputs).map(input => input.value).join("");
+            hiddenInput.value = code;
+        }
+    }
+
+
+
+
+    function checkFields() {
+    const isPasswordEmpty = passwordInput.value === '';
+    const isConfirmPasswordEmpty = confirmPasswordInput.value === '';
+    const isPasswordValidLength = passwordInput.value.length >= 6 && passwordInput.value.length <= 20;
+    const userLang = localStorage.getItem('selectedLanguage');
+        if (isPasswordEmpty || isConfirmPasswordEmpty || !isPasswordValidLength) {
+            registrationButton.classList.add('inactive-button');
+            registrationButton.disabled = true;
+            loginButton.classList.add('inactive-button');
+            loginButton.disabled = true;
+        
+            if (!isPasswordValidLength) {
+                passwordMessageDiv.innerText = translations[userLang]['password-message'];
+                passwordMessageDiv.style.color = 'red';
+            } else {
+                passwordMessageDiv.innerText = '';
+            }
+
+            messageDiv.innerText = ''; // Очищаем сообщение о совпадении паролей
+        }
+
+else {
+    registrationButton.classList.remove('inactive-button');
+    registrationButton.disabled = false;
+    loginButton.classList.remove('inactive-button');
+    loginButton.disabled = false;
+    passwordMessageDiv.innerText = '';
+
+    if (passwordInput.value !== confirmPasswordInput.value) {
+        messageDiv.innerText =  translations[userLang]['passwordsDoNotMatch'];
+        messageDiv.style.color = 'red';
+    } else {
+        console.log("Пароли совпадают!))");
+        messageDiv.innerText =  translations[userLang]['passwordsMatch'];
+        messageDiv.style.color = 'green';
+    }
+}
+}
+    // Проверка полей при загрузке страницы
+    checkFields();
+
+
+
+      // Проверка полей при вводе данных
+  passwordInput.addEventListener('input', function() {
+checkFields();
+if (passwordInput.value.length > 0 || confirmPasswordInput.value.length > 0) {
+    confirmationMessageDiv.innerText = ''; // Скрыть сообщение о подтверждении почты
+       }
+    });
+
+confirmPasswordInput.addEventListener('input', function() {
+checkFields();
+if (passwordInput.value.length > 0 || confirmPasswordInput.value.length > 0) {
+    confirmationMessageDiv.innerText = ''; // Скрыть сообщение о подтверждении почты
+        }
+     });
+    // Проверка полей при вводе данных
+    passwordInput.addEventListener('input', checkFields);
+    confirmPasswordInput.addEventListener('input', checkFields);
+
+//Обработчик Кнопки Зарегистрироваться   
+
+registrationButton.addEventListener('click', () => {
+    if (passwordInput.value !== confirmPasswordInput.value) {
+        console.error('Пароли не совпадают.');
+        return;
+    }
+
+    const formData = new FormData(form);
+    const formDataJson = {};
+
+    formData.forEach((value, key) => {
+        formDataJson[key] = value;
+    });
+
+    // Получаем значения пола и года рождения
+    const gender = document.getElementById('user_sex').value;
+    const birthYear = document.getElementById('birth').value;
+
+    // Проверяем, что оба поля заполнены
+    if (!gender || !birthYear) {
+        console.error('Пол и год рождения должны быть заполнены.');
+        return;
+    }
+
+    // Преобразуем данные в нужный формат для запроса
+    formDataJson['user_sex'] = gender;
+    formDataJson['birth'] = parseInt(birthYear);
+
+    const corId = localStorage.getItem('cor_id');
+    console.log('COR-ID:', corId); 
+    formDataJson['cor_id'] = corId; // Добавляем corId в запрос
+    
+    // Отправка данных на сервер
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '/api/auth/signup');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if ((xhr.status === 201)||(xhr.status === 200)) {
+                const response = JSON.parse(xhr.responseText);
+                console.log('Регистрация прошла успешно.');
+                messageDiv.innerText = translations[userLang]['registrationSuccess'];
+                messageDiv.style.color = 'green';
+                registrationButton.classList.add('hidden');
+                loginButton.classList.remove('hidden');
+                
+            } else {
+                console.error('Произошла ошибка при регистрации.');
+                // Можно добавить обработку ошибки, например:
+                messageDiv.innerText = translations[userLang]['registration-error'] || 'Ошибка при регистрации';
+                messageDiv.style.color = 'red';
+            }
+        }
+    };
+
+    xhr.send(JSON.stringify(formDataJson));
+});
+
+
+
+
+    loginButton.addEventListener('click', () => {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const userLang = localStorage.getItem('selectedLanguage');
+        const loginDataParams = new URLSearchParams();
+        loginDataParams.append('username', email);
+        loginDataParams.append('password', password);
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "/api/auth/login");
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    console.log("Successful login");
+                    messageDiv.innerText = "Successful login"
+                    messageDiv.innerText =translations[userLang]['loginSuccess'];
+                    messageDiv.style.color = 'green';
+
+                    setTimeout(() => {
+
+                    localStorage.setItem('access_token', response.access_token);
+                    localStorage.setItem('refresh_token', response.refresh_token);
+                    const url = `/static/COR_ID/mainscreen.html`;
+
+                    window.location.href = url;
+                        }, 500);
+                } else {
+                    console.error("Произошла ошибка при входе.");
+                    messageDiv.innerText = translations[userLang]['login-error'];
+                    messageDiv.style.color = 'red';
+                }
+            }
+        };
+
+        xhr.send(loginDataParams.toString());
+    });
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+var sendCodeButton = document.getElementById('sendVerifCode');
+sendCodeButton.addEventListener('click', sendVerificationCode);
+
+});
+
+
+function startCountdown(button, language) {
+button.disabled = true;
+button.classList.add('inactive-button');
+
+let countdown = 30;
+button.textContent = translations[language]['send-again-countdown'].replace('{countdown}', countdown);
+
+const interval = setInterval(function() {
+    countdown--;
+    button.textContent = translations[language]['send-again-countdown'].replace('{countdown}', countdown);
+    if (countdown <= 0) {
+        clearInterval(interval);
+        button.disabled = false;
+        button.classList.remove('inactive-button');
+        button.textContent = translations[language]['send-code-email'];
+    }
+}, 1000);
+}
+
+
+</script>
+</body>
+</html>

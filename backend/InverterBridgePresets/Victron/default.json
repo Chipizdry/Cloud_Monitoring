@@ -1,0 +1,61 @@
+{
+  "title": "Victron COR Bridge polling",
+  "description": "Modbus TCP polling for Victron inverter via COR Bridge.",
+  "interval_ms": 1000,
+  "commands": [
+    {
+      "suffix": "vebus",
+      "label": "vebus",
+      "command_type": "modbus_tcp",
+      "unit_id": 227,
+      "function_code": 3,
+      "start_address": 3,
+      "quantity": 26
+    },
+    {
+      "suffix": "grid",
+      "label": "grid",
+      "command_type": "modbus_tcp",
+      "unit_id": 227,
+      "function_code": 3,
+      "start_address": 30,
+      "quantity": 48
+    },
+    {
+      "suffix": "system",
+      "label": "system",
+      "command_type": "modbus_tcp",
+      "unit_id": 100,
+      "function_code": 3,
+      "start_address": 800,
+      "quantity": 28
+    },
+    {
+      "suffix": "battery",
+      "label": "battery",
+      "command_type": "modbus_tcp",
+      "unit_id": 225,
+      "function_code": 3,
+      "start_address": 256,
+      "quantity": 12
+    },
+    {
+      "suffix": "solar",
+      "label": "solar",
+      "command_type": "modbus_tcp",
+      "unit_id": 100,
+      "function_code": 3,
+      "start_address": 3700,
+      "quantity": 4
+    },
+    {
+      "suffix": "solar_power",
+      "label": "solar_power",
+      "command_type": "modbus_tcp",
+      "unit_id": 100,
+      "function_code": 3,
+      "start_address": 3724,
+      "quantity": 7
+    }
+  ]
+}

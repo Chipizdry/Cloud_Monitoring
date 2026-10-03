@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="alternate icon" href="/static/favicon.png" type="image/png">
+    <link rel="mask-icon"  href="/static/favicon.svg" color="#291161"> 
+    <link rel="stylesheet" href="/static/COR_Energy/monitoring.css">
+    <link rel="stylesheet" href="/static/COR_ID_css/styles.css">
+    <link rel="stylesheet" href="/static/COR_ID_css/modal.css">
+
+    
+    <title>COR-Energy</title>
+    <script src="/static/COR_ID_Js/general_fun.js"></script>
+    <script src="/static/COR_Energy/xlsx.full.min.js"></script>
+    <script src="/static/COR_Energy/chart.min.js"></script>
+    <script src="/static/COR_ID_Js/config.js"></script>
+    
+
+</head>
+<body>
+    <div class="energy-container">
+        <div class="navigation-container">
+            <button class="link-button" onclick="goBack('/static/COR_ID/mainscreen.html')" data-translate="back-link-text">&lt;&lt;&lt;назад&lt;&lt;&lt;</button>         
+        </div>
+        <div id="loading" class="loading">Загрузка данных...</div>
+        <div id="error" class="error" style="display: none;"></div>
+
+        <div class="header-row">
+            <h1>Объекты</h1>
+
+            <div class="button-controls">
+                <button id="addObjectBtn" class="btn">+ Добавить объект</button>
+            </div>
+        </div>
+        <div id="table-container" style="display: none;" class="objects-table-container">
+            <table id="objects-table" class="objects-table">
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Описание</th>
+                        <th>Протокол</th>
+                        <th>Статус</th>
+                        <th>   </th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    <!-- Данные будут загружены через JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Модальное окно для добавления объекта -->
+        <div id="addObjectModal" class="modal" style="display: none;">
+            <div class="modal-header">
+                <div class="modal-buttons">
+                    <button class="modal-button close" id="closeAddObject">✖</button>
+                </div>
+                <h3 style="margin-top:30; color:#291161;font-size: 17px;">Добавить объект</h3>
+            </div>
+
+            <div class="modal-content">
+            <form id="addObjectForm">   
+
+                <div class="form">
+                    <label>Название:</label>
+                    <input type="text" id="objectName"  name="name" required>
+                </div>
+
+                <div class="form">
+                    <label>Описание:</label>
+                    <textarea id="objectDescription" name="description" required></textarea>
+                </div>
+
+                <div class="form">
+                    <label>Вендор:</label>
+                    <select id="objectVendor" name="vendor" data-role="vendor" required></select> 
+                </div>
+
+                <div class="form">
+                    <label>Модель:</label>
+                    <select id="objectModel" name="model_name" data-role="model" required></select>          
+                </div>
+
+                <div class="form">
+                    <label>Протокол:</label>
+                    <select id="objectProtocol" name="protocol" data-role="protocol" required></select>       
+                </div>
+
+                <div class="form" data-field="agent_id">
+                    <label for="objectAgentID">COR-Agent ID:</label>
+                    <select id="agent_id" name="agent_id" data-required="true">
+                        <option value="" disabled selected>Выберите COR-Agent</option>
+                    </select>
+                </div>
+                <div class="form" data-field="ip_address">
+                    <label>IP адрес:</label>
+                    <input type="text" inputmode="numeric" pattern="[0-9.]+" name="ip_address" id="addObjectIp" placeholder="000.000.000.000" data-required="true">
+                </div>
+
+                <div class="form" data-field="port">
+                    <label>Порт:</label>
+                    <input type="number" id="port" name="port" placeholder="502"data-required="true">
+                </div>
+
+                <div class="form" data-field="slave_id">
+                    <label>Slave ID:</label>
+                    <input type="number"  id="slave_id" name="slave_id" placeholder="1" data-required="true">
+                </div>
+
+                <div class="form" data-field="inverter_login">
+                    <label>Логин инвертора:</label>
+                    <input type="text" id="objectLogin" name="objectLogin">
+                </div>
+
+                <div class="form" data-field="inverter_password">
+                    <label>Пароль инвертора:</label>
+                    <input type="text" id="objectPassword" name ="objectPassword">
+                </div>
+                
+                <button type="submit" id="submitAddObjectBtn">Добавить</button>
+            </form>
+        </div>
+    </div>
+
+ <!-- Модальное окно для шаринга объекта -->
+        <div id="shareObjectModal" class="modal" style="display: none;">
+            <div class="modal-header">
+                <div class="modal-buttons">
+                    <button class="modal-button close" id="closeShareObject">✖</button>
+                </div>
+                <h3 class="modal-title" style="margin-top:30; color:#291161;font-size: 17px;">Доступ</h3>
+            </div>
+
+            <div class="modal-content">
+           
+            </div>
+        </div>
+
+        <!-- Модальное окно для редактирования объекта -->
+<div id="editObjectModal" class="modal" style="display: none;">
+    <div class="modal-header">
+        <div class="modal-buttons">
+            <button class="modal-button close" id="closeEditObject">✖</button>
+        </div>
+        <h3 style="margin-top:30; color:#291161;font-size: 17px;">Редактировать объект</h3>
+    </div>
+
+    <div class="modal-content">
+      <form id="editObjectForm">   
+        <div class="form">
+            <label for="editObjectName">Название:</label>
+            <input type="text" id="editObjectName" name="name" required>
+        </div>
+
+        <div class="form">
+            <label for="editObjectDescription">Описание:</label>
+            <textarea id="editObjectDescription" name="description" required></textarea>
+        </div>
+
+        <div class="form">
+            <label for="editObjectVendor">Вендор:</label>
+            <select id="editObjectVendor" data-role="vendor" name="vendor" required>
+                <option value="" disabled selected>Выберите вендора</option>
+            </select>
+        </div>
+
+        <div class="form" >
+            <label for="editObjectModel">Модель:</label>
+            <select id="editObjectModel" data-role="model" name="model_name" required>
+                <option value="" disabled selected>Выберите модель</option>
+            </select>
+        </div>
+
+        <div class="form" >
+            <label for="editObjectProtocol">Протокол:</label>
+            <select id="editObjectProtocol" name="protocol" data-role="protocol" required>
+                <option value="" disabled selected>Выберите протокол</option>      
+            </select>
+        </div>
+
+         <div class="form" data-field="agent_id">
+            <label for="objectProtocol">COR-Agent ID:</label>
+            <select id="editObjectAgentID"  name="agent_id" data-required="true">
+                <option value="" disabled selected>Выберите COR-Agent ID</option>  
+            </select>
+        </div>
+        <div class="form" data-field="ip_address">
+            <label>IP адрес:</label>
+            <input type="text" inputmode="numeric" pattern="[0-9.]+" id="editObjectIp"  name="ip_address" data-required="true">
+        </div>
+
+        <div class="form" data-field="port">
+            <label>Порт:</label>
+            <input type="number" id="editObjectPort"  name="port" data-required="true">
+        </div>
+
+         <div class="form" data-field="slave_id">
+            <label>Slave ID:</label>
+            <input type="number" id="editObjectSlaveID"  name="slave_id" data-required="true">
+        </div>
+
+
+        <div class="form" data-field="inverter_login">
+            <label>Логин инвертора:</label>
+            <input type="text" id="editObjectLogin" name="objectLogin">
+        </div>
+
+        <div class="form" data-field="inverter_password">
+            <label>Пароль инвертора:</label>
+            <input type="text" id="editObjectPassword" name ="objectPassword">
+        </div>
+
+        <input type="hidden" name="id" id="editObjectId">
+
+        <button type="submit" id="submitEditObjectBtn">Сохранить изменения</button>
+      </form>
+    </div>
+</div>
+<script type="module" src="/static/COR_Energy/objectsPage.js"></script>
+</body>
+</html>

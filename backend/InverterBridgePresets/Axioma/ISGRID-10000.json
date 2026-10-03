@@ -1,0 +1,25 @@
+{
+  "title": "Axioma ISGRID-10000 COR Bridge polling",
+  "description": "PI30 polling preset for Axioma ISGRID-10000 via COR Bridge.",
+  "interval_ms": 3000,
+  "commands": [
+    {
+      "suffix": "^P003GS",
+      "label": "General status values",
+      "command_type": "pi30",
+      "pi30_command": "^P003GS\r"
+    },
+    {
+      "suffix": "^P003WS",
+      "label": "Warning status bits",
+      "command_type": "pi30",
+      "pi30_command": "^P003WS\r"
+    },
+    {
+      "suffix": "^P003MOD",
+      "label": "Device mode",
+      "command_type": "pi30",
+      "pi30_command": "^P003MOD\r"
+    }
+  ]
+}

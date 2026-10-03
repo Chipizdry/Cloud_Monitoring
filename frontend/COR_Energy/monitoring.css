@@ -1,0 +1,1246 @@
+
+.energy-container {
+    position:relative;
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 19px;
+    border-radius: 30px;
+    max-width: 890px;
+    width: 900px !important;
+    text-align: center;
+    height: 780px;
+    flex-shrink: 0;
+}
+
+.header-row {
+    display: flex;
+    justify-content: space-between; /* заголовок слева, кнопка справа */
+    align-items: center; /* выравнивание по вертикали */
+    margin-bottom: 20px;
+}
+
+body {
+    overflow: hidden;
+    
+}
+
+
+.tabs {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    overflow-x: hidden;
+    white-space: normal;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+/* Стили для каждой вкладки */
+.tab {
+    flex: 1; /* Вкладки занимают равную ширину */
+    text-align: center; /* Центрируем текст внутри вкладок */
+    cursor: pointer;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border-radius: 12px ; 
+   /* border-right: 1px solid #ccc; /* Горизонтальная граница между вкладками */
+    box-sizing: border-box; /* Учет padding и border в ширину */
+    color: #7527B2;         /* более бледный текст */
+    font-weight: 300;    /* тонкий шрифт */
+    opacity: 0.45;        /* визуально делает ещё бледнее */
+}
+/* Убираем правую границу у последней вкладки */
+.tab:last-child {
+    border-right: none;
+}
+
+/* Контент вкладок */
+.tabcontent {
+    display: none;
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 22px;
+    border-top: none;
+    margin-top: 0;
+    padding: 6px;
+    width: 100%;
+    box-sizing: border-box;
+    max-height: 80vh;
+    height: 640px;
+}
+
+/* Стиль для активной вкладки */
+.tab.active {
+    background-color: #fff;
+    font-weight: bold;
+    color: #7527B2;
+    opacity: 1.0;
+    /*border-bottom: 1px solid #fff; /* Имитируем активную вкладку */
+}
+
+/* Активный контент вкладки */
+.tabcontent.active {
+    display: block;
+     position: relative;
+}
+.inner-content {
+    width: 100%; /* Убедитесь, что внутренний контейнер также занимает всю ширину */
+    box-sizing: border-box; /* Учитываем отступы и границы */
+}
+
+/* Стиль для контейнера графика */
+#chartContainer {
+    width: 100%;
+    height: 540px;
+}
+
+a {
+    color: #4de752;
+    text-decoration: none;
+    margin-top: 20px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+form {
+    margin-top: 10px;
+}
+
+input[type="text"], input[type="password"] {
+    display: block;
+    padding: 12px 15px;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 14px;
+    padding: 5px;
+    margin-bottom: 10px; /* Уменьшаем нижний отступ между полями */
+    width: 100%; /* Полная ширина для удобства на мобильных устройствах */
+}
+
+input[type="submit"] {
+    padding: 12px 25px;
+    background-color: #47e84c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+
+footer {
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #888;
+}
+
+
+
+#control {
+    position: relative; /* Относительное позиционирование для контейнера */
+     min-height: 600px;
+}
+
+.icon {
+    position: absolute; /* Абсолютное позиционирование для иконок */
+    text-align: center; /* Центрирование текста под иконкой */
+} 
+
+.battery-icon {  top: 380px; left: 50px;}
+.solar-battery-icon { top: 380px; left: 670px;}
+.inverter-icon { top: 180px; left: 340px; }
+.power-grid-icon { top: 30px; left: 50px; }
+.power-icon { top: 30px; left: 670px;}
+.GeneratorIcon { top: 380px; left: 340px;}
+.block-icon { top: 390px; left: 350px;display: none;}
+
+.WindTurbineIcon {
+    top: 100px;
+    left: 0;
+}
+
+.FlyWheelIcon {
+    top: 100px;
+    left: 90px;
+}
+
+
+.error-icon {  top: 150px; left: 341px;display: none;}
+.warning-icon {  top: 150px; left: 341px;display: none;}
+.fault-icon {  top: 150px; left: 341px;display: none;}
+
+#errorIcon,
+#ErrorIcon {
+    width: 140px;
+    height: 140px;
+   /* display: flex; */
+    flex-direction: column;
+    align-items: center;
+}
+
+#ErrorIcon,
+#WarningIcon,
+#FaultIcon {
+    display: none ;
+}
+
+.icon svg {
+    display: block;
+    margin: 0 auto; /* Для центрирования SVG внутри блока */
+}
+
+
+.icon:hover svg {
+    cursor: pointer;
+}
+
+
+.icon p {
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+
+
+
+.icon-label {
+    text-align: center;
+    margin-bottom: 4px;
+    font-size: 12px;
+    color: #291161;
+    font-weight: bold;
+}
+
+.phase-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;   /* Уменьшаем отступы сверху и снизу */
+    margin-bottom: 15px;
+    font-size: 0.8em;
+    color: #291161;
+}
+
+.phase-table th, .phase-table td {
+    border: 1px solid #ddd;
+    padding: 4px;      /* Уменьшаем внутренний отступ для компактности */
+    height: 20px;      /* Задаем фиксированную высоту строки */
+    text-align: center;
+}
+
+
+.phase-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    height: 26px;      /* Немного больше высота для заголовка */
+}
+/* Стили для строк с вводом данных */
+
+.input-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 3px; /* Уменьшаем отступ между строками */
+    gap: 5px;           /* Используем gap для сокращения расстояния между label и input */
+    
+}
+
+/* Стили для label (наименований параметров) */
+.input-row label {
+    flex: 1; /* Растягиваем label, чтобы текст располагался слева */
+    align-items: center;
+    margin-right: 3px; /* Отступ между текстом и полем ввода */
+    height: 20px;  
+}
+
+/* Стили для input */
+.input-row input[type="number"] {
+    flex: 0; /* Не растягиваем поле ввода */
+    width: 45px; /* Фиксированная ширина для числового ввода */
+   /* border: none;  Убираем рамку */
+    border: 2px solid #747373;
+    border-radius: 3px;
+    height: 20px;  
+    background-color: transparent; /* Убираем фон */
+    text-align:left; /* Выравниваем текст */
+}
+
+.switches-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.flywheel-data p, .coil-switches h3 {
+    margin: 10px 0;
+}
+
+
+/* Стиль для индикатора соединения */
+.status-indicator {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: red; /* По умолчанию красный (нет соединения) */
+    margin-right: 10px;
+}
+
+/* Если соединение активное — цвет зелёный */
+.status-indicator.active {
+    background-color: rgb(7, 206, 7);
+}
+
+.status-indicator.warning {
+    background-color: yellow;
+}
+
+
+#gridInverterLine {
+    pointer-events: none;
+    z-index: 5;
+}
+
+#gridInverterLine1Anim, 
+#gridInverterLine2Anim {
+    transition: stroke 0.3s ease;
+}
+
+
+/* Стили для контролов графика */
+.chart-controls {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    border-radius: 8px;
+}
+
+
+.time-range-slider-container {
+    width: 100%;
+    position: relative;
+}
+
+.time-range-slider {
+    width: 100%;
+    height: 10px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #ddd;
+    border-radius: 5px;
+    outline: none;
+    margin: 10px 0;
+    direction: rtl; /* Обратное направление ползунка */
+}
+
+.time-range-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #2ccb32;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.time-range-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+    background: #239c28;
+}
+
+.slider-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 12px;
+    color: #666;
+    margin-top: -5px;
+}
+
+.time-display {
+    text-align: center;
+    font-size: 13px;
+    color: #444;
+    font-weight: bold;
+}
+
+
+
+#loadingIndicator {
+    color: #2ccb32;
+    font-size: 14px;
+    font-style: italic;
+}
+
+.modal-results {
+    white-space: pre;
+    font-family: monospace;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    overflow: auto;
+    max-height: 200px;
+    min-height: 20px;
+    max-width: 300px;
+}
+
+.schedule-controls {
+    margin-bottom: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.button-controls {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: flex-end; 
+}
+.schedule-table-container {
+    overflow-x: auto;
+}
+
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: monospace;
+}
+
+
+.schedule-table tr {
+    height: 37px;
+}
+
+
+.schedule-table th {
+    background-color: #f2f2f2;
+    position: sticky;
+    top: 0;
+    font-size: 12px;
+    height: 30px;
+    width: auto;
+    white-space: normal; /* Разрешаем перенос слов */
+    word-wrap: break-word; /* Перенос длинных слов */
+    word-break: break-word; /* Альтернативный вариант переноса */
+    padding: 8px 4px; /* Уменьшаем боковые отступы */
+    line-height: 1.3; /* Улучшаем читаемость при переносе */
+}
+
+/* Для ячеек с кнопками сохраняем nowrap */
+.schedule-table td {
+    white-space: nowrap;
+    border: 1px solid #ada8a8;
+    padding: 3px;
+    text-align: center;
+    font-size: 16px;
+}
+
+
+
+.schedule-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.schedule-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.schedule-table td .time-input, .energy-container .time-input {
+    text-align: center !important;
+    max-width: 50px !important;
+    height: 29px !important;
+    border-radius: 4px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 1px solid #ddd !important;
+    width: auto !important;
+}
+
+.schedule-table td .integer-input, .energy-container .integer-input {
+    text-align: center !important;
+    max-width: 100px !important;
+    height: 29px !important;
+    border-radius: 4px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 1px solid #ddd !important;
+    width: auto !important;
+}
+
+.kw-input {
+    width: 70px;
+}
+
+.percent-input {
+    width: 50px;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 0 5px;
+    padding: 5px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 15px;
+}
+
+/* Стиль при наведении */
+.action-btn:hover {
+    transform: translateY(-1px);
+    background-color: none;  
+}
+
+/* Стиль при нажатии */
+.action-btn:active {
+    transform: translateY(1px);
+    box-shadow: none;
+}
+
+/* Стиль для активной кнопки (например, если она нажата/выбрана) */
+.action-btn.active {
+    background-color: white; 
+  /*  box-shadow: inset 0 1px 3px rgba(0,0,0,0.2); */
+}
+
+/* Стиль для неактивной кнопки */
+.action-btn:disabled,
+.action-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Специфичные стили для кнопки сохранения */
+.save-btn {
+    color: #28a745;
+    background-color:white;
+}
+
+.save-btn:hover {
+    background-color:white;
+    transform: translateY(1px);
+}
+
+.save-btn:active {
+    transform: translateY(2px);
+}
+
+/* Специфичные стили для кнопки удаления */
+.delete-btn {
+    color: #dc3545;
+    background-color: none; 
+}
+
+.delete-btn:hover {
+ 
+    background-color:white;
+    transform: translateY(1px);
+}
+
+.delete-btn:active {
+    background-color:white;
+    transform: translateY(2px);
+}
+
+
+
+
+/* Стили для временной шкалы */
+.timeline-container {
+    margin-bottom: 20px;
+    background: #f8f8f8;
+    padding: 10px;
+    border-radius: 4px;
+}
+.timeline {
+    position: relative;
+    height: 80px; 
+    background: #fff;
+    border: 1px solid #ddd;
+    margin-bottom: 5px;
+}
+
+
+.timeline-ruler {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: repeating-linear-gradient(
+        to right,
+        #eee,
+        #eee 1px,
+        transparent 1px,
+        transparent calc(100% / 24)
+    );
+}
+
+.timeline-periods {
+    position: relative;
+    height: 100%;
+}
+
+.timeline-period {
+    position: absolute;
+    height: 8px; 
+    border-radius: 3px;
+    opacity: 0.7;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.timeline-period:hover {
+    opacity: 1;
+    z-index: 2;
+}
+
+.timeline-hours {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #666;
+}
+
+.timeline-hour {
+    width: calc(100% / 24);
+    text-align: center;
+}
+
+
+.timeline-period::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: pre;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s;
+    z-index: 10;
+}
+
+.timeline-period:hover::after {
+    opacity: 1;
+}
+
+.pages-control {
+    margin-bottom: 0 !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+.notification.success {
+    background-color: #4CAF50;
+}
+.notification.error {
+    background-color: #f44336;
+}
+.notification.fade-out {
+    opacity: 0;}
+
+
+
+.register-test-container {
+    position: absolute;
+    top: 220px;
+    right: 50px;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    width: 300px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 10;
+}
+
+.save-btn.inactive {
+    filter: grayscale(100%);
+    pointer-events: none;
+    opacity: 0.5;
+}
+.save-btn.active {
+    filter: none;
+    pointer-events: auto;
+    opacity: 1;
+}
+
+
+.current-time-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: red;
+    z-index: 10;
+}
+
+.current-time-label {
+    position: absolute;
+    top: -20px;
+    left: -15px;
+    background-color: red;
+    color: white;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 12px;
+    z-index: 11;
+}
+
+
+
+
+
+
+/* chart-controls.css */
+.view-mode-control {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 8px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+}
+
+.view-mode-control label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.view-mode-control input[type="radio"] {
+    margin: 0;
+}
+
+.mode-dependent-controls {
+    display: none;
+}
+
+.mode-dependent-controls.active {
+    display: block;
+}
+
+.time-range-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.time-range-control label {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.time-range-control select {
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 13px;
+}
+
+#customDateRange {
+    display: none;
+    gap: 20px;
+    align-items: center;
+}
+
+#customDateRange input {
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 13px;
+}
+
+
+.pages-control {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pages-control label {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.pages-control select {
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+
+
+
+
+.loader {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.excel-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.excel-table th, .excel-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.excel-table th {
+    background-color: #f2f2f2;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.excel-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.excel-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+
+.table-container {
+    max-height: 60vh;
+    overflow-y: auto;
+    margin: 20px 0;
+    border: 1px solid #ddd;
+    max-width: 320px;
+    font-size: 12px;
+    max-height: 400px;
+}
+
+
+.totals-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0 20px 0;
+    gap: 15px;
+}
+
+.hidden {
+    display: none !important;
+  }
+
+
+  .apply-button {
+    padding: 10px;
+    margin: 0px 0;
+    background-color: #7527B2;
+    color: white;
+    cursor: pointer;
+    max-width: 90px;
+    height: 35px;
+}
+
+
+.chart-loading-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.8);
+    z-index: 1000;
+}
+
+.chart-loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+.btn-icon {
+    background: none;
+    border: none;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 4px 6px;
+    transition: 0.2s;
+    max-width: 10px;
+}
+
+.btn-icon:hover {
+    transform: scale(1.2);
+    opacity: 0.8;
+    background: none;
+}
+
+.btn-icon:active {
+    transform: scale(0.95);
+    background: none;
+}
+
+
+.btn-icon:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    background: none;
+}
+
+.btn-icon svg {
+    width: 10px;
+    height: 10px;
+    fill: #333;
+}
+.btn-icon:hover svg {
+    fill: #2ccb32;
+}
+.btn-icon:disabled svg {
+    fill: #aaa;
+}
+
+
+.objects-table-container {
+    height: 630px;
+    overflow-y: auto;
+    /* border: 1px solid #ddd; */
+    border-radius: 20px;
+    padding: 0 10px 10px 10px;
+    background: rgba(255, 255, 255, 0.6);
+}
+
+/* Чтобы заголовок был закреплён */
+.objects-table thead tr {
+    position: sticky;
+    top: 0;
+    background: rgba(255, 255, 255, 0.9);
+    z-index: 5;
+}
+
+.objects-table thead th:first-child {
+    border-top-left-radius: 20px;
+}
+
+.objects-table thead th:last-child {
+    border-top-right-radius: 20px;
+}
+
+/* Таблица должна растягиваться */
+.objects-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.objects-table th {
+    height: 40px !important;
+    line-height: 40px !important;
+    padding: 0 10px !important;
+    color: #5B4296;
+    position: relative;
+    border-bottom: none !important;
+    text-align: left;
+    padding-left: 8px;
+}
+
+.objects-table th::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+    width: 100%;
+    height: 1px;
+
+    background: linear-gradient(
+        to right,
+        rgba(91, 66, 150, 0) 0%,         /* край — растворение */
+        rgba(91, 66, 150, 0.25) 30%,      /* как border */
+        rgba(91, 66, 150, 0.25) 70%,      
+        rgba(91, 66, 150, 0) 100%        /* край — растворение */
+    );
+}
+
+
+.objects-table td {
+    height: 40px !important;
+    line-height: 40px !important;
+    padding: 0 10px !important;
+    color: #5B4296;
+    border-bottom: 1px solid rgba(91, 66, 150, 0.1);/* Граница под ячейками */
+    text-align: left;
+    padding-left: 10px;
+    cursor: pointer;
+}
+
+
+
+
+
+.objects-table tr {
+    height: 40px !important;
+    line-height: 40px !important;
+    padding: 0 10px !important;
+    color: #5B4296;
+    border-bottom: 1px solid #5B4296;
+    font-size: 14px;
+}
+
+#table-body tr:hover td:not(.actions) {
+    background-color: #f2f2f2;
+}
+
+#devices-table tbody tr:hover {
+    background-color: #f2f2f2;
+    cursor: pointer;
+}
+/* Столбец с действиями */
+.objects-table td.actions {
+    position: relative;
+    width: 40px;
+    text-align: center;
+}
+
+/* Кнопка три точки */
+.more-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 22px;
+    margin: 0px;
+    border-radius: 6px;
+    transition: 0.2s;
+    height: 35px;
+    padding: 2px;
+    color: #7527B2;
+}
+
+.more-btn:hover {
+    background: rgba(0,0,0,0.05);
+    border-radius: 6px;
+    margin: 0px;
+    transition: 0.2s;
+    height: 35px;
+    padding: 2px;
+}
+
+/* Выпадающее меню */
+.actions-menu {
+    position: absolute;
+    right: 0;
+    top: 45px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    width: 230px;
+    display: none;
+    z-index: 999;
+}
+
+.actions-menu.visible {
+    display: block;
+}
+
+.actions-menu button {
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    color: #291161;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.actions-menu button:hover {
+    background: rgba(41,17,97,0.06);
+}
+
+
+.icon-btn {
+
+    border: none;
+    background: none;
+    padding: 4px;
+    height: 10px;
+    cursor: pointer;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.icon-btn:hover {
+    background: none;
+    background: transparent;
+}
+
+
+.icon-btn svg {
+    width: 18px;
+    height: 18px;
+    transition: color 0.15s ease;
+}
+
+
+.form select {
+    width: 200px;
+    padding: 10px;
+    font-size: 14px;
+    color: #5B4296;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    box-sizing: border-box;
+    background-color: white;
+    appearance: none;
+    margin-bottom: 10px;
+}
+
+/* При фокусе — как у input */
+.form select:focus {
+    outline: none;
+    border-color: #7527B2;
+    background-color: #ffffff;
+    color: #7527B2;
+    box-shadow: 0 0 5px rgba(117, 39, 178, 0.5);
+}
+
+/* Активная выбранная опция */
+.form select option:checked {
+    background-color: #5B4296;
+    color: white;
+} 
+
+.object-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+
+
+.relay-block {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.relay-control {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.label-text {
+    font-size: 15px;
+    color: #222;
+}
+
+/* iOS switch */
+.ios-switch {
+    position: relative;
+    display: inline-block;
+    width: 52px;
+    height: 30px;
+}
+
+.ios-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    background-color: #ccc;
+    border-radius: 34px;
+    inset: 0;
+    transition: 0.25s;
+}
+
+.slider:before {
+    content: "";
+    position: absolute;
+    height: 24px;
+    width: 24px;
+    left: 3px;
+    top: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.25s;
+}
+
+input:checked + .slider {
+    background-color: #34c759; /* iOS green */
+}
+
+input:checked + .slider:before {
+    transform: translateX(22px);
+}
+

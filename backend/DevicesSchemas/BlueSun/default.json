@@ -1,0 +1,114 @@
+
+
+
+
+
+{       "layout": "hybrid_inverter",
+        "battery": {
+            "enabled": true,
+            "modalId": "batteryModal",
+            "title": "Батарея",
+            "maxPower": 11000,
+            "fields": [
+                { "id": "soc", "label": "SOC", "unit": "%", "source": "batterySOC" },
+                { "id": "voltage", "label": "Напряжение", "unit": "V", "source": "batteryVoltage" },
+                { "id": "current", "label": "Ток", "unit": "A", "source": "batteryCurrent" },
+                { "id": "power", "label": "Мощность", "unit": "W", "source": "batteryTotalPower" }
+            ],
+
+            "controls": [
+                {
+                    "type": "slider",
+                    "id": "State_Of_Charge",
+                    "label": "Минимальный SOC",
+                    "min": 0,
+                    "max": 99,
+                    "step": 1,
+                    "source": "batteryMinSoc",
+                    "saveAction": "saveBatterySettings"
+                }
+            ]
+        },
+
+        "grid": {
+            "enabled": true,
+            "modalId": "GridSettingsModal",
+            "title": "Сеть",
+            "maxPower": 11000,
+            "blocks": [
+                {
+                    "type": "singlePhase",
+                    "fields": [
+                        { "label": "Напряжение:", "unit": "V", "source": "inputVoltage" },
+                        { "label": "Ток:", "unit": "A", "source": "inputCurrent" },
+                        { "label": "Мощность:", "unit": "W", "source": "inputPower" },
+                        { "label": "Частота:", "unit": "Hz", "source": "inputFrequency" }
+                    ]
+                }
+            ]
+        },
+
+        "load": {
+            "enabled": true,
+            "modalId": "loadSettingsModal",
+            "title": "Нагрузка",
+            "maxPower": 11000,
+            "phases": true,
+            "blocks": [
+            {
+                "type": "singlePhase",
+                "fields": [
+                    { "label": "Напряжение:", "unit": "V", "source": "outputVoltage" },
+                    { "label": "Ток:", "unit": "A", "source": "outputCurrent" },
+                    { "label": "Мощность:", "unit": "W", "source": "outputActivePower" },
+                    { "label": "Частота:", "unit": "Hz", "source": "outputFrequency" }
+                ]
+            }
+            ]
+        },
+
+        "solar": {
+            "enabled": true,
+            "modalId": "SolarModal",
+            "title": "Солнечные панели",
+            "maxPower": 11000,
+                "fields": [
+                
+                { "id": "voltage", "label": "Напряжение", "unit": "V", "source": "spvVoltage" },
+                { "id": "current", "label": "Ток", "unit": "A", "source": "pvChargeCurrent" },
+                { "id": "power", "label": "Мощность", "unit": "W", "source": "solarPower" }
+            ]
+        },
+
+        "inverter": {
+            "enabled": true,
+            "modalId": "inverterModal",
+            "title": "Инвертор",
+            "maxPower": 11000,
+             "fields": [
+                { "id": "temp", "label": "Температура", "unit": "°C", "source": "inverterTemp" },
+                { "id": "busVoltage", "label": "Напряжение шины", "unit": "V", "source": "busVoltage" }
+            ]
+        },
+
+        "generator": {
+            "enabled": false
+        },
+
+         "hooks": {
+            "batteryOpenHandler": "startBatteryServicePolling",
+            "batteryCloseHandler": "stopBatteryServicePolling"
+        } ,
+
+        "protocols": {
+          "cor_bridge": {
+            "label": "COR-Bridge",
+            "show": ["agent_id" , "slave_id"]}
+        },
+        "monitoring": {
+            "cor_bridge": "MonitoringBlueSunCorBridge"
+    }
+
+}
+
+

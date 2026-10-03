@@ -1,0 +1,22 @@
+{
+    "title": "Victron Cerbo GX Default Direct Polling",
+    "description": "Default direct Modbus-TCP polling tasks for Victron Cerbo GX",
+    "modbus_config_file": "victron_cerbo_gx.json",
+    "tasks": [
+        {
+            "task_type": "modbus_registers",
+            "command_config": {"preset": "grid_monitoring"},
+            "interval_ms": 5000
+        },
+        {
+            "task_type": "schedule_check",
+            "command_config": {},
+            "interval_ms": 3000
+        },
+        {
+            "task_type": "cerbo_collection",
+            "command_config": {},
+            "interval_ms": 2000
+        }
+    ]
+}

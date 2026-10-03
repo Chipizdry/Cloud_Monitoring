@@ -1,0 +1,258 @@
+
+
+
+/* =========================================
+   ОСНОВНОЙ LAYOUT
+========================================= */
+
+.flywheel-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    padding: 20px;
+}
+
+/* =========================================
+   ВЕРХНЯЯ ПАНЕЛЬ
+========================================= */
+
+.top-bar {
+  
+    justify-content: center;
+}
+
+.status-icons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    align-items: center;
+}
+
+.icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 90px;
+}
+
+.icon-title {
+    margin-bottom: 10px;
+
+    color: #291161;
+    font-size: 14px;
+    font-weight: bold;
+
+    text-align: center;
+}
+
+/* =========================================
+   ОСНОВНОЙ GRID
+========================================= */
+
+.content-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(300px, 1fr)
+        320px;
+
+    gap: 24px;
+
+    align-items: start;
+}
+
+/* =========================================
+   TELEMETRY
+========================================= */
+
+.telemetry-panel {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit, minmax(150px, 1fr));
+    gap: 18px;
+}
+
+/* =========================================
+   КАРТОЧКИ
+========================================= */
+
+.data-card,
+.control-panel {
+    background: white;
+
+    border-radius: 18px;
+
+    padding: 18px;
+
+    box-shadow:
+        0 4px 14px rgba(0,0,0,0.08);
+}
+
+/*.single-block-title, */
+.group-title {
+    margin-bottom: 16px;
+
+    text-align: center;
+
+    font-size: 18px;
+    font-weight: bold;
+
+    color: #291161;
+}
+
+/* =========================================
+   DATA ROWS
+========================================= */
+
+.data-row {
+    display: flex;
+    justify-content: space-between;
+
+    padding: 8px 0;
+
+    border-bottom:
+        1px solid rgba(0,0,0,0.06);
+}
+
+/*
+.info-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    background:
+    rgba(91,66,150,0.05);
+}
+*/
+.info-card {
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    gap: 12px;
+    align-items: center;
+}
+/* =========================================
+   CONTROL PANEL
+========================================= */
+
+.control-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    position: sticky;
+    top: 20px;
+}
+
+.control-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.control-label {
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.pwm-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.control-btn {
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 12px;
+    background: #5B4296;
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.control-btn:hover {
+    transform: translateY(-1px);
+}
+
+.control-btn:active {
+    transform: scale(0.95);
+}
+
+.pwm-display {
+    min-width: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    padding: 10px;
+    border-radius: 12px;
+    background: #F7F7FB;
+}
+
+.start-stop-btn {
+    height: 48px;
+    border: none;
+    border-radius: 14px;
+    background: #2ccb32;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.start-stop-btn.stop {
+    background: #DF1125;
+}
+
+.mode-switch {
+    display: flex;
+    gap: 10px;
+}
+
+.mode-btn {
+    flex: 1;
+
+    height: 42px;
+
+    border-radius: 12px;
+    border: none;
+
+    background: #ECE8F7;
+
+    color: #5B4296;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.mode-btn.active {
+    background: #5B4296;
+    color: white;
+}
+
+/* =========================================
+   АДАПТИВ
+========================================= */
+
+@media (max-width: 1000px) {
+
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .control-panel {
+        position: static;
+    }
+}
+
+

@@ -1,0 +1,27 @@
+{
+    "title": "Deye Default Direct Polling",
+    "description": "Default direct Modbus-over-TCP polling tasks for Deye inverters",
+    "modbus_config_file": "deye_inverter.json",
+    "tasks": [
+        {
+            "task_type": "modbus_registers",
+            "command_config": {
+                "register_groups": [
+                    "grid_phase_voltage_power",
+                    "grid_current",
+                    "gen_relay_status",
+                    "generator_extended",
+                    "battery",
+                    "load",
+                    "service_extended",
+                    "inverter",
+                    "solar",
+                    "solar_high",
+                    "power32_v104",
+                    "energy_service"
+                ]
+            },
+            "interval_ms": 5000
+        }
+    ]
+}

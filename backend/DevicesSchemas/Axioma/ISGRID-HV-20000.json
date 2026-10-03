@@ -1,0 +1,248 @@
+
+
+
+
+        {    
+            "layout": "hybrid_inverter",
+            "battery": {
+                "enabled": true,
+                "modalId": "batteryModal",
+                "title": "Батарея",
+                "maxPower": 20000,
+                "blocks": [
+                    {
+                        "type": "fieldList",
+                        "title": "Батарея 1",
+                        "fields": [
+                            { "label": "SOC", "unit": "%", "source": "battery1SOC" },
+                            { "label": "Напряжение", "unit": "V", "source": "battery1Voltage" },
+                            { "label": "Ток", "unit": "A", "source": "battery1Current" },
+                            { "label": "Мощность", "unit": "W", "source": "battery1Power" }                   
+                        ]
+                    },
+
+                    {
+                        "type": "fieldList",
+                        "title": "Батарея 2",
+                        "fields": [
+                            { "label": "SOC", "unit": "%", "source": "battery2SOC" },
+                            { "label": "Напряжение", "unit": "V", "source": "battery2Voltage" },
+                            { "label": "Ток", "unit": "A", "source": "battery2Current" },
+                            { "label": "Мощность", "unit": "W", "source": "battery2Power" }                  
+                        ]
+                    },
+                    {
+                        "type": "slider",
+                        "label": "Минимальный SOC",
+                        "min": 0,
+                        "max": 99,
+                        "step": 1,
+                        "source": "batteryMinSoc",
+                        "saveAction": "saveBatterySettings"
+                    }
+                ]
+            },
+
+            "grid": {
+                "enabled": true,
+                "modalId": "GridSettingsModal",
+                "title": "Сеть",
+                "maxPower": 20000,
+                "blocks": [
+                    {
+                        "type": "phaseTable",
+                        "phases": 3,
+
+                        "rows": [
+                            {
+                                "label": "Напряжение",
+                                "unit": "V",
+                                "source": ["inputVoltageL1", "inputVoltageL2", "inputVoltageL3"]
+                            },
+                            {
+                                "label": "Ток",
+                                "unit": "A",
+                                "source": ["inputCurrentL1", "inputCurrentL2", "inputCurrentL3"]
+                            },
+                            {
+                                "label": "Мощность",
+                                "unit": "W",
+                                "source": ["inputPowerL1", "inputPowerL2", "inputPowerL3"]
+                            }
+                        ]
+                    },
+
+                    {
+                        "type": "fieldList",
+                        "fields": [
+                            {
+                                "label": "Общая мощность",
+                                "unit": "W",
+                                "source": "inputPowerTotal"
+                            },
+                            {
+                                "label": "Частота",
+                                "unit": "Hz",
+                                "source": "inputFrequency"
+                            }
+
+                        ]
+                    }
+
+                ]
+            } ,   
+
+            "load": {
+                "enabled": true,
+                "modalId": "loadSettingsModal",
+                "title": "Нагрузка",
+                "maxPower": 20000,
+                   "blocks": [
+                    {
+                        "type": "phaseTable",
+                        "phases": 3,
+                        "rows": [
+                            {
+                                "label": "Напряжение",
+                                "unit": "V",
+                                "source": ["LoadPhaseVoltageA", "LoadPhaseVoltageB", "LoadPhaseVoltageC"]
+                            },
+                            {
+                                "label": "Ток",
+                                "unit": "A",
+                                "source": ["LoadPhaseCurrentA", "LoadPhaseCurrentB", "LoadPhaseCurrentC"]
+                            },
+                            {
+                                "label": "Мощность",
+                                "unit": "W",
+                                "source": ["LoadPhasePowerA", "LoadPhasePowerB", "LoadPhasePowerC"]
+                            }
+                        ]
+                    },
+
+                    {
+                        "type": "fieldList",
+                        "fields": [
+                            {
+                                "label": "Общая мощность",
+                                "unit": "W",
+                                "source": "LoadTotalPower"
+                            },
+                            {
+                                "label": "Частота",
+                                "unit": "Hz",
+                                "source": "LoadFrequency"
+                            }
+
+                        ]
+                    }
+
+                  
+                ]
+            },
+
+           "solar": {
+                "enabled": true,
+                "modalId": "SolarModal",
+                "title": "Солнечные панели",
+                "maxPower": 20000,
+                "blocks": [
+                    {
+                        "type": "stringTable",
+                        "rows": [
+                            { "label": "String 1", "voltage": "PV1Voltage", "current": "PV1Current", "power": "PV1Power" },
+                            { "label": "String 2", "voltage": "PV2Voltage", "current": "PV2Current", "power": "PV2Power" },
+                            { "label": "String 3", "voltage": "PV3Voltage", "current": "PV3Current", "power": "PV3Power" },
+                            { "label": "String 4", "voltage": "PV4Voltage", "current": "PV4Current", "power": "PV4Power" },
+                            { "label": "String 5", "voltage": "PV5Voltage", "current": "PV5Current", "power": "PV5Power" },
+                            { "label": "String 6", "voltage": "PV6Voltage", "current": "PV6Current", "power": "PV6Power" }
+                        ]
+                    },
+                    {
+                        "type": "fieldList",
+                        "fields": [
+                            { "label": "Общая мощность", "unit": "W", "source": "TotalPVPower" }
+                        ]
+                    }
+                ]
+            },
+
+            "inverter": {
+                "enabled": true,
+                "modalId": "inverterModal",
+                "title": "Инвертор",
+                "maxPower": 20000
+
+             
+            },
+
+            "generator": {
+                "enabled": true,
+
+
+                "modalId": "GeneratorModal",
+                "title": "Генератор",
+                "maxPower": 20000,
+                "blocks": [
+                    {
+                        "type": "phaseTable",
+                        "phases": 3,
+
+                        "rows": [
+                            {
+                                "label": "Напряжение",
+                                "unit": "V",
+                                "source": ["GenPhaseVoltageA", "GenPhaseVoltageB", "GenPhaseVoltageC"]
+                            },
+                            {
+                                "label": "Ток",
+                                "unit": "A",
+                                "source": ["GenPhaseCurrentA", "GenPhaseCurrentB", "GenPhaseCurrentC"]
+                            },
+                            {
+                                "label": "Мощность",
+                                "unit": "W",
+                                "source": ["GenPhasePowerA", "GenPhasePowerB", "GenPhasePowerC"]
+                            }
+                        ]
+                    },
+
+                    {
+                        "type": "fieldList",
+                        "fields": [
+                            {
+                                "label": "Общая мощность",
+                                "unit": "W",
+                                "source": "GenTotalPower"
+                            }
+
+                        ]
+                    }
+
+                  
+                ]
+            },
+
+            
+    "hooks": {
+        "batteryOpenHandler": "startBatteryServicePolling",
+        "batteryCloseHandler": "stopBatteryServicePolling"
+    },
+    "protocols": {
+         "modbus_over_tcp": {
+            "label": "Modbus over TCP",
+            "show": ["ip_address", "port", "slave_id"]
+          },
+        "cor_bridge": {
+        "label": "COR-Bridge",
+        "show": ["agent_id" , "slave_id"]
+        }
+    },
+
+    "monitoring": {
+        "modbus_over_tcp": "MonitoringAxiomaModbusOverTcp",
+        "cor_bridge": "MonitoringAxiomaCorBridge"     
+    }
+}     
+
+        

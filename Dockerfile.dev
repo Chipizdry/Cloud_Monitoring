@@ -1,0 +1,21 @@
+# Development Dockerfile with additional system dependencies
+FROM python:3.12-slim
+
+RUN apt-get update && apt-get install -y \
+    dos2unix \
+    cifs-utils \
+    smbclient \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+RUN cat requirements.txt | dos2unix > requirements.txt.new
+RUN echo "psycopg2-binary>=2.9.9" >> requirements.txt.new
+RUN pip install -r requirements.txt.new
+
+COPY . /app
+
+# Development mode - will be overridden by docker-compose.dev.yml
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

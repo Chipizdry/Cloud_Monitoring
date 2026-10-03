@@ -1,0 +1,24 @@
+{
+  "title": "BlueSun BSM-11000BLV-48 COR-Bridge polling",
+  "description": "Modbus RTU (FC03) via COR-Bridge. Block-aligned reads only. Protocol 4.",
+  "interval_ms": 2000,
+  "commands": [
+    { "suffix": "identity",  "label": "protocol",            "function_code": 3, "start_address": 184, "count": 1  },
+    { "suffix": "serial",    "label": "serial",              "function_code": 3, "start_address": 186, "count": 12 },
+    { "suffix": "powerflow", "label": "powerflow",           "function_code": 3, "start_address": 198, "count": 1  },
+    { "suffix": "workmode",  "label": "workmode",            "function_code": 3, "start_address": 201, "count": 1  },
+    { "suffix": "grid",      "label": "grid (202–207)",      "function_code": 3, "start_address": 202, "count": 6  },
+    { "suffix": "inverter",  "label": "inverter (226–231)",  "function_code": 3, "start_address": 226, "count": 6  },
+    { "suffix": "output",    "label": "output (252–256)",    "function_code": 3, "start_address": 252, "count": 5  },
+    { "suffix": "battery",   "label": "battery (277–281)",   "function_code": 3, "start_address": 277, "count": 5  },
+    { "suffix": "pv",        "label": "pv (302–305)",        "function_code": 3, "start_address": 302, "count": 4  },
+    { "suffix": "ct",        "label": "ct (326–327)",        "function_code": 3, "start_address": 326, "count": 2  },
+    { "suffix": "phaseL1",   "label": "phaseL1 (338–355)",   "function_code": 3, "start_address": 338, "count": 18 },
+    { "suffix": "gen_daily", "label": "gen_daily",           "function_code": 3, "start_address": 702, "count": 1  },
+    { "suffix": "gen_total", "label": "gen_total",           "function_code": 3, "start_address": 703, "count": 2  },
+    { "suffix": "rating",    "label": "rating",              "function_code": 3, "start_address": 762, "count": 1  },
+    { "suffix": "fault",     "label": "Fault code",          "function_code": 3, "start_address": 100, "count": 2  },
+    { "suffix": "warning",   "label": "Warning code",        "function_code": 3, "start_address": 108, "count": 2  },
+    { "suffix": "devtype",   "label": "Device type",         "function_code": 3, "start_address": 171, "count": 1  }
+  ]
+}

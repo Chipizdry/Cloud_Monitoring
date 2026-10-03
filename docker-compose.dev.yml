@@ -1,0 +1,54 @@
+# Local development override for docker-compose.yml
+
+# Build and run (containers will have -monitoring suffix):
+# source cormonitoring_env.development && docker-compose -f docker-compose.yml -f docker-compose.dev.yml build --no-cache
+# source cormonitoring_env.development && docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+
+#Запуск на винде
+#docker-compose -f docker-compose.yml -f docker-compose.dev.yml --env-file cormonitoring_env.development build --no-cache
+#docker-compose -f docker-compose.yml -f docker-compose.dev.yml --env-file cormonitoring_env.development up
+
+
+# Автогенерация миграций при запущеном контейнере dev-fastapi-monitoring:
+# docker exec dev-fastapi-monitoring alembic revision --autogenerate -m "текст_миграции"
+
+services:
+  fastapi-monitoring:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      platforms:
+        - linux/amd64
+    entrypoint: ["/bin/sh", "-c"]
+    command: 
+      - |
+        pip install python-multipart
+        alembic upgrade head
+        uvicorn main:app --host 0.0.0.0 --port 8000 --log-config log_config.yaml --reload
+    volumes:
+      - .:/app
+      - /app/.venv  
+      - /usr/local/lib/python3.12/site-packages  
+
+  postgres:
+    environment:
+      POSTGRES_PASSWORD: cormedpassword
+      POSTGRES_USER: postgres
+      POSTGRES_DB: cor_monitoring_development
+
+  redis:
+    platform: linux/amd64
+
+  prometheus:
+    platform: linux/amd64
+
+  grafana:
+    platform: linux/amd64
+
+  loki:
+    platform: linux/amd64
+
+  promtail:
+    platform: linux/amd64

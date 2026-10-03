@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="/static/favicon.png">
+       
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+        <meta name="theme-color" content="#ffffff">
+        <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/COR_ID_css/styles.css">
+    <link rel="stylesheet" type="text/css" href="/static/COR_ID_css/modal.css">
+    <link rel="stylesheet" type="text/css" href="/static/COR_ID_css/admin.css">
+    <link rel="stylesheet" type="text/css" href="/static/COR_ID_css/flatpikr.min.css">
+    
+    <title>Admin Page</title>
+  
+</head>
+<body>
+  <div class="admin-container">
+        <button class="link-button" onclick="goBack('/static/COR_ID/mainscreen.html')" data-translate="back-link-text"><<<назад<<<</button>
+        <div class="card-body">
+            <span class="build-icon">⚙️</span>
+            <span id="app-version">Загрузка...</span>
+        </div>
+      
+        <h1>Пользователи</h1>
+
+     <button id="openModalBtn">Выбрать вывод</button>
+        <!-- Таблица для отображения пользователей -->
+        <table id="userTable">
+            <thead>
+                <tr>
+                    <th id="header-user_index">Индекс<br><input type="text" oninput="filterTable()" data-column="user_index"></th>
+                    <th id="header-id">ID<br><input type="text" oninput="filterTable()" data-column="id"></th>
+                    <th id="header-cor_id">COR-ID<br><input type="text" oninput="filterTable()" data-column="cor_id"></th>
+                    <th id="header-user_sex">Пол<br><input type="text" oninput="filterTable()" data-column="user_sex"></th>
+                    <th id="header-birth">Год рожд.<br><input type="text" oninput="filterTable()" data-column="birth"></th>
+                    <th id="header-email">Email<br><input type="text" oninput="filterTable()" data-column="email"></th>
+                    <th id="header-created_at">Дата регистрации<br><input type="text" oninput="filterTable()" data-column="created_at"></th>
+                    <th id="header-last_password_change">Последнее изм. пароля<br><input type="text" oninput="filterTable()" data-column="last_password_change"></th>
+                 <!--   <th id="header-last_active">Последняя активность<br><input type="text" oninput="filterTable()" data-column="last_active"></th> -->
+                    <th id="header-last_active">Последняя активность<br>
+                      <div class="date-range">
+                        <input type="text" id="dateRangeActive" onchange="filterByDateRange()" placeholder="Выберите диапазон дат">
+                      </div>
+                    </th> 
+                    <th id="header-account_status">Статус аккаунта<br><input type="text" oninput="filterTable()" data-column="account_status"></th>
+                    <th>Действия</th>
+                   
+                </tr>
+        
+            </thead>
+            <tbody>
+                <!-- Здесь будут добавлены пользователи -->
+            </tbody>
+        </table>
+
+        <!-- Пагинация -->
+        <div class="pagination" id="pagination">
+            <button onclick="goToFirstPage()" class="pagination button">« Первый</button>
+            <button onclick="prevPage()"  class="pagination button">« Назад</button>
+            <span id="page-info">Страница 1</span> <!-- Отображение текущей страницы -->
+            <button onclick="nextPage()" class="pagination button">Вперед »</button>
+            <button onclick="goToLastPage()" class="pagination button">Последний »»</button>
+        </div>
+  </div>
+
+            <!-- Модальное окно выбора отображения колонок --> 
+            <div id="columnSelectModal" class="modal" style="display: none;">
+                <div class="modal-header">
+                    <h1>Поля для отображения</h1>
+                    <div class="modal-buttons">
+                        <button class="modal-button close" data-action="close" id="closeColumnSelectModal">✖</button>
+                    </div>
+                </div>
+                <div class="checkbox-container">
+                    <label><input type="checkbox" onchange="toggleColumn('user_index')" id="checkbox-user_index" checked>Индекс</label>
+                    <label><input type="checkbox" onchange="toggleColumn('id')" id="checkbox-id" checked>ID</label>
+                    <label><input type="checkbox" onchange="toggleColumn('cor_id')" id="checkbox-cor_id" checked>COR-ID</label>
+                    <label><input type="checkbox" onchange="toggleColumn('user_sex')" id="checkbox-user_sex" checked>Пол</label>
+                    <label><input type="checkbox" onchange="toggleColumn('birth')" id="checkbox-birth" checked>Год рож.</label>
+                    <label><input type="checkbox" onchange="toggleColumn('email')" id="checkbox-email" checked>Email</label>
+                    <label><input type="checkbox" onchange="toggleColumn('created_at')" id="checkbox-created_at" checked>Дата регистрации</label>
+                    <label><input type="checkbox" onchange="toggleColumn('last_password_change')" id="checkbox-last_password_change" checked>Последнее изменение пароля</label>
+                    <label><input type="checkbox" onchange="toggleColumn('last_active')" id="checkbox-last_active" checked>Последняя активность</label>
+                </div>
+                <div class="modal-footer" style="text-align: center; margin-top: 20px;">
+                    <button onclick="closeModal('columnSelectModal')" class="button">ОК</button>
+                </div>
+            </div>
+
+                
+            <!-- Модальное окно для отображения информации о COR-ID -->
+            <div id="corIdModal" class="modal" style="display: none;">
+                <div class="modal-header">
+                    <h1>Информация о COR-ID:</h1>
+                    <div class="modal-buttons">
+                        <button class="modal-button close" data-action="close" id="closeCorIDModal">✖</button>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 30px;">
+                    <span id="corIdValue" style="color: #291161; font-size: 17px;"></span>
+                </div>       
+                    <div id="corIdInfo" class="cor-card"> </div>
+                        <!-- Здесь информация о COR-ID -->                              
+                    <div id="qrcode"></div>
+            </div>
+
+
+
+            <div id="rolesModal" class="modal" style="display: none;">
+                <div class="modal-header">
+                    <h3 style="margin-top:30; color:#291161;font-size: 17px;">Управление ролями пользователя:</h3>
+                    <div class="modal-buttons">
+                        <button class="modal-button close" data-action="close" id="closeRolesModal">✖</button>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 30px;">
+                    <span id="rolesEmail" style="color: #291161; font-size: 15px;"></span>
+                </div> 
+                <div style="text-align: center; margin-top: 10px;">
+                    <span id="rolesСorId" style="color: #291161; font-size: 17px;"></span>
+                </div>       
+                <div id="rolesList" class="checkbox-container">
+                    <!-- Список ролей будет загружен динамически -->
+                </div>
+                <div class="modal-footer" style="text-align: center; margin-top: 20px;">
+                    <button onclick="saveUserRoles()" class="button">Сохранить</button>
+                </div>
+            </div>
+            
+            <!-- Модальное окно с характеристиками роли -->
+            <div id="roleInfoModal" class="modal" style="display: none;">
+                <div class="modal-header">
+                    <h3 style="margin-top:30; color:#291161;font-size: 17px;">Характеристики роли:</h3>
+                    <div class="modal-buttons">
+                        <button class="modal-button close" data-action="close" id="closeRoleInfoModal">✖</button>
+                    </div>
+                </div>
+                <div id="roleInfoContent" style="padding: 0px;">
+                    <!-- Здесь будет информация о роли -->
+                </div>
+               
+            </div> 
+
+
+    <script src="/static/COR_ID_Js/translation.js"></script>
+    <script src="/static/COR_ID_Js/general_fun.js"></script>
+    <script src="/static/COR_ID_Js/admin.js"></script>
+    <script src="/static/COR_ID_Js/QrCode.min.js"></script> 
+    <script src="/static/COR_ID_Js/flatpikr.min.js"></script> 
+    <script> 
+
+document.addEventListener('DOMContentLoaded', () => {
+        initAdminPanel();
+        initDateRangePickers();
+        document.getElementById('closeRolesModal')?.addEventListener('click', () => closeModal('rolesModal'));
+        document.getElementById('closeRoleInfoModal')?.addEventListener('click', () => closeModal('roleInfoModal'));
+        document.getElementById('closeColumnSelectModal')?.addEventListener('click', () => closeModal('columnSelectModal'));
+        document.getElementById('closeCorIDModal')?.addEventListener('click', () => closeModal('corIdModal'));
+
+                });
+
+
+
+                document.addEventListener('DOMContentLoaded', function () {
+    const tableBody = document.querySelector("#userTable tbody");
+    if (!tableBody) return;
+
+    tableBody.addEventListener('click', function (event) {
+        // Обработка клика на COR-ID
+        if (event.target.tagName === 'TD' && event.target.classList.contains('cor-id-cell')) {
+            const corId = event.target.textContent.trim();
+            if (corId) showCorIdInfo(corId);
+        }
+        
+        // Обработка клика на иконку ролей
+        if (event.target.classList.contains('roles-icon')) {
+            const row = event.target.closest('tr');
+            if (row) {
+                const corIdCell = row.querySelector('.cor-id-cell');
+                if (corIdCell) {
+                    const corId = corIdCell.textContent.trim();
+                    if (corId) showUserRoles(corId);
+                }
+            }
+        }
+    });
+});                
+
+        let widthsArray= [20, 70, 70, 10, 30,70,50,50,50,50,30];
+        let currentPage = 1;
+        let rowsPerPage = 10;
+        let totalRows = 0;
+
+        
+        let allFilteredUsers = []; // Хранение всех отфильтрованных данных
+        let isFiltering = false; // Флаг для отслеживания процесса фильтрации
+          
+
+async function getAllUsers(skip = 0, limit = rowsPerPage) {
+    const url = `/api/admin/get_all?skip=${skip}&limit=${limit}`;
+    console.log('Запрос URL:', url);
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + getToken()
+            }
+        });
+
+        console.log('HTTP код ответа:', response.status); // Логируем HTTP статус ответа
+        if (response.status==='401') {
+        showTokenExpiredModal();
+        } 
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log('Полученные данные:', JSON.stringify(data, null, 2));
+       
+        const users = Array.isArray(data) ? data : []; 
+
+        console.log('Проверка свойства users:', users);
+       
+
+        if (users.length > 0) {
+            console.log('Полученные пользователи:', users);
+            populateTable(users); 
+            adjustTableLayout();
+            return users;
+        } else {
+            console.log('Пользователи отсутствуют.');
+            return false; 
+        }
+    } catch (error) {
+        console.error('Ошибка при загрузке пользователей:', error);      
+        return false;
+    }
+}
+    
+
+        // Функция для изменения статуса пользователя
+        async function confirmStatusChange(email, newStatus) {
+            const confirmChange = confirm(`Вы уверены, что хотите изменить статус пользователя с email: ${email} на ${newStatus}?`);
+
+            if (!confirmChange) return;
+            const url = `/api/admin/asign_status/${newStatus}?email=${encodeURIComponent(email)}`;
+
+            try {
+                const response = await fetch(url, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + getToken()
+                    }
+                });
+
+                if (response.ok) {
+                    alert(`Статус пользователя ${email} успешно изменен на ${newStatus}.`);
+                    getAllUsers(); // Обновить таблицу после изменения статуса
+                } else {
+                    const errorData = await response.json();
+                    alert(`Ошибка изменения статуса: ${errorData.message || response.statusText}`);
+                }
+            } catch (error) {
+                console.error('Ошибка при изменении статуса пользователя:', error);
+                alert('Произошла ошибка при изменении статуса пользователя.');
+            }
+        }
+
+
+ // Функция для отправки запроса на активацию/деактивацию пользователя
+ async function toggleUserStatus(email, isActive) {
+ 
+
+    // Установка URL в зависимости от статуса isActive
+    const url = isActive 
+        ? `/api/admin/deactivate/${encodeURIComponent(email)}` 
+        : `/api/admin/activate/${encodeURIComponent(email)}`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + getToken()
+            }
+        });
+        
+        const result = await response.json();
+
+        if (response.ok) {
+            alert(result.message);
+            getAllUsers(); // Обновить таблицу после изменения статуса
+        } else {
+            alert(`Ошибка: ${result.message}`);
+        }
+    } catch (error) {
+        console.error('Ошибка:', error);
+        alert('Произошла ошибка при попытке изменить статус пользователя.');
+    }
+}
+
+async function filterTable() {
+    if (isFiltering) {
+        console.log("Фильтрация уже выполняется, отмена повторного запуска");
+        return;
+    }
+    isFiltering = true;
+
+    // Собираем значения фильтров из полей ввода
+    const filters = {};
+    document.querySelectorAll('thead input[type="text"]').forEach(input => {
+        const column = input.getAttribute('data-column');
+        const value = input.value.trim().toLowerCase();
+        if (value) {
+            filters[column] = value; // Добавляем в фильтры только непустые значения
+        }
+    });
+
+    console.log("Активные фильтры:", filters);
+
+    allFilteredUsers = [];
+    let skip = 0;
+    let hasMoreData = true;
+
+    while (hasMoreData) {
+        console.log(`Запрос данных с пропуском: ${skip}, лимит: ${rowsPerPage}`);
+        const users = await getAllUsers(skip, rowsPerPage);
+
+        if (Array.isArray(users) && users.length > 0) {
+            console.log(`Получено пользователей: ${users.length}`);
+            const filteredUsers = users.filter(user => {
+                // Проверяем соответствие всех активных фильтров
+                return Object.keys(filters).every(column => {
+                    return user[column]?.toString().toLowerCase().includes(filters[column]);
+                });
+            });
+
+            console.log(`Отфильтровано пользователей: ${filteredUsers.length}`);
+            allFilteredUsers = allFilteredUsers.concat(filteredUsers);
+            skip += rowsPerPage;
+        } else {
+            hasMoreData = false;
+            console.log("Нет больше данных");
+        }
+    }
+
+    // Отображаем первую страницу отфильтрованных данных
+    populateTable(allFilteredUsers.slice(0, rowsPerPage));
+    isFiltering = false;
+}
+  
+            // Обновляем информацию о текущей странице
+        function updatePageInfo() {
+            document.getElementById('page-info').innerText = `Страница ${currentPage}`;
+        }
+
+
+        // Функция перехода на следующую страницу
+            async function nextPage() {
+                const skip = currentPage * rowsPerPage;
+                const dataAvailable = await getAllUsers(skip, rowsPerPage);
+
+                // Увеличиваем currentPage, только если данные доступны
+                if (dataAvailable) {
+                    currentPage++;
+                    updatePageInfo();
+                }
+            }
+
+            // Перемотка на предыдущую страницу
+            function prevPage() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    updatePageInfo();
+                    const skip = (currentPage - 1) * rowsPerPage;
+                    getAllUsers(skip, rowsPerPage); // Обновляем данные для предыдущей страницы
+                }
+            }
+
+
+        function goToFirstPage() {
+            currentPage = 1;
+            updatePageInfo();
+            loadPage();
+        }
+
+        async function goToLastPage() {
+            let totalUsers = 0; // Общее количество пользователей
+
+            // Запрашиваем пользователей до тех пор, пока есть данные
+            let skip = 0;
+            let hasMoreData = true;
+
+            while (hasMoreData) {
+                console.log(`Запрос данных с пропуском: ${skip}, лимит: ${rowsPerPage}`);
+                const users = await getAllUsers(skip, rowsPerPage); // Получаем пользователей
+
+                if (Array.isArray(users) && users.length > 0) {
+                    totalUsers += users.length; // Увеличиваем общее количество пользователей
+                    skip += rowsPerPage; // Увеличиваем пропуск для следующего запроса
+                } else {
+                    hasMoreData = false; // Прекращаем цикл, если нет больше данных
+                    console.log("Нет больше данных");
+                }
+            }
+
+            // Вычисляем общее количество страниц
+            const totalPages = Math.ceil(totalUsers / rowsPerPage);
+            currentPage = totalPages; // Устанавливаем текущую страницу на последнюю
+
+            updatePageInfo(); // Обновляем информацию о текущей странице
+            loadPage(); // Загружаем данные для последней страницы
+        }
+
+        function loadPage() {
+            const skip = (currentPage - 1) * rowsPerPage;
+            getAllUsers(skip, rowsPerPage);
+        }
+
+                // Функции для открытия и закрытия модального окна
+            function openModal() {
+                document.getElementById("corIdModal").style.display = "block";
+                
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const tableBody = document.querySelector("#userTable tbody");
+                if (!tableBody) return;
+
+                tableBody.addEventListener('click', function (event) {
+                    // Более строгая проверка: клик именно на TD с классом cor-id-cell
+                    if (event.target.tagName === 'TD' && event.target.classList.contains('cor-id-cell')) {
+                        const corId = event.target.textContent.trim();
+                        if (corId) showCorIdInfo(corId);
+                    }
+                });
+            });
+
+        
+ 
+           
+                    
+           // Функция для инициализации видимости колонок из localStorage
+            function initializeColumns() {
+                const columnState = JSON.parse(localStorage.getItem('columnsState') || '{}');
+
+                // Применяем состояние для каждой колонки
+                Object.keys(columnState).forEach(column => {
+                    const header = document.getElementById(`header-${column}`);
+                    if (header) {
+                        const isVisible = columnState[column];
+                        header.style.display = isVisible ? '' : 'none'; // Устанавливаем видимость
+
+                        // Обновляем видимость ячеек в таблице
+                        const cells = document.querySelectorAll(`tbody td:nth-child(${Array.from(header.parentNode.children).indexOf(header) + 1})`);
+                        cells.forEach(cell => {
+                            cell.style.display = header.style.display;
+                        });
+                    }
+                });
+            }
+
+  
+            function adjustContainerWidth() {
+    const table = document.querySelector('#userTable');
+    const container = document.querySelector('.admin-container');
+    if (!table || !container) return;
+
+    // Временно переключаем layout
+    table.style.tableLayout = 'auto';
+    table.style.width = 'auto';
+
+    // Принудительно пересчитываем ширину таблицы
+    const actualWidth = table.scrollWidth;
+
+    // Применяем ширину контейнеру
+    container.style.width = `${actualWidth}px`;
+    container.style.minWidth = '400px';
+    container.style.maxWidth = '95vw';
+
+    // Возвращаем фиксированный layout
+    table.style.tableLayout = 'fixed';
+    table.style.width = '100%';
+
+    console.log('container width adjusted to:', container.style.width);
+}
+
+function setAllColumnWidths(widthsArray) {
+    const table = document.querySelector('#userTable');
+    if (!table || !widthsArray || !widthsArray.length) return;
+
+    // Временно переключаем на auto layout для корректного расчета
+    table.style.tableLayout = 'auto';
+    
+    // Получаем все заголовки
+    const allHeaders = table.querySelectorAll('thead th');
+    
+    // Применяем ширины
+    widthsArray.forEach((width, index) => {
+        if (index >= allHeaders.length) return;
+        
+        const header = allHeaders[index];
+        const cells = table.querySelectorAll(`tbody td:nth-child(${index + 1})`);
+        
+        // Устанавливаем ширину только если колонка видима
+        if (header.style.display !== 'none') {
+            header.style.width = `${width}px`;
+            header.style.minWidth = `${width}px`;
+            cells.forEach(cell => {
+                cell.style.width = `${width}px`;
+                cell.style.minWidth = `${width}px`;
+            });
+        } else {
+            // Для скрытых колонок сбрасываем ширину
+            header.style.width = '';
+            header.style.minWidth = '';
+            cells.forEach(cell => {
+                cell.style.width = '';
+                cell.style.minWidth = '';
+            });
+        }
+    });
+
+    // Возвращаем фиксированный layout после применения ширин
+    table.style.tableLayout = 'fixed';
+    console.log("Ширины колонок установлены");
+}
+
+
+           
+function initAdminPanel() {
+  // Проверка токена и безопасность
+  checkToken();
+  console.log('Страница загружена. Запуск процесса загрузки пользователей...');
+  initializeColumns();
+  initializeCheckboxes();
+  adjustTableLayout();
+  makeModalDraggable('columnSelectModal');
+  makeModalDraggable('corIdModal');
+  makeModalDraggable('rolesModal');
+  makeModalDraggable('roleInfoModal');
+  setupEventListeners();
+  getAllUsers();
+}
+
+function initDateRangePickers() {
+  const dateInputs = document.querySelectorAll('input[id*="Range"]');
+  
+  dateInputs.forEach(input => {
+    input.addEventListener('focus', () => initFlatpickr(input));
+  });
+}
+
+
+function initFlatpickr(inputElement) {
+  new flatpickr(inputElement, {
+    mode: "range", 
+    dateFormat: "Y-m-d",
+    onClose: function(selectedDates) {
+      if (selectedDates.length === 2) {
+        inputElement.value = formatDateRange(selectedDates[0], selectedDates[1]);
+      }
+    }
+  });
+}
+
+function formatDateRange(startDate, endDate) {
+  return `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`;
+}
+
+function setupEventListeners() {
+  // Обработчик изменения размера окна
+  window.addEventListener('resize', adjustTableLayout());
+  
+  // Обработчик открытия модального окна
+  document.getElementById('openModalBtn').addEventListener('click', () => {
+    initializeCheckboxes();
+    document.getElementById('columnSelectModal').style.display = 'block';
+  });
+}
+
+function adjustTableLayout() {
+    
+    setAllColumnWidths(widthsArray);
+   // adjustContainerWidth();
+}
+
+
+
+async function showUserRoles(corId) {
+    if (!checkToken()) return;
+    try {
+        const response = await fetch(`/api/admin/get_user_info/${corId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + getToken()
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        const userInfo = data.user_info;
+        const userRoles = data.user_roles || [];
+        console.log("Полученные данные от сервера:", data);
+
+        // Заполняем модальное окно
+        document.getElementById("rolesEmail").textContent = userInfo.email;
+        document.getElementById("rolesСorId").textContent = userInfo.cor_id;
+
+        const rolesList = document.getElementById("rolesList");
+        rolesList.innerHTML = '';
+
+        // Создаем элементы только для отображения ролей
+        const allRoles = ['admin', 'lawyer', 'cor-int', 'active_user', 'doctor','energy_manager', 'lab_assistant'];
+        allRoles.forEach(role => {
+            const isChecked = userRoles.includes(role);
+            
+            // Создаем контейнер для роли
+            const roleContainer = document.createElement('div');
+            roleContainer.className = 'role-container';
+            
+            // Создаем "чекбокс" (на самом деле просто картинка)
+            const checkboxIcon = document.createElement('span');
+            checkboxIcon.className = 'role-checkbox-icon';
+            checkboxIcon.innerHTML = isChecked ? '✓' : '✗';
+            checkboxIcon.style.color = isChecked ? 'green' : 'red';
+            
+            // Создаем название роли
+            const roleName = document.createElement('span');
+            roleName.className = 'role-name';
+            roleName.textContent = role;
+            
+            // Добавляем обработчик клика по названию роли
+            roleName.addEventListener('click', (e) => {
+                e.preventDefault();
+                // Передаем только cor_id вместо всех данных
+                showRoleInfo(role, userInfo.cor_id); 
+            });
+                        
+            // Собираем все вместе
+            roleContainer.appendChild(checkboxIcon);
+            roleContainer.appendChild(roleName);
+            rolesList.appendChild(roleContainer);
+        });
+
+        const saveButton = document.querySelector('#rolesModal .modal-footer button');
+        if (saveButton) {
+            saveButton.style.display = 'none';
+        }
+
+        // Открываем модальное окно
+        document.getElementById("rolesModal").style.display = "block";
+
+    } catch (error) {
+        console.error('Ошибка при загрузке информации о пользователе:', error);
+        alert('Произошла ошибка при загрузке информации о пользователе');
+    }
+}
+
+
+// Основная функция вывода информации о роли
+function showRoleInfo(role, corId) {
+    const roleInfoContent = document.getElementById("roleInfoContent");
+    roleInfoContent.innerHTML = '';
+    
+    // Выбираем соответствующую функцию для роли
+    const roleHandlers = {
+        'admin': showAdminInfo,
+        'lawyer': showLawyerInfo,
+        'cor-int': showCorIntInfo,
+        'active_user': showActiveUserInfo,
+        'doctor': showDoctorInfo,
+        'energy_manager': showEnergyManagerInfo,
+        'lab_assistant': showLabAssistantInfo
+    };
+    
+    if (roleHandlers[role]) {
+        roleHandlers[role](corId); // Теперь передаем только corId
+    } else {
+        roleInfoContent.innerHTML = `<p>Информация о роли "${role}" отсутствует.</p>`;
+    }
+    
+    document.getElementById("roleInfoModal").style.display = "block";
+}
+
+function showAdminInfo(userData) {
+    const roleInfoContent = document.getElementById("roleInfoContent");
+    roleInfoContent.innerHTML = `
+        <h3>Администратор</h3>
+        <div class="role-form">
+            <p>Пользователь с полными правами доступа</p>
+        </div>
+    `;
+}
+
+function showLawyerInfo(userData) {
+    const roleInfoContent = document.getElementById("roleInfoContent");
+    roleInfoContent.innerHTML = `
+        <h3>Юрист</h3>
+        <div class="role-form">
+            <p>Пользователь с полными правами доступа</p>
+        </div>
+    `;
+}
+
+function showCorIntInfo(userData) {
+    const roleInfoContent = document.getElementById("roleInfoContent");
+    roleInfoContent.innerHTML = `
+        <h3>Юрист</h3>
+        <div class="role-form">
+            <p>Пользователь с полными правами доступа</p>
+        </div>
+    `;
+}
+
+function showActiveUserInfo(userData) {
+    const roleInfoContent = document.getElementById("roleInfoContent");
+    roleInfoContent.innerHTML = `
+        <h3>Юрист</h3>
+        <div class="role-form">
+            <p>Пользователь с полными правами доступа</p>
+        </div>
+    `;
+}
+
+function showEnergyManagerInfo(userData) {
+    const roleInfoContent = document.getElementById("roleInfoContent");
+    roleInfoContent.innerHTML = `
+        <h3>Юрист</h3>
+        <div class="role-form">
+            <p>Пользователь с полными правами доступа</p>
+        </div>
+    `;
+}
+
+
+function showLabAssistantInfo(userData) {
+    const roleInfoContent = document.getElementById("roleInfoContent");
+    roleInfoContent.innerHTML = `
+        <h3>Юрист</h3>
+        <div class="role-form">
+            <p>Пользователь с полными правами доступа</p>
+        </div>
+    `;
+}
+async function showDoctorInfo(corId) {
+    const roleInfoContent = document.getElementById("roleInfoContent");
+    
+    try {
+        console.log('[DoctorInfo] Начало загрузки данных врача для corId:', corId);
+        
+        if (typeof corId !== 'string') {
+            const errorMsg = `Ожидался string corId, получено: ${typeof corId}`;
+            console.error('[DoctorInfo] Ошибка:', errorMsg, corId);
+            throw new Error(errorMsg);
+        }
+
+        roleInfoContent.innerHTML = '<p>Загрузка данных врача...</p>';
+        
+        const response = await fetch(`/api/admin/get_user_info/${corId}/doctors-data`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + getToken()
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка HTTP: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        const doctorInfo = data.doctor_info || {};
+        
+        // Формируем HTML для отображения в roleInfoModal
+        roleInfoContent.innerHTML = `
+    <h3>Информация о враче</h3>
+    <div class="doctor-tabs">
+        <div class="tabs-header">
+            <button class="tab-btn active" data-tab="personal">Личные данные</button>
+            <button class="tab-btn" data-tab="documents">Документы</button>
+            <button class="tab-btn" data-tab="diplomas">Дипломы</button>
+            <button class="tab-btn" data-tab="certificates">Сертификаты</button>
+            <button class="tab-btn" data-tab="clinics">Клиники</button>
+        </div>     
+            <div id="personal-tab" class="tab-pane">
+                ${renderPersonalInfo(doctorInfo)}
+            </div>
+            <div id="documents-tab" class="tab-pane">
+                ${renderDocuments(doctorInfo)}
+            </div>
+            <div id="diplomas-tab" class="tab-pane">
+                ${renderDiplomas(doctorInfo.diplomas || [])}
+            </div>
+            <div id="certificates-tab" class="tab-pane">
+                ${renderCertificates(doctorInfo.certificates || [])}
+            </div>
+            <div id="clinics-tab" class="tab-pane">
+                ${renderClinics(doctorInfo.clinic_affiliations || [])}
+            </div>       
+    </div>
+    <button id="saveDoctorButton" class="button" style=" bottom:10px; margin:-10px 120px; margin-top:20px;">Сохранить врача</button>
+`;
+
+
+initTabs();
+ document.getElementById("saveDoctorButton")?.addEventListener("click", () => {saveDoctorData(corId); });
+
+    } catch (error) {
+        console.error('[DoctorInfo] Ошибка:', error);
+        roleInfoContent.innerHTML = `<p class="error">Не удалось загрузить информацию о враче: ${error.message}</p>`;
+    }
+    
+    // Не нужно вызывать showModal, так как roleInfoModal уже открыт
+}
+// Функции для рендеринга разных разделов
+function renderPersonalInfo(doctor) {
+    return `
+        <div class="form-group-width">
+            <label>Имя:</label>
+            <input type="text" id="doctorFirstName" value="${doctor.first_name || ''}">
+        </div>
+        <div class="form-group-width">
+            <label>Фамилия:</label>
+            <input type="text" id="doctorLastName" value="${doctor.last_name || ''}">
+        </div>
+        <div class="form-group-width">
+            <label>Отчество:</label>
+            <input type="text" id="doctorMiddleName" value="${doctor.middle_name || ''}">
+        </div>
+        <div class="form-group-width">
+            <label>Рабочий email:</label>
+            <input type="email" id="doctorWorkEmail" value="${doctor.work_email || ''}">
+        </div>
+        <div class="form-group-width">
+            <label>Телефон:</label>
+            <input type="tel" id="doctorPhone" value="${doctor.phone_number || ''}">
+        </div>
+      
+    `;
+}
+
+function renderDocuments(doctor) {
+    return `
+
+        <div class="form-group-width">
+            <label>Паспорт:</label>
+            <input type="text" id="doctorPassportCode" value="${doctor.passport_code || ''}">
+        </div>
+        <div class="form-group-width">
+            <label>Место регистрации:</label>
+            <input type="text" id="doctorRegistration" value="${doctor.place_of_registration || ''}">
+        </div>
+        <div class="form-group-width">
+            <label>ИНН:</label>
+            <input type="text" id="doctorInn" value="${doctor.taxpayer_identification_number || ''}">
+        </div>
+        <div class="form-group-width">
+            <label>Дата последней аттестации:</label>
+            <input type="date" id="doctorAttestationDate" value="${doctor.date_of_last_attestation || ''}">
+        </div>
+        <div class="form-group-width">
+            <label>Научная степень:</label>
+            <input type="text" id="doctorDegree" value="${doctor.scientific_degree || ''}">
+        </div>
+    `;
+}
+
+function renderDiplomas(diplomas) {
+    const list = diplomas.length > 0 ? diplomas : [{}];  // хотя бы один пустой
+
+    return `
+        <div class="documents-list">
+            ${list.map((diploma, index) => `
+                <div data-id="${diploma.id || ''}">
+                    <h4>Диплом</h4>
+                    <div class="form-group-width">
+                        <label>Университет:</label>
+                        <input type="text" value="${diploma.university || ''}">
+                    </div>
+                    <div class="form-group-width">
+                        <label>Серия:</label>
+                        <input type="text" value="${diploma.series || ''}">
+                    </div>
+                    <div class="form-group-width">
+                        <label>Номер:</label>
+                        <input type="text" value="${diploma.number || ''}">
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
+
+function renderCertificates(certificates) {
+    const list = certificates.length > 0 ? certificates : [{}];
+
+    return `
+        <div class="documents-list">
+            ${list.map((cert, index) => `
+                <div data-id="${cert.id || ''}">
+                    <h4>Сертификат</h4>
+                    <div class="form-group-width">
+                        <label>Университет:</label>
+                        <input type="text" value="${cert.university || ''}">
+                    </div>
+                    <div class="form-group-width">
+                        <label>Серия:</label>
+                        <input type="text" value="${cert.series || ''}">
+                    </div>
+                    <div class="form-group-width">
+                        <label>Номер:</label>
+                        <input type="text" value="${cert.number || ''}">
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
+function renderClinics(clinics) {
+    const list = clinics.length > 0 ? clinics : [{}];
+
+    return `
+        <div class="clinics-list">
+            ${list.map((clinic, index) => `
+                <div data-id="${clinic.id || ''}">
+                    <h4>Клиника</h4>
+                    <div class="form-group-width">
+                        <label>Название:</label>
+                        <input type="text" value="${clinic.clinic_name || ''}">
+                    </div>
+                    <div class="form-group-width">
+                        <label>Отделение:</label>
+                        <input type="text" value="${clinic.department || ''}">
+                    </div>
+                    <div class="form-group-width">
+                        <label>Должность:</label>
+                        <input type="text" value="${clinic.position || ''}">
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
+// Вспомогательные функции
+function showModal(modalId, content) {
+    const modal = document.getElementById(modalId);
+    if (!modal) {
+        const newModal = document.createElement('div');
+        newModal.id = modalId;
+        newModal.className = 'modal';
+        document.body.appendChild(newModal);
+    }
+    
+    document.getElementById(modalId).innerHTML = content;
+    document.getElementById(modalId).style.display = 'block';
+}
+
+function closeModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+}
+
+function initTabs() {
+    const tabsContainer = document.querySelector('.doctor-tabs');
+    if (!tabsContainer) return;
+
+    // Установите первую вкладку как активную по умолчанию
+    const firstTab = tabsContainer.querySelector('.tab-btn');
+    const firstPane = tabsContainer.querySelector('.tab-pane');
+    if (firstTab && firstPane) {
+        firstTab.classList.add('active');
+        firstPane.classList.add('active');
+    }
+
+    // Обработчик кликов
+    tabsContainer.addEventListener('click', function(e) {
+        const btn = e.target.closest('.tab-btn');
+        if (!btn) return;
+
+        // Убираем активный класс у всех кнопок и панелей
+        tabsContainer.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        tabsContainer.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+        
+        // Добавляем активный класс текущей кнопке и соответствующей панели
+        btn.classList.add('active');
+        const tabId = btn.getAttribute('data-tab');
+        const pane = tabsContainer.querySelector(`#${tabId}-tab`);
+        if (pane) pane.classList.add('active');
+    });
+}
+
+
+
+async function saveDoctorData(corId) {
+    try {
+        console.log("📤 Сбор данных для создания врача...");
+
+        const data = {
+            first_name: document.getElementById("doctorFirstName").value.trim(),
+            last_name: document.getElementById("doctorLastName").value.trim(),
+            middle_name: document.getElementById("doctorMiddleName").value.trim(),
+            work_email: document.getElementById("doctorWorkEmail").value.trim(),
+            phone_number: document.getElementById("doctorPhone").value.trim(),
+            scientific_degree: document.getElementById("doctorDegree").value.trim(),
+            passport_code: document.getElementById("doctorPassportCode").value.trim(),
+            place_of_registration: document.getElementById("doctorRegistration").value.trim(),
+            taxpayer_identification_number: document.getElementById("doctorInn").value.trim(),
+            date_of_last_attestation: document.getElementById("doctorAttestationDate").value || new Date().toISOString().split('T')[0],
+            diplomas: [],
+            certificates: [],
+            clinic_affiliations: []
+        };
+
+        console.log("✅ Персональные данные:", data);
+
+        // Дипломы
+        document.querySelectorAll('#diplomas-tab div[data-id]').forEach((d, idx) => {
+            const inputs = d.querySelectorAll('input');
+            const diploma = {
+                university: inputs[0]?.value.trim() || "",
+                series: inputs[1]?.value.trim() || "",
+                number: inputs[2]?.value.trim() || "",
+                date: "2023-01-01"
+            };
+            console.log(`📘 Диплом #${idx + 1}:`, diploma);
+            data.diplomas.push(diploma);
+        });
+
+        // Сертификаты
+        document.querySelectorAll('#certificates-tab div[data-id]').forEach((c, idx) => {
+            const inputs = c.querySelectorAll('input');
+            const cert = {
+                university: inputs[0]?.value.trim() || "",
+                series: inputs[1]?.value.trim() || "",
+                number: inputs[2]?.value.trim() || "",
+                date: "2023-01-01"
+            };
+            console.log(`📄 Сертификат #${idx + 1}:`, cert);
+            data.certificates.push(cert);
+        });
+
+        // Клиники
+        document.querySelectorAll('#clinics-tab div[data-id]').forEach((cl, idx) => {
+            const inputs = cl.querySelectorAll('input');
+            const clinic = {
+                clinic_name: inputs[0]?.value.trim() || "",
+                department: inputs[1]?.value.trim() || "",
+                position: inputs[2]?.value.trim() || "",
+                specialty: "Терапевт"
+            };
+            console.log(`🏥 Клиника #${idx + 1}:`, clinic);
+            data.clinic_affiliations.push(clinic);
+        });
+
+        console.log("📦 Полный payload для отправки:", data);
+
+        const response = await fetch(`/api/admin/signup_as_doctor?user_cor_id=${encodeURIComponent(corId)}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${getToken()}`
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error(`❌ Ошибка от сервера (${response.status}):`, errorText);
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}\n${errorText}`);
+        }
+
+        const result = await response.json();
+        console.log("✅ Врач успешно создан:", result);
+        alert("✅ Пользователь успешно наделён правами врача!");
+
+    } catch (error) {
+        console.error("❌ Ошибка при сохранении врача:", error);
+        alert("Ошибка при сохранении данных: " + error.message);
+    }
+}
+
+    </script>
+</body>
+</html>
+

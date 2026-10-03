@@ -1,0 +1,118 @@
+
+
+
+{
+  "layout": "hybrid_inverter",
+
+  "battery": {
+    "enabled": true,
+    "modalId": "batteryModal",
+    "title": "Батарея",
+    "maxPower": 11000,
+    "fields": [
+      { "id": "soc",      "label": "SOC",              "unit": "%",  "source": "batterySOC" },
+      { "id": "voltage",  "label": "Напряжение",       "unit": "V",  "source": "batteryVoltage" },
+      { "id": "current",  "label": "Ток",              "unit": "A",  "source": "batteryCurrent" },
+      { "id": "power",    "label": "Мощность",         "unit": "W",  "source": "batteryTotalPower" },
+      { "id": "dcdc",     "label": "Температура DCDC", "unit": "°C", "source": "dcdcTemp" }
+    ]
+  },
+
+  "grid": {
+    "enabled": true,
+    "modalId": "GridSettingsModal",
+    "title": "Сеть",
+    "maxPower": 11000,
+    "blocks": [
+      {
+        "type": "singlePhase",
+        "fields": [
+          { "label": "Напряжение:",       "unit": "V",  "source": "inputVoltage" },
+          { "label": "Ток:",              "unit": "A",  "source": "inputCurrent" },
+          { "label": "Частота:",          "unit": "Hz", "source": "inputFrequency" },
+          { "label": "Активная P:",       "unit": "W",  "source": "gridPower" },
+          { "label": "Полная S:",         "unit": "VA", "source": "gridApparentPower" },
+          { "label": "Мощность заряда:",  "unit": "W",  "source": "gridChargingPower" },
+          { "label": "CT мощность:",      "unit": "W",  "source": "ctPower" }
+        ]
+      }
+    ]
+  },
+
+  "load": {
+    "enabled": true,
+    "modalId": "loadSettingsModal",
+    "title": "Нагрузка",
+    "maxPower": 11000,
+    "blocks": [
+      {
+        "type": "singlePhase",
+        "fields": [
+          { "label": "Напряжение:", "unit": "V",  "source": "outputVoltage" },
+          { "label": "Ток:",        "unit": "A",  "source": "outputCurrent" },
+          { "label": "Частота:",    "unit": "Hz", "source": "outputFrequency" },
+          { "label": "Мощность:",   "unit": "W",  "source": "outputActivePower" },
+          { "label": "Полная:",     "unit": "VA", "source": "outputApparentPower" },
+          { "label": "Загрузка:",   "unit": "%",  "source": "loadPercent" }
+        ]
+      }
+    ]
+  },
+
+  "solar": {
+    "enabled": true,
+    "modalId": "SolarModal",
+    "title": "Солнечные панели",
+    "maxPower": 11000,
+    "fields": [
+      { "id": "voltage",   "label": "Напряжение",     "unit": "V",  "source": "pvVoltage" },
+      { "id": "current",   "label": "Ток PV",         "unit": "A",  "source": "pvChargeCurrent" },
+      { "id": "power",     "label": "Мощность",       "unit": "W",  "source": "solarPower" },
+      { "id": "pchg",      "label": "Мощность заряда","unit": "W",  "source": "pvChargingPower" },
+      { "id": "pv1p",      "label": "PV1 мощность",   "unit": "W",  "source": "pv1Power" },
+      { "id": "pvt",       "label": "Температура",    "unit": "°C", "source": "pvTemperature" },
+      { "id": "gend",      "label": "Выработка день", "unit": "кВт·ч","source": "generationDaily" },
+      { "id": "gent",      "label": "Выработка всего","unit": "кВт·ч","source": "generationTotal" }
+    ]
+  },
+
+  "inverter": {
+    "enabled": true,
+    "modalId": "inverterModal",
+    "title": "Инвертор",
+    "maxPower": 11000,
+    "fields": [
+      { "id": "mode",       "label": "Режим работы",      "unit": "",   "source": "workingModeRu" },
+      { "id": "temp",       "label": "Температура",       "unit": "°C", "source": "inverterTemp" },
+      { "id": "invVolt",    "label": "Напряжение AC",     "unit": "V",  "source": "inverterVoltage" },
+      { "id": "invCurr",    "label": "Ток AC",            "unit": "A",  "source": "inverterCurrent" },
+      { "id": "invP",       "label": "Мощность AC",       "unit": "W",  "source": "inverterPowerAC" },
+      { "id": "serial",     "label": "Серийный номер",    "unit": "",   "source": "serialNumber" },
+      { "id": "devtype",    "label": "Тип устройства",    "unit": "",   "source": "deviceType" },
+      { "id": "protocol",   "label": "Протокол",          "unit": "",   "source": "protocolNumber" },
+      { "id": "rated",      "label": "Номинал",           "unit": "W",  "source": "ratedPower" }
+    ]
+  },
+
+  "generator": {
+    "enabled": false
+  },
+
+  "hooks": {
+    "batteryOpenHandler":  "startBatteryServicePolling",
+    "batteryCloseHandler": "stopBatteryServicePolling"
+  },
+
+  "protocols": {
+    "cor_bridge": {
+      "label": "COR-Bridge",
+      "show": ["agent_id", "slave_id"]
+    }
+  },
+
+  "monitoring": {
+    "cor_bridge": "MonitoringBlueSunCorBridge"
+  }
+}
+
+

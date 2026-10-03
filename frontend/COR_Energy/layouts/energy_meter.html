@@ -1,0 +1,352 @@
+<!-- ============================================================
+     layouts/energy_meter.html
+     Фрагмент для инжекта в #control через applyControlLayout()
+     ============================================================ -->
+<style>
+.tac-meter{
+  --ink:#291161; --ink-soft:#6b6b8a; --line:#e4e5f1; --line-strong:#cfd1e6;
+  --violet:#7a4ddb; --red:#DF1125; --orange:#F8A441; --green:#12a150;
+  display:flex; flex-direction:column;
+  width:100%; height:100%; min-height:0;
+  background:#fff; border-radius:12px;
+  font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  color:var(--ink); font-size:12px; overflow:hidden;
+}
+.tac-bar{
+  flex:0 0 auto; display:flex; align-items:center; justify-content:space-between;
+  gap:10px; padding:6px 10px; background:#f7f7fd; border-bottom:1px solid var(--line);
+}
+.tac-badges{display:flex; gap:6px}
+.tac-badge{
+  display:inline-flex; align-items:center; gap:5px;
+  padding:3px 8px; border-radius:6px; font-size:10.5px; font-weight:700;
+  background:#fff; border:1px solid var(--line); color:var(--ink-soft);
+  opacity:.4; filter:grayscale(1); transition:.2s;
+}
+.tac-badge i{width:8px; height:8px; border-radius:50%; background:#b9bcd8; display:inline-block}
+.tac-badge[data-entity="error"] i{background:var(--red)}
+.tac-badge[data-entity="warning"] i{background:var(--orange)}
+.tac-badge[data-entity="fault"] i{background:var(--red)}
+.tac-badge.active{opacity:1; filter:none; color:var(--ink); border-color:var(--line-strong)}
+.tac-conn{
+  display:inline-flex; align-items:center; gap:6px;
+  padding:3px 10px; border-radius:999px; font-size:11px; font-weight:700;
+  background:#fff; border:1px solid var(--line); color:var(--ink-soft);
+}
+.tac-conn .dot{width:8px; height:8px; border-radius:50%; background:#98a0c0}
+.tac-conn[data-state="online"]{color:var(--green); border-color:#bfe9cb}
+.tac-conn[data-state="online"] .dot{background:var(--green); animation:pulse 1.6s infinite}
+.tac-conn[data-state="demo"]{color:#b8761a; border-color:#f0d8b8}
+.tac-conn[data-state="demo"] .dot{background:var(--orange); animation:pulse 1.6s infinite}
+.tac-conn[data-state="error"]{color:var(--red); border-color:#f3c8cd}
+.tac-conn[data-state="error"] .dot{background:var(--red)}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(61,220,132,.6)}70%{box-shadow:0 0 0 7px rgba(61,220,132,0)}100%{box-shadow:0 0 0 0 rgba(61,220,132,0)}}
+
+.tac-tabs{
+  flex:0 0 auto; display:flex; padding:4px 6px 0; gap:3px;
+  background:#f7f7fd; border-bottom:2px solid var(--line);
+}
+.tac-tab{
+  flex:1; cursor:pointer; font-family:inherit;
+  font-size:11.5px; font-weight:700; padding:7px 6px;
+  border:1px solid var(--line); border-bottom:none;
+  border-radius:8px 8px 0 0; background:#fff; color:var(--ink-soft);
+  transition:.15s;
+}
+.tac-tab:hover{color:var(--ink)}
+.tac-tab.active{background:var(--ink); color:#fff; border-color:var(--ink)}
+
+.tac-panels{flex:1 1 auto; min-height:0; position:relative}
+.tac-panel{display:none; position:absolute; inset:0; padding:8px 10px; overflow:auto}
+.tac-panel.active{display:block}
+
+/* Обзор */
+.ov-layout{display:grid; grid-template-columns:290px 1fr; gap:10px; height:100%}
+@media (max-width:700px){.ov-layout{grid-template-columns:1fr}}
+.ov-quad{background:#fafaff; border:1px solid var(--line); border-radius:10px; padding:8px; display:flex; flex-direction:column}
+.ov-quad svg{width:100%; height:auto; max-height:220px; display:block; margin:0 auto}
+.ov-quad-state{
+  margin-top:6px; text-align:center; font-size:11.5px; font-weight:700;
+  background:#fff; border:1px solid var(--line); border-radius:8px; padding:6px 8px; line-height:1.35;
+}
+.ov-quad-state small{display:block; font-weight:500; color:var(--ink-soft); font-size:10px; margin-top:1px}
+.q-sector{fill:#eceefa; transition:fill .3s}
+#tacSecQ1.active{fill:#d6f4e2}
+#tacSecQ2.active{fill:#ffe9c9}
+#tacSecQ3.active{fill:#ffd9dd}
+#tacSecQ4.active{fill:#d6e8ff}
+.q-ring{fill:none; stroke:var(--line-strong); stroke-width:1}
+.q-ring.inner{stroke-dasharray:3 4; stroke:#e6e7f4}
+.q-axis{stroke:var(--line-strong); stroke-width:1.3}
+.q-axis-text{font-size:9.5px; font-weight:800; fill:var(--ink-soft); font-family:inherit}
+.q-label{font-size:16px; font-weight:800; fill:#b9bcd8; text-anchor:middle; dominant-baseline:middle; transition:fill .3s}
+.q-label.active{fill:var(--ink)}
+.q-vec{stroke:var(--violet); stroke-width:3; stroke-linecap:round; transition:x2 .3s, y2 .3s}
+.q-pt{fill:var(--violet); stroke:#fff; stroke-width:2.5; transition:cx .3s, cy .3s}
+.q-ctr{fill:var(--ink)}
+
+.ov-right{display:flex; flex-direction:column; gap:8px; min-width:0}
+.kpi-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:6px}
+.kpi{background:linear-gradient(160deg,#fafaff,#f2f2fb); border:1px solid var(--line); border-radius:8px; padding:6px 8px; min-width:0}
+.kpi label{display:block; font-size:9.5px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.3px; font-weight:800}
+.kpi b{display:inline-block; font-size:16px; font-weight:800; font-variant-numeric:tabular-nums; margin-top:2px}
+.kpi b.neg{color:var(--red)}
+.kpi i{font-style:normal; font-size:10px; color:var(--ink-soft); margin-left:3px}
+
+.ov-list{background:#fafaff; border:1px solid var(--line); border-radius:8px; padding:4px 10px; flex:1; min-height:0; overflow:auto}
+.ov-list .r{display:flex; align-items:baseline; gap:8px; padding:5px 0; border-bottom:1px dashed var(--line); font-size:11.5px}
+.ov-list .r:last-child{border-bottom:none}
+.ov-list .r span{flex:1; color:var(--ink-soft)}
+.ov-list .r b{font-weight:700; font-variant-numeric:tabular-nums}
+.ov-list .r b.neg{color:var(--red)}
+.ov-list .r i{width:26px; text-align:right; font-style:normal; color:var(--ink-soft); font-size:10px}
+
+/* Фазы */
+.ph-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
+@media (max-width:700px){.ph-grid{grid-template-columns:1fr}}
+.ph-card{background:#fafaff; border:1px solid var(--line); border-radius:8px; padding:6px 10px}
+.ph-card h4{margin:0 0 4px; padding-bottom:4px; font-size:10px; text-transform:uppercase; letter-spacing:.4px; color:var(--ink-soft); font-weight:800; border-bottom:1px dashed var(--line)}
+.ph-card .r{display:flex; align-items:baseline; gap:6px; padding:3px 0; font-size:11px}
+.ph-card .r span{flex:1; color:var(--ink-soft)}
+.ph-card .r b{font-weight:700; font-variant-numeric:tabular-nums}
+.ph-card .r b.neg{color:var(--red)}
+.ph-card .r i{width:20px; text-align:right; font-style:normal; color:var(--ink-soft); font-size:9.5px}
+.ph-tbl-wrap{margin-top:8px}
+
+.tbl{width:100%; border-collapse:collapse; font-size:11px}
+.tbl th{text-align:right; font-size:9.5px; text-transform:uppercase; letter-spacing:.3px; color:var(--ink-soft); font-weight:800; padding:5px 4px; border-bottom:2px solid var(--line)}
+.tbl th:first-child{text-align:left}
+.tbl td{padding:5px 4px; text-align:right; border-bottom:1px dashed var(--line); font-variant-numeric:tabular-nums; font-weight:600}
+.tbl td:first-child{text-align:left; color:var(--ink-soft); font-weight:500; font-variant-numeric:normal}
+.tbl td.neg{color:var(--red)}
+.tbl td.sum{font-weight:800; background:#fafaff}
+.tbl tr:last-child td{border-bottom:none}
+
+/* Энергия */
+.en-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+@media (max-width:700px){.en-grid{grid-template-columns:1fr}}
+.en-card{background:#fafaff; border:1px solid var(--line); border-radius:8px; padding:6px 10px}
+.en-card h4{margin:0 0 4px; padding-bottom:4px; font-size:10px; text-transform:uppercase; letter-spacing:.4px; color:var(--ink-soft); font-weight:800; border-bottom:1px dashed var(--line)}
+
+/* Связь */
+.cn-grid{display:grid; grid-template-columns:1fr; gap:8px; height:100%}
+.cn-hint{font-size:10.5px; color:var(--ink-soft); line-height:1.4; padding:4px 0}
+.cn-log{
+  height:100%; min-height:340px; overflow:auto;
+  background:#0f0a24; color:#c9d1ff; border-radius:8px; padding:8px 10px;
+  font-family:"Consolas","SF Mono",Menlo,monospace; font-size:10.5px; line-height:1.5;
+}
+.cn-log div{white-space:pre-wrap; word-break:break-word}
+.cn-log .t{color:#7d86b8; margin-right:5px}
+.cn-log .warn{color:#F8A441}
+.cn-log .err{color:#ff6b7d}
+</style>
+
+<div class="tac-meter">
+
+  <!-- ВЕРХНЯЯ ПОЛОСА -->
+   <!--
+  <div class="tac-bar">
+    <div class="tac-badges">
+      <span class="tac-badge" data-entity="error"><i></i>Ошибка</span>
+      <span class="tac-badge" data-entity="warning"><i></i>Предупреждение</span>
+      <span class="tac-badge" data-entity="fault"><i></i>Авария</span>
+    </div>
+    <div class="tac-conn" id="tacConnPill" data-state="offline">
+      <span class="dot"></span><span id="tacConnText">Нет связи</span>
+    </div>
+  </div>  -->
+
+  <!-- ПОД-ВКЛАДКИ -->
+  <nav class="tac-tabs">
+    <button class="tac-tab active" onclick="tacSwitchTab(event,'overview')">Обзор</button>
+    <button class="tac-tab"        onclick="tacSwitchTab(event,'phases')">Фазы</button>
+    <button class="tac-tab"        onclick="tacSwitchTab(event,'energy')">Энергия</button>
+  <!--  <button class="tac-tab"        onclick="tacSwitchTab(event,'conn')">Связь</button> -->
+  </nav>
+
+  <div class="tac-panels">
+
+    <!-- ========== ОБЗОР ========== -->
+    <section class="tac-panel active" id="tac-panel-overview">
+      <div class="ov-layout">
+
+        <div class="ov-quad">
+          <svg viewBox="0 0 300 300" aria-label="Квадрант мощности">
+            <path class="q-sector" id="tacSecQ1" d="M150 150 L150 25 A125 125 0 0 1 275 150 Z"/>
+            <path class="q-sector" id="tacSecQ2" d="M150 150 L25 150 A125 125 0 0 1 150 25 Z"/>
+            <path class="q-sector" id="tacSecQ3" d="M150 150 L150 275 A125 125 0 0 1 25 150 Z"/>
+            <path class="q-sector" id="tacSecQ4" d="M150 150 L275 150 A125 125 0 0 1 150 275 Z"/>
+            <circle class="q-ring" cx="150" cy="150" r="125"/>
+            <circle class="q-ring inner" cx="150" cy="150" r="83.3"/>
+            <circle class="q-ring inner" cx="150" cy="150" r="41.7"/>
+            <line class="q-axis" x1="14" y1="150" x2="286" y2="150"/>
+            <line class="q-axis" x1="150" y1="14" x2="150" y2="286"/>
+            <text class="q-axis-text" x="284" y="164" text-anchor="end">P, кВт</text>
+            <text class="q-axis-text" x="156" y="22">Q, квар</text>
+            <text class="q-label" id="tacLblQ1" x="208" y="78">I</text>
+            <text class="q-label" id="tacLblQ2" x="92"  y="78">II</text>
+            <text class="q-label" id="tacLblQ3" x="92"  y="222">III</text>
+            <text class="q-label" id="tacLblQ4" x="208" y="222">IV</text>
+            <line class="q-vec" id="tacQuadVector" x1="150" y1="150" x2="150" y2="150"/>
+            <circle class="q-pt" id="tacQuadPoint" cx="150" cy="150" r="5"/>
+            <circle class="q-ctr" cx="150" cy="150" r="2.5"/>
+          </svg>
+          <div class="ov-quad-state" id="tacQuadState">
+            Ожидание данных
+            <small>Вектор строится по P и Q</small>
+          </div>
+        </div>
+
+        <div class="ov-right">
+          <div class="kpi-grid">
+            <div class="kpi"><label>Активная P</label>   <b data-source="tac_pTotal"  data-dec="3">—</b><i>кВт</i></div>
+            <div class="kpi"><label>Реактивная Q</label>  <b data-source="tac_qTotal"  data-dec="3">—</b><i>квар</i></div>
+            <div class="kpi"><label>Полная S</label>      <b data-source="tac_sTotal"  data-dec="3">—</b><i>кВА</i></div>
+            <div class="kpi"><label>PF Σ</label>          <b data-source="tac_pfTotal" data-dec="3">—</b><i></i></div>
+            <div class="kpi"><label>Частота</label>       <b data-source="tac_freq"    data-dec="2">—</b><i>Гц</i></div>
+            <div class="kpi"><label>Угол Σ</label>        <b data-source="tac_angTotal" data-dec="1">—</b><i>°</i></div>
+          </div>
+
+          <div class="ov-list">
+            <div class="r"><span>Сумма линейных токов</span>       <b data-source="tac_iSum"    data-dec="3">—</b><i>А</i></div>
+            <div class="r"><span>Средний линейный ток</span>       <b data-source="tac_iAvg"    data-dec="3">—</b><i>А</i></div>
+            <div class="r"><span>Ток нейтрали</span>               <b data-source="tac_iN"      data-dec="3">—</b><i>А</i></div>
+            <div class="r"><span>Среднее фазное напряжение</span>  <b data-source="tac_vAvgPh"  data-dec="1">—</b><i>В</i></div>
+            <div class="r"><span>Среднее линейное напряжение</span><b data-source="tac_vAvgLine" data-dec="1">—</b><i>В</i></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========== ФАЗЫ ========== -->
+    <section class="tac-panel" id="tac-panel-phases">
+      <div class="ph-grid">
+
+        <div class="ph-card">
+          <h4>Напряжения</h4>
+          <div class="r"><span>L1 – N</span><b data-source="tac_v1"  data-dec="1">—</b><i>В</i></div>
+          <div class="r"><span>L2 – N</span><b data-source="tac_v2"  data-dec="1">—</b><i>В</i></div>
+          <div class="r"><span>L3 – N</span><b data-source="tac_v3"  data-dec="1">—</b><i>В</i></div>
+          <div class="r"><span>L1 – L2</span><b data-source="tac_u12" data-dec="1">—</b><i>В</i></div>
+          <div class="r"><span>L2 – L3</span><b data-source="tac_u23" data-dec="1">—</b><i>В</i></div>
+          <div class="r"><span>L3 – L1</span><b data-source="tac_u31" data-dec="1">—</b><i>В</i></div>
+        </div>
+
+        <div class="ph-card">
+          <h4>Токи и углы</h4>
+          <div class="r"><span>Ток L1</span><b data-source="tac_i1"   data-dec="3">—</b><i>А</i></div>
+          <div class="r"><span>Ток L2</span><b data-source="tac_i2"   data-dec="3">—</b><i>А</i></div>
+          <div class="r"><span>Ток L3</span><b data-source="tac_i3"   data-dec="3">—</b><i>А</i></div>
+          <div class="r"><span>φ L1</span>   <b data-source="tac_ang1" data-dec="1">—</b><i>°</i></div>
+          <div class="r"><span>φ L2</span>   <b data-source="tac_ang2" data-dec="1">—</b><i>°</i></div>
+          <div class="r"><span>φ L3</span>   <b data-source="tac_ang3" data-dec="1">—</b><i>°</i></div>
+        </div>
+
+        <div class="ph-card">
+          <h4>PF и характер нагрузки</h4>
+          <div class="r"><span>PF L1</span>       <b data-source="tac_pf1"   data-dec="3">—</b><i></i></div>
+          <div class="r"><span>PF L2</span>       <b data-source="tac_pf2"   data-dec="3">—</b><i></i></div>
+          <div class="r"><span>PF L3</span>       <b data-source="tac_pf3"   data-dec="3">—</b><i></i></div>
+          <div class="r"><span>Нагрузка L1</span> <b data-source="tac_load1">—</b><i></i></div>
+          <div class="r"><span>Нагрузка L2</span> <b data-source="tac_load2">—</b><i></i></div>
+          <div class="r"><span>Нагрузка L3</span> <b data-source="tac_load3">—</b><i></i></div>
+        </div>
+
+      </div>
+
+      <div class="ph-tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Мощности по фазам</th><th>L1</th><th>L2</th><th>L3</th><th>Σ</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Активная, кВт</td>
+              <td data-source="tac_p1" data-dec="3">—</td>
+              <td data-source="tac_p2" data-dec="3">—</td>
+              <td data-source="tac_p3" data-dec="3">—</td>
+              <td class="sum" data-source="tac_pTotal" data-dec="3">—</td>
+            </tr>
+            <tr>
+              <td>Реактивная, квар</td>
+              <td data-source="tac_q1" data-dec="3">—</td>
+              <td data-source="tac_q2" data-dec="3">—</td>
+              <td data-source="tac_q3" data-dec="3">—</td>
+              <td class="sum" data-source="tac_qTotal" data-dec="3">—</td>
+            </tr>
+            <tr>
+              <td>Полная, кВА</td>
+              <td data-source="tac_s1" data-dec="3">—</td>
+              <td data-source="tac_s2" data-dec="3">—</td>
+              <td data-source="tac_s3" data-dec="3">—</td>
+              <td class="sum" data-source="tac_sTotal" data-dec="3">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ========== ЭНЕРГИЯ ========== -->
+    <section class="tac-panel" id="tac-panel-energy">
+      <div class="en-grid">
+        <div class="en-card">
+          <h4>Накопленная энергия</h4>
+          <table class="tbl">
+            <thead><tr><th>Вид</th><th>Импорт</th><th>Экспорт</th><th>Сумма</th></tr></thead>
+            <tbody>
+              <tr><td>Активная, кВт·ч</td>   <td data-source="tac_eActImp"   data-dec="2">—</td><td data-source="tac_eActExp"   data-dec="2">—</td><td class="sum" data-source="tac_eActTot"   data-dec="2">—</td></tr>
+              <tr><td>Реактивная, квар·ч</td><td data-source="tac_eReactImp" data-dec="2">—</td><td data-source="tac_eReactExp" data-dec="2">—</td><td class="sum" data-source="tac_eReactTot" data-dec="2">—</td></tr>
+              <tr><td>Полная, кВА·ч</td><td colspan="2" style="text-align:center;color:#999">—</td><td class="sum" data-source="tac_eAppTot" data-dec="2">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="en-card">
+  <h4>По фазам</h4>
+  <table class="tbl">
+    <thead><tr><th>Вид</th><th>L1</th><th>L2</th><th>L3</th></tr></thead>
+    <tbody>
+      <tr><td>Актив. импорт</td>
+        <td data-source="tac_eActL1Imp" data-dec="2">—</td>
+        <td data-source="tac_eActL2Imp" data-dec="2">—</td>
+        <td data-source="tac_eActL3Imp" data-dec="2">—</td></tr>
+      <tr><td>Актив. экспорт</td>
+        <td data-source="tac_eActL1Exp" data-dec="2">—</td>
+        <td data-source="tac_eActL2Exp" data-dec="2">—</td>
+        <td data-source="tac_eActL3Exp" data-dec="2">—</td></tr>
+      <tr><td>Актив. сумма</td>
+        <td data-source="tac_eActL1Tot" data-dec="2">—</td>
+        <td data-source="tac_eActL2Tot" data-dec="2">—</td>
+        <td data-source="tac_eActL3Tot" data-dec="2">—</td></tr>
+      <tr><td>Реакт. импорт</td>
+        <td data-source="tac_eReactL1Imp" data-dec="2">—</td>
+        <td data-source="tac_eReactL2Imp" data-dec="2">—</td>
+        <td data-source="tac_eReactL3Imp" data-dec="2">—</td></tr>
+      <tr><td>Реакт. экспорт</td>
+        <td data-source="tac_eReactL1Exp" data-dec="2">—</td>
+        <td data-source="tac_eReactL2Exp" data-dec="2">—</td>
+        <td data-source="tac_eReactL3Exp" data-dec="2">—</td></tr>
+      <tr><td>Реакт. сумма</td>
+        <td data-source="tac_eReactL1Tot" data-dec="2">—</td>
+        <td data-source="tac_eReactL2Tot" data-dec="2">—</td>
+        <td data-source="tac_eReactL3Tot" data-dec="2">—</td></tr>
+    </tbody>
+  </table>
+</div>
+      </div>
+    </section>
+
+    <!-- ========== СВЯЗЬ ========== -->
+
+ <!--  <section class="tac-panel" id="tac-panel-conn">
+      <div class="cn-grid">
+        <div class="cn-hint">
+          Лог обмена с COR-Bridge. Данные приходят по WebSocket, разбираются как Modbus FC&nbsp;03/04 (Float32&nbsp;big-endian).
+        </div>
+        <div class="cn-log" id="tacLog"></div>
+      </div>
+    </section>  --> 
+
+  </div><!-- /.tac-panels -->
+</div><!-- /.tac-meter -->
+
+

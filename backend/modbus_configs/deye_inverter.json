@@ -1,0 +1,1102 @@
+{
+    "vendor": "Deye",
+    "model": "Hybrid Inverter",
+    "protocol": "modbus_over_tcp",
+    "description": "Modbus register map for Deye Hybrid Inverter",
+    "slave_id": 1,
+    "port": 502,
+    "register_groups": {
+        "grid_phase_voltage_power": {
+            "description": "Grid phase voltages and power (registers 598-609)",
+            "start_address": 598,
+            "count": 12,
+            "func_code": 3,
+            "registers": [
+                {
+                    "name": "phase_voltage_a",
+                    "offset": 0,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "V",
+                    "description": "Phase A voltage"
+                },
+                {
+                    "name": "phase_voltage_b",
+                    "offset": 1,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "V",
+                    "description": "Phase B voltage"
+                },
+                {
+                    "name": "phase_voltage_c",
+                    "offset": 2,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "V",
+                    "description": "Phase C voltage"
+                },
+                {
+                    "name": "line_voltage_ab",
+                    "offset": 3,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "V",
+                    "description": "Line voltage A-B"
+                },
+                {
+                    "name": "line_voltage_bc",
+                    "offset": 4,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "V",
+                    "description": "Line voltage B-C"
+                },
+                {
+                    "name": "line_voltage_ca",
+                    "offset": 5,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "V",
+                    "description": "Line voltage C-A"
+                },
+                {
+                    "name": "power_a",
+                    "offset": 6,
+                    "type": "int16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Phase A power"
+                },
+                {
+                    "name": "power_b",
+                    "offset": 7,
+                    "type": "int16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Phase B power"
+                },
+                {
+                    "name": "power_c",
+                    "offset": 8,
+                    "type": "int16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Phase C power"
+                },
+                {
+                    "name": "total_power",
+                    "offset": 9,
+                    "type": "int16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Total grid power"
+                },
+                {
+                    "name": "total_apparent_power",
+                    "offset": 10,
+                    "type": "int16",
+                    "scale": 1,
+                    "unit": "VA",
+                    "description": "Total apparent power"
+                },
+                {
+                    "name": "grid_frequency",
+                    "offset": 11,
+                    "type": "uint16",
+                    "scale": 0.01,
+                    "unit": "Hz",
+                    "description": "Grid frequency"
+                }
+            ]
+        },
+        "grid_current": {
+            "description": "Grid currents and output power (registers 610-620)",
+            "start_address": 610,
+            "count": 11,
+            "func_code": 3,
+            "registers": [
+                {
+                    "name": "current_a",
+                    "offset": 0,
+                    "type": "int16",
+                    "scale": 0.01,
+                    "unit": "A",
+                    "description": "Phase A current"
+                },
+                {
+                    "name": "current_b",
+                    "offset": 1,
+                    "type": "int16",
+                    "scale": 0.01,
+                    "unit": "A",
+                    "description": "Phase B current"
+                },
+                {
+                    "name": "current_c",
+                    "offset": 2,
+                    "type": "int16",
+                    "scale": 0.01,
+                    "unit": "A",
+                    "description": "Phase C current"
+                },
+                {
+                    "name": "out_current_a",
+                    "offset": 3,
+                    "type": "int16",
+                    "scale": 0.01,
+                    "unit": "A",
+                    "description": "Output current A"
+                },
+                {
+                    "name": "out_current_b",
+                    "offset": 4,
+                    "type": "int16",
+                    "scale": 0.01,
+                    "unit": "A",
+                    "description": "Output current B"
+                },
+                {
+                    "name": "out_current_c",
+                    "offset": 5,
+                    "type": "int16",
+                    "scale": 0.01,
+                    "unit": "A",
+                    "description": "Output current C"
+                },
+                {
+                    "name": "out_power_a",
+                    "offset": 6,
+                    "type": "int16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Output power A"
+                },
+                {
+                    "name": "out_power_b",
+                    "offset": 7,
+                    "type": "int16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Output power B"
+                },
+                {
+                    "name": "out_power_c",
+                    "offset": 8,
+                    "type": "int16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Output power C"
+                },
+                {
+                    "name": "out_total_power",
+                    "offset": 9,
+                    "type": "int16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Total output power"
+                },
+                {
+                    "name": "out_total_apparent_power",
+                    "offset": 10,
+                    "type": "int16",
+                    "scale": 1,
+                    "unit": "VA",
+                    "description": "Total output apparent power"
+                }
+            ]
+        },
+        "battery": {
+            "description": "Battery status (registers 586-596)",
+            "start_address": 586,
+            "count": 11,
+            "func_code": 3,
+            "registers": [
+                {
+                    "name": "battery1_temperature",
+                    "offset": 0,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "°C",
+                    "description": "Battery 1 temperature"
+                },
+                {
+                    "name": "battery1_voltage",
+                    "offset": 1,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "V",
+                    "description": "Battery 1 voltage"
+                },
+                {
+                    "name": "battery1_soc",
+                    "offset": 2,
+                    "type": "uint16",
+                    "scale": 1,
+                    "unit": "%",
+                    "description": "Battery 1 State of Charge"
+                },
+                {
+                    "name": "battery2_soc",
+                    "offset": 3,
+                    "type": "uint16",
+                    "scale": 1,
+                    "unit": "%",
+                    "description": "Battery 2 State of Charge"
+                },
+                {
+                    "name": "battery1_power",
+                    "offset": 4,
+                    "type": "int16",
+                    "scale": 10,
+                    "unit": "W",
+                    "description": "Battery 1 power (positive = charging, negative = discharging)"
+                },
+                {
+                    "name": "battery1_current",
+                    "offset": 5,
+                    "type": "int16",
+                    "scale": 0.01,
+                    "unit": "A",
+                    "description": "Battery 1 current (positive = charging, negative = discharging)"
+                },
+                {
+                    "name": "battery_corrected_ah",
+                    "offset": 6,
+                    "type": "uint16",
+                    "scale": 1,
+                    "unit": "Ah",
+                    "description": "Battery corrected Ah"
+                },
+                {
+                    "name": "battery2_voltage",
+                    "offset": 7,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "V",
+                    "description": "Battery 2 voltage"
+                },
+                {
+                    "name": "battery2_current",
+                    "offset": 8,
+                    "type": "int16",
+                    "scale": 0.01,
+                    "unit": "A",
+                    "description": "Battery 2 current"
+                },
+                {
+                    "name": "battery2_power",
+                    "offset": 9,
+                    "type": "int16",
+                    "scale": 10,
+                    "unit": "W",
+                    "description": "Battery 2 power"
+                },
+                {
+                    "name": "battery2_temperature",
+                    "offset": 10,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "°C",
+                    "description": "Battery 2 temperature"
+                }
+            ]
+        },
+        "solar": {
+            "description": "Solar PV inputs (registers 672-683)",
+            "start_address": 672,
+            "count": 12,
+            "func_code": 3,
+            "registers": [
+                {
+                    "name": "pv1_input_power",
+                    "offset": 0,
+                    "type": "uint16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "PV1 input power"
+                },
+                {
+                    "name": "pv2_input_power",
+                    "offset": 1,
+                    "type": "uint16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "PV2 input power"
+                },
+                {
+                    "name": "pv3_input_power",
+                    "offset": 2,
+                    "type": "uint16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "PV3 input power"
+                },
+                {
+                    "name": "pv4_input_power",
+                    "offset": 3,
+                    "type": "uint16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "PV4 input power"
+                },
+                {
+                    "name": "dc_voltage_1",
+                    "offset": 4,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "V",
+                    "description": "DC voltage 1"
+                },
+                {
+                    "name": "dc_current_1",
+                    "offset": 5,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "A",
+                    "description": "DC current 1"
+                },
+                {
+                    "name": "dc_voltage_2",
+                    "offset": 6,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "V",
+                    "description": "DC voltage 2"
+                },
+                {
+                    "name": "dc_current_2",
+                    "offset": 7,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "A",
+                    "description": "DC current 2"
+                },
+                {
+                    "name": "dc_voltage_3",
+                    "offset": 8,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "V",
+                    "description": "DC voltage 3"
+                },
+                {
+                    "name": "dc_current_3",
+                    "offset": 9,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "A",
+                    "description": "DC current 3"
+                },
+                {
+                    "name": "dc_voltage_4",
+                    "offset": 10,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "V",
+                    "description": "DC voltage 4"
+                },
+                {
+                    "name": "dc_current_4",
+                    "offset": 11,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "A",
+                    "description": "DC current 4"
+                }
+            ]
+        },
+        "gen_relay_status": {
+            "description": "Generator relay status (register 552)",
+            "start_address": 552,
+            "count": 1,
+            "func_code": 3,
+            "registers": [
+                {
+                    "name": "gen_relay",
+                    "offset": 0,
+                    "type": "uint16",
+                    "scale": 1,
+                    "unit": "bool",
+                    "bit": 3,
+                    "description": "Generator relay status - bit 3 (1=ON/running, 0=OFF)"
+                }
+            ]
+        },
+        "generator": {
+            "description": "Generator status (registers 661-667)",
+            "start_address": 661,
+            "count": 7,
+            "func_code": 3,
+            "registers": [
+                {
+                    "name": "gen_phase_voltage_a",
+                    "offset": 0,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "V",
+                    "description": "Generator phase A voltage"
+                },
+                {
+                    "name": "gen_phase_voltage_b",
+                    "offset": 1,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "V",
+                    "description": "Generator phase B voltage"
+                },
+                {
+                    "name": "gen_phase_voltage_c",
+                    "offset": 2,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "V",
+                    "description": "Generator phase C voltage"
+                },
+                {
+                    "name": "gen_phase_power_a",
+                    "offset": 3,
+                    "type": "int16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Generator phase A power"
+                },
+                {
+                    "name": "gen_phase_power_b",
+                    "offset": 4,
+                    "type": "int16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Generator phase B power"
+                },
+                {
+                    "name": "gen_phase_power_c",
+                    "offset": 5,
+                    "type": "int16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Generator phase C power"
+                },
+                {
+                    "name": "gen_total_power",
+                    "offset": 6,
+                    "type": "int16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Generator total power"
+                }
+            ]
+        },
+        "generator_extended": {
+            "description": "Generator extended status (registers 661-671)",
+            "start_address": 661,
+            "count": 11,
+            "func_code": 3,
+            "registers": [
+                {
+                    "name": "gen_phase_voltage_a",
+                    "offset": 0,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "V",
+                    "description": "Generator phase A voltage"
+                },
+                {
+                    "name": "gen_phase_voltage_b",
+                    "offset": 1,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "V",
+                    "description": "Generator phase B voltage"
+                },
+                {
+                    "name": "gen_phase_voltage_c",
+                    "offset": 2,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "V",
+                    "description": "Generator phase C voltage"
+                },
+                {
+                    "name": "gen_phase_power_a_low",
+                    "offset": 3,
+                    "type": "uint16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Generator phase A power low word"
+                },
+                {
+                    "name": "gen_phase_power_b_low",
+                    "offset": 4,
+                    "type": "uint16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Generator phase B power low word"
+                },
+                {
+                    "name": "gen_phase_power_c_low",
+                    "offset": 5,
+                    "type": "uint16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Generator phase C power low word"
+                },
+                {
+                    "name": "gen_total_power_low",
+                    "offset": 6,
+                    "type": "uint16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Generator total power low word"
+                },
+                {
+                    "name": "gen_phase_power_a_high",
+                    "offset": 7,
+                    "type": "uint16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Generator phase A power high word"
+                },
+                {
+                    "name": "gen_phase_power_b_high",
+                    "offset": 8,
+                    "type": "uint16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Generator phase B power high word"
+                },
+                {
+                    "name": "gen_phase_power_c_high",
+                    "offset": 9,
+                    "type": "uint16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Generator phase C power high word"
+                },
+                {
+                    "name": "gen_total_power_high",
+                    "offset": 10,
+                    "type": "uint16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Generator total power high word"
+                }
+            ]
+        },
+        "load": {
+            "description": "Load status (registers 644-660)",
+            "start_address": 644,
+            "count": 17,
+            "func_code": 3,
+            "registers": [
+                {"name": "load_phase_voltage_a", "offset": 0, "type": "uint16", "scale": 0.1, "unit": "V", "description": "Load phase voltage A"},
+                {"name": "load_phase_voltage_b", "offset": 1, "type": "uint16", "scale": 0.1, "unit": "V", "description": "Load phase voltage B"},
+                {"name": "load_phase_voltage_c", "offset": 2, "type": "uint16", "scale": 0.1, "unit": "V", "description": "Load phase voltage C"},
+                {"name": "load_phase_current_a", "offset": 3, "type": "uint16", "scale": 0.01, "unit": "A", "description": "Load phase current A"},
+                {"name": "load_phase_current_b", "offset": 4, "type": "uint16", "scale": 0.01, "unit": "A", "description": "Load phase current B"},
+                {"name": "load_phase_current_c", "offset": 5, "type": "uint16", "scale": 0.01, "unit": "A", "description": "Load phase current C"},
+                {"name": "load_phase_power_a_low", "offset": 6, "type": "uint16", "scale": 1, "unit": "W", "description": "Load phase power A low word"},
+                {"name": "load_phase_power_b_low", "offset": 7, "type": "uint16", "scale": 1, "unit": "W", "description": "Load phase power B low word"},
+                {"name": "load_phase_power_c_low", "offset": 8, "type": "uint16", "scale": 1, "unit": "W", "description": "Load phase power C low word"},
+                {"name": "load_total_power_low", "offset": 9, "type": "uint16", "scale": 1, "unit": "W", "description": "Load total power low word"},
+                {"name": "load_total_apparent_power_low", "offset": 10, "type": "uint16", "scale": 1, "unit": "VA", "description": "Load total apparent power low word"},
+                {"name": "load_frequency", "offset": 11, "type": "uint16", "scale": 0.01, "unit": "Hz", "description": "Load frequency"},
+                {"name": "load_phase_power_a_high", "offset": 12, "type": "uint16", "scale": 1, "unit": "W", "description": "Load phase power A high word"},
+                {"name": "load_phase_power_b_high", "offset": 13, "type": "uint16", "scale": 1, "unit": "W", "description": "Load phase power B high word"},
+                {"name": "load_phase_power_c_high", "offset": 14, "type": "uint16", "scale": 1, "unit": "W", "description": "Load phase power C high word"},
+                {"name": "load_total_power_high", "offset": 15, "type": "uint16", "scale": 1, "unit": "W", "description": "Load total power high word"},
+                {"name": "load_total_apparent_power_high", "offset": 16, "type": "uint16", "scale": 1, "unit": "VA", "description": "Load total apparent power high word"}
+            ]
+        },
+        "inverter": {
+            "description": "Inverter status (registers 621-638)",
+            "start_address": 621,
+            "count": 18,
+            "func_code": 3,
+            "registers": [
+                {
+                    "name": "grid_total_apparent_power",
+                    "offset": 0,
+                    "type": "int16",
+                    "scale": 1,
+                    "unit": "VA",
+                    "description": "Grid total apparent power"
+                },
+                {
+                    "name": "grid_power_factor",
+                    "offset": 1,
+                    "type": "int16",
+                    "scale": 0.001,
+                    "unit": "",
+                    "description": "Grid power factor"
+                },
+                {
+                    "name": "grid_power_a",
+                    "offset": 2,
+                    "type": "int16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Grid power A"
+                },
+                {
+                    "name": "grid_power_b",
+                    "offset": 3,
+                    "type": "int16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Grid power B"
+                },
+                {
+                    "name": "grid_power_c",
+                    "offset": 4,
+                    "type": "int16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Grid power C"
+                },
+                {
+                    "name": "inverter_voltage_a",
+                    "offset": 6,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "V",
+                    "description": "Inverter voltage A"
+                },
+                {
+                    "name": "inverter_voltage_b",
+                    "offset": 7,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "V",
+                    "description": "Inverter voltage B"
+                },
+                {
+                    "name": "inverter_voltage_c",
+                    "offset": 8,
+                    "type": "uint16",
+                    "scale": 0.1,
+                    "unit": "V",
+                    "description": "Inverter voltage C"
+                },
+                {
+                    "name": "inverter_current_a",
+                    "offset": 9,
+                    "type": "int16",
+                    "scale": 0.01,
+                    "unit": "A",
+                    "description": "Inverter current A"
+                },
+                {
+                    "name": "inverter_current_b",
+                    "offset": 10,
+                    "type": "int16",
+                    "scale": 0.01,
+                    "unit": "A",
+                    "description": "Inverter current B"
+                },
+                {
+                    "name": "inverter_current_c",
+                    "offset": 11,
+                    "type": "int16",
+                    "scale": 0.01,
+                    "unit": "A",
+                    "description": "Inverter current C"
+                },
+                {
+                    "name": "inverter_power_a",
+                    "offset": 12,
+                    "type": "int16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Inverter power A"
+                },
+                {
+                    "name": "inverter_power_b",
+                    "offset": 13,
+                    "type": "int16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Inverter power B"
+                },
+                {
+                    "name": "inverter_power_c",
+                    "offset": 14,
+                    "type": "int16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Inverter power C"
+                },
+                {
+                    "name": "inverter_total_power",
+                    "offset": 15,
+                    "type": "int16",
+                    "scale": 1,
+                    "unit": "W",
+                    "description": "Inverter total power"
+                },
+                {
+                    "name": "inverter_total_apparent_power",
+                    "offset": 16,
+                    "type": "int16",
+                    "scale": 1,
+                    "unit": "VA",
+                    "description": "Inverter total apparent power"
+                },
+                {
+                    "name": "inverter_frequency",
+                    "offset": 17,
+                    "type": "uint16",
+                    "scale": 0.01,
+                    "unit": "Hz",
+                    "description": "Inverter frequency"
+                }
+            ]
+        },
+        "power32_v104": {
+            "description": "Power high words map V104 (registers 687-709)",
+            "start_address": 687,
+            "count": 23,
+            "func_code": 3,
+            "registers": [
+                {"name": "grid_power_a_high", "offset": 0, "type": "uint16", "scale": 1, "unit": "W", "description": "Grid power A high"},
+                {"name": "grid_power_b_high", "offset": 1, "type": "uint16", "scale": 1, "unit": "W", "description": "Grid power B high"},
+                {"name": "grid_power_c_high", "offset": 2, "type": "uint16", "scale": 1, "unit": "W", "description": "Grid power C high"},
+                {"name": "grid_total_power_high", "offset": 3, "type": "uint16", "scale": 1, "unit": "W", "description": "Grid total power high"},
+                {"name": "inverter_power_a_high", "offset": 4, "type": "uint16", "scale": 1, "unit": "W", "description": "Inverter power A high"},
+                {"name": "inverter_power_b_high", "offset": 5, "type": "uint16", "scale": 1, "unit": "W", "description": "Inverter power B high"},
+                {"name": "inverter_power_c_high", "offset": 6, "type": "uint16", "scale": 1, "unit": "W", "description": "Inverter power C high"},
+                {"name": "inverter_total_power_high", "offset": 7, "type": "uint16", "scale": 1, "unit": "W", "description": "Inverter total power high"},
+                {"name": "inverter_total_apparent_power_high", "offset": 8, "type": "uint16", "scale": 1, "unit": "VA", "description": "Inverter total apparent power high"},
+                {"name": "ups_power_a_high", "offset": 9, "type": "uint16", "scale": 1, "unit": "W", "description": "UPS power A high"},
+                {"name": "ups_power_b_high", "offset": 10, "type": "uint16", "scale": 1, "unit": "W", "description": "UPS power B high"},
+                {"name": "ups_power_c_high", "offset": 11, "type": "uint16", "scale": 1, "unit": "W", "description": "UPS power C high"},
+                {"name": "ups_total_power_high", "offset": 12, "type": "uint16", "scale": 1, "unit": "W", "description": "UPS total power high"},
+                {"name": "inner_grid_power_a_high", "offset": 13, "type": "uint16", "scale": 1, "unit": "W", "description": "Inner grid power A high"},
+                {"name": "inner_grid_power_b_high", "offset": 14, "type": "uint16", "scale": 1, "unit": "W", "description": "Inner grid power B high"},
+                {"name": "inner_grid_power_c_high", "offset": 15, "type": "uint16", "scale": 1, "unit": "W", "description": "Inner grid power C high"},
+                {"name": "inner_grid_total_power_high", "offset": 16, "type": "uint16", "scale": 1, "unit": "W", "description": "Inner grid total power high"},
+                {"name": "inner_grid_total_apparent_power_high", "offset": 17, "type": "uint16", "scale": 1, "unit": "VA", "description": "Inner grid total apparent power high"},
+                {"name": "out_grid_power_a_high", "offset": 18, "type": "uint16", "scale": 1, "unit": "W", "description": "Out grid power A high"},
+                {"name": "out_grid_power_b_high", "offset": 19, "type": "uint16", "scale": 1, "unit": "W", "description": "Out grid power B high"},
+                {"name": "out_grid_power_c_high", "offset": 20, "type": "uint16", "scale": 1, "unit": "W", "description": "Out grid power C high"},
+                {"name": "out_grid_total_power_high", "offset": 21, "type": "uint16", "scale": 1, "unit": "W", "description": "Out grid total power high"},
+                {"name": "out_grid_total_apparent_power_high", "offset": 22, "type": "uint16", "scale": 1, "unit": "VA", "description": "Out grid total apparent power high"}
+            ]
+        },
+        "solar_high": {
+            "description": "Solar high strings (registers 718-730)",
+            "start_address": 718,
+            "count": 13,
+            "func_code": 3,
+            "registers": [
+                {"name": "pv_total_power_raw_high", "offset": 0, "type": "uint16", "scale": 10, "unit": "W", "description": "PV total power raw"},
+                {"name": "pv5_voltage", "offset": 1, "type": "uint16", "scale": 0.1, "unit": "V", "description": "PV5 voltage"},
+                {"name": "pv6_voltage", "offset": 2, "type": "uint16", "scale": 0.1, "unit": "V", "description": "PV6 voltage"},
+                {"name": "pv7_voltage", "offset": 3, "type": "uint16", "scale": 0.1, "unit": "V", "description": "PV7 voltage"},
+                {"name": "pv8_voltage", "offset": 4, "type": "uint16", "scale": 0.1, "unit": "V", "description": "PV8 voltage"},
+                {"name": "pv5_current", "offset": 5, "type": "uint16", "scale": 0.1, "unit": "A", "description": "PV5 current"},
+                {"name": "pv6_current", "offset": 6, "type": "uint16", "scale": 0.1, "unit": "A", "description": "PV6 current"},
+                {"name": "pv7_current", "offset": 7, "type": "uint16", "scale": 0.1, "unit": "A", "description": "PV7 current"},
+                {"name": "pv8_current", "offset": 8, "type": "uint16", "scale": 0.1, "unit": "A", "description": "PV8 current"},
+                {"name": "pv5_power", "offset": 9, "type": "uint16", "scale": 10, "unit": "W", "description": "PV5 power"},
+                {"name": "pv6_power", "offset": 10, "type": "uint16", "scale": 10, "unit": "W", "description": "PV6 power"},
+                {"name": "pv7_power", "offset": 11, "type": "uint16", "scale": 10, "unit": "W", "description": "PV7 power"},
+                {"name": "pv8_power", "offset": 12, "type": "uint16", "scale": 10, "unit": "W", "description": "PV8 power"}
+            ]
+        },
+        "service_extended": {
+            "description": "Service and status extended (registers 551-558)",
+            "start_address": 551,
+            "count": 8,
+            "func_code": 3,
+            "registers": [
+                {"name": "power_on_status_word", "offset": 0, "type": "uint16", "scale": 1, "unit": "bitfield", "description": "Power on status flags"},
+                {"name": "relay_status_word", "offset": 1, "type": "uint16", "scale": 1, "unit": "bitfield", "description": "Relay status flags"},
+                {"name": "warning_word_1", "offset": 2, "type": "uint16", "scale": 1, "unit": "bitmap", "description": "Warnings word 1"},
+                {"name": "warning_word_2", "offset": 3, "type": "uint16", "scale": 1, "unit": "bitmap", "description": "Warnings word 2"},
+                {"name": "fault_1", "offset": 4, "type": "uint16", "scale": 1, "unit": "bitmap", "description": "Fault bits 1-16"},
+                {"name": "fault_2", "offset": 5, "type": "uint16", "scale": 1, "unit": "bitmap", "description": "Fault bits 17-32"},
+                {"name": "fault_3", "offset": 6, "type": "uint16", "scale": 1, "unit": "bitmap", "description": "Fault bits 33-48"},
+                {"name": "fault_4", "offset": 7, "type": "uint16", "scale": 1, "unit": "bitmap", "description": "Fault bits 49-64"}
+            ]
+        },
+        "energy_service": {
+            "description": "Energy service settings (registers 101-130)",
+            "start_address": 101,
+            "count": 30,
+            "func_code": 3,
+            "registers": [
+                {"name": "battery_float_voltage", "offset": 0, "type": "uint16", "scale": 0.1, "unit": "V", "description": "Battery float voltage"},
+                {"name": "battery_capacity_ah", "offset": 1, "type": "uint16", "scale": 1, "unit": "Ah", "description": "Battery capacity"},
+                {"name": "battery_empty_voltage", "offset": 2, "type": "uint16", "scale": 0.1, "unit": "V", "description": "Battery empty voltage"},
+                {"name": "zero_export_power", "offset": 3, "type": "uint16", "scale": 1, "unit": "W", "description": "Zero export power"},
+                {"name": "equalization_day_cycle", "offset": 4, "type": "uint16", "scale": 1, "unit": "days", "description": "Equalization day cycle"},
+                {"name": "equalization_time", "offset": 5, "type": "uint16", "scale": 0.1, "unit": "hours", "description": "Equalization time"},
+                {"name": "temp_compensation", "offset": 6, "type": "int16", "scale": 1, "unit": "mV/C", "description": "Temperature compensation"},
+                {"name": "battery_max_charge_current", "offset": 7, "type": "uint16", "scale": 1, "unit": "A", "description": "Battery max charge current"},
+                {"name": "battery_max_discharge_current", "offset": 8, "type": "uint16", "scale": 1, "unit": "A", "description": "Battery max discharge current"},
+                {"name": "parallel_battery_enable", "offset": 9, "type": "uint16", "scale": 1, "unit": "bool", "description": "Parallel battery enable"},
+                {"name": "battery_work_mode", "offset": 10, "type": "uint16", "scale": 1, "unit": "enum", "description": "Battery work mode"},
+                {"name": "li_battery_wakeup", "offset": 11, "type": "uint16", "scale": 1, "unit": "bitfield", "description": "Li battery wakeup bits"},
+                {"name": "battery_resistance", "offset": 12, "type": "uint16", "scale": 1, "unit": "mOhm", "description": "Battery resistance"},
+                {"name": "battery_charge_efficiency", "offset": 13, "type": "uint16", "scale": 0.1, "unit": "%", "description": "Battery charge efficiency"},
+                {"name": "battery_capacity_shutdown", "offset": 14, "type": "uint16", "scale": 1, "unit": "%", "description": "Battery capacity shutdown"},
+                {"name": "battery_capacity_restart", "offset": 15, "type": "uint16", "scale": 1, "unit": "%", "description": "Battery capacity restart"},
+                {"name": "battery_capacity_low_batt", "offset": 16, "type": "uint16", "scale": 1, "unit": "%", "description": "Battery capacity low battery"},
+                {"name": "battery_voltage_shutdown", "offset": 17, "type": "uint16", "scale": 0.1, "unit": "V", "description": "Battery voltage shutdown"},
+                {"name": "battery_voltage_restart", "offset": 18, "type": "uint16", "scale": 0.1, "unit": "V", "description": "Battery voltage restart"},
+                {"name": "battery_voltage_low_batt", "offset": 19, "type": "uint16", "scale": 0.1, "unit": "V", "description": "Battery voltage low battery"},
+                {"name": "generator_max_run_time", "offset": 20, "type": "uint16", "scale": 0.1, "unit": "hours", "description": "Generator max run time"},
+                {"name": "generator_cooling_time", "offset": 21, "type": "uint16", "scale": 0.1, "unit": "hours", "description": "Generator cooling time"},
+                {"name": "generator_charge_start_voltage", "offset": 22, "type": "uint16", "scale": 0.1, "unit": "V", "description": "Generator charge start voltage"},
+                {"name": "generator_charge_start_capacity", "offset": 23, "type": "uint16", "scale": 1, "unit": "%", "description": "Generator charge start capacity"},
+                {"name": "generator_charge_current", "offset": 24, "type": "uint16", "scale": 1, "unit": "A", "description": "Generator charge current"},
+                {"name": "grid_charge_start_voltage", "offset": 25, "type": "uint16", "scale": 0.1, "unit": "V", "description": "Grid charge start voltage"},
+                {"name": "grid_charge_start_capacity", "offset": 26, "type": "uint16", "scale": 1, "unit": "%", "description": "Grid charge start capacity"},
+                {"name": "grid_charge_current", "offset": 27, "type": "uint16", "scale": 1, "unit": "A", "description": "Grid charge current"},
+                {"name": "generator_charge_enable", "offset": 28, "type": "uint16", "scale": 1, "unit": "bool", "description": "Generator charge enable"},
+                {"name": "grid_charge_enable", "offset": 29, "type": "uint16", "scale": 1, "unit": "bool", "description": "Grid charge enable"}
+            ]
+        },
+        "relay_coils_status": {
+            "description": "Relay module coils state (slave 10, coils 0-7)",
+            "start_address": 0,
+            "count": 8,
+            "func_code": 1,
+            "slave_id": 10,
+            "registers": [
+                {"name": "relay_coil_0", "offset": 0, "type": "uint16", "scale": 1, "unit": "bool", "description": "Relay coil 0 state"},
+                {"name": "relay_coil_1", "offset": 1, "type": "uint16", "scale": 1, "unit": "bool", "description": "Relay coil 1 state"},
+                {"name": "relay_coil_2", "offset": 2, "type": "uint16", "scale": 1, "unit": "bool", "description": "Relay coil 2 state"},
+                {"name": "relay_coil_3", "offset": 3, "type": "uint16", "scale": 1, "unit": "bool", "description": "Relay coil 3 state"},
+                {"name": "relay_coil_4", "offset": 4, "type": "uint16", "scale": 1, "unit": "bool", "description": "Relay coil 4 state"},
+                {"name": "relay_coil_5", "offset": 5, "type": "uint16", "scale": 1, "unit": "bool", "description": "Relay coil 5 state"},
+                {"name": "relay_coil_6", "offset": 6, "type": "uint16", "scale": 1, "unit": "bool", "description": "Relay coil 6 state"},
+                {"name": "relay_coil_7", "offset": 7, "type": "uint16", "scale": 1, "unit": "bool", "description": "Relay coil 7 state"}
+            ]
+        },
+        "relay_discrete_inputs_status": {
+            "description": "Relay module discrete inputs state (slave 10, inputs 0-7)",
+            "start_address": 0,
+            "count": 8,
+            "func_code": 2,
+            "slave_id": 10,
+            "registers": [
+                {"name": "relay_input_0", "offset": 0, "type": "uint16", "scale": 1, "unit": "bool", "description": "Relay discrete input 0 state"},
+                {"name": "relay_input_1", "offset": 1, "type": "uint16", "scale": 1, "unit": "bool", "description": "Relay discrete input 1 state"},
+                {"name": "relay_input_2", "offset": 2, "type": "uint16", "scale": 1, "unit": "bool", "description": "Relay discrete input 2 state"},
+                {"name": "relay_input_3", "offset": 3, "type": "uint16", "scale": 1, "unit": "bool", "description": "Relay discrete input 3 state"},
+                {"name": "relay_input_4", "offset": 4, "type": "uint16", "scale": 1, "unit": "bool", "description": "Relay discrete input 4 state"},
+                {"name": "relay_input_5", "offset": 5, "type": "uint16", "scale": 1, "unit": "bool", "description": "Relay discrete input 5 state"},
+                {"name": "relay_input_6", "offset": 6, "type": "uint16", "scale": 1, "unit": "bool", "description": "Relay discrete input 6 state"},
+                {"name": "relay_input_7", "offset": 7, "type": "uint16", "scale": 1, "unit": "bool", "description": "Relay discrete input 7 state"}
+            ]
+        },
+        "faults_warnings": {
+            "description": "Faults and warnings status (registers 553-558)",
+            "start_address": 553,
+            "count": 6,
+            "func_code": 3,
+            "registers": [
+                {
+                    "name": "warning_1",
+                    "offset": 0,
+                    "type": "uint16",
+                    "scale": 1,
+                    "unit": "bitmap",
+                    "description": "Warning bits 1-16"
+                },
+                {
+                    "name": "warning_2",
+                    "offset": 1,
+                    "type": "uint16",
+                    "scale": 1,
+                    "unit": "bitmap",
+                    "description": "Warning bits 17-32"
+                },
+                {
+                    "name": "fault_1",
+                    "offset": 2,
+                    "type": "uint16",
+                    "scale": 1,
+                    "unit": "bitmap",
+                    "description": "Fault bits 1-16"
+                },
+                {
+                    "name": "fault_2",
+                    "offset": 3,
+                    "type": "uint16",
+                    "scale": 1,
+                    "unit": "bitmap",
+                    "description": "Fault bits 17-32"
+                },
+                {
+                    "name": "fault_3",
+                    "offset": 4,
+                    "type": "uint16",
+                    "scale": 1,
+                    "unit": "bitmap",
+                    "description": "Fault bits 33-48"
+                },
+                {
+                    "name": "fault_4",
+                    "offset": 5,
+                    "type": "uint16",
+                    "scale": 1,
+                    "unit": "bitmap",
+                    "description": "Fault bits 49-64"
+                }
+            ]
+        }
+    },
+    "fault_info": {
+        "1": {"name": "F01", "description": "DC_Inversed_Failure", "solution": "Check the PV input polarity.", "description_ru": "Обратная полярность DC", "solution_ru": "Проверьте полярность подключения PV."},
+        "2": {"name": "F02", "description": "DC_Insulation_Failure", "solution": "Check whether the PV is grounded, secondly, check whether the impedance of the PV to the ground is normal.", "description_ru": "Ошибка изоляции DC", "solution_ru": "Проверьте заземление PV и сопротивление изоляции относительно земли."},
+        "3": {"name": "F03", "description": "GFDI_Failure", "solution": "1. Check whether the PV modules are grounded. 2. Check whether the impedance of the PV to the ground is normal, whether there is leakage current.", "description_ru": "Ошибка GFDI", "solution_ru": "1. Проверьте заземление модулей PV. 2. Проверьте сопротивление изоляции и наличие утечки."},
+        "4": {"name": "F04", "description": "GFDI_Ground_Failure", "solution": "Check whether the PV is grounded.", "description_ru": "Ошибка заземления GFDI", "solution_ru": "Проверьте заземление PV."},
+        "5": {"name": "F05", "description": "EEPROM_Read_Failure", "solution": "Restart the inverter 3 times and restore the factory settings.", "description_ru": "Ошибка чтения EEPROM", "solution_ru": "Перезапустите инвертор 3 раза и выполните сброс к заводским настройкам."},
+        "6": {"name": "F06", "description": "EEPROM_Write_Failure", "solution": "Restart the inverter 3 times and restore the factory settings.", "description_ru": "Ошибка записи EEPROM", "solution_ru": "Перезапустите инвертор 3 раза и выполните сброс к заводским настройкам."},
+        "7": {"name": "F07", "description": "DCDC1_START_Failure", "solution": "The BUS voltage can't be reached by PV or battery. 1. Switch off the DC switches and restart the inverter.", "description_ru": "Ошибка запуска DCDC1", "solution_ru": "Напряжение шины не достигается. Отключите DC и перезапустите инвертор."},
+        "8": {"name": "F08", "description": "DCDC2_START_Failure", "solution": "The BUS voltage can't be reached by PV or battery. 1. Switch off the DC switches and restart the inverter.", "description_ru": "Ошибка запуска DCDC2", "solution_ru": "Напряжение шины не достигается. Отключите DC и перезапустите инвертор."},
+        "9": {"name": "F09", "description": "IGBT_Failure", "solution": "Restart the inverter 3 times and restore the factory settings.", "description_ru": "Ошибка IGBT", "solution_ru": "Перезапустите инвертор 3 раза и выполните сброс."},
+        "10": {"name": "F10", "description": "AuxPowerBoard_Failure", "solution": "1. First check whether the inverter switch is open. 2. Restart the inverter 3 times and restore the factory settings.", "description_ru": "Ошибка платы питания", "solution_ru": "1. Проверьте включение инвертора. 2. Перезапустите и сбросьте настройки."},
+        "11": {"name": "F11", "description": "AC_MainContactor_Failure", "solution": "Restart the inverter 3 times and restore the factory settings.", "description_ru": "Ошибка главного контактора AC", "solution_ru": "Перезапустите инвертор 3 раза и выполните сброс."},
+        "12": {"name": "F12", "description": "AC_SlaveContactor_Failure", "solution": "Restart the inverter 3 times and restore the factory settings.", "description_ru": "Ошибка вспомогательного контактора AC", "solution_ru": "Перезапустите инвертор 3 раза и выполните сброс."},
+        "13": {"name": "F13", "description": "Working_Mode_Change", "solution": "1. When the grid type and frequency have changed it will report F13. 2. When the battery mode has been changed to 'No battery' mode, it will report F13. 3. For some old FW version, it will report F13 when the system's work mode has been changed. 4. Generally, this error will disappear automatically. 5. If it remains the same, turn off DC and AC switches for one minute, then turn on the DC and AC switches.", "description_ru": "Смена режима работы", "solution_ru": "Возникает при смене типа сети или режима батареи. Обычно исчезает автоматически. При необходимости — перезапуск AC/DC."},
+        "14": {"name": "F14", "description": "DC_OverCurr_Failure", "solution": "Restart the inverter 3 times and restore the factory settings.", "description_ru": "Перегрузка по току DC", "solution_ru": "Перезапустите инвертор 3 раза и выполните сброс."},
+        "15": {"name": "F15", "description": "AC_OverCurr_SW_Failure", "solution": "AC side over current fault. 1. Please check whether the backup load power and common load power are within the range. 2. Restart and check whether it is normal.", "description_ru": "Перегрузка по току AC (ПО)", "solution_ru": "Проверьте мощность нагрузки (backup и общую). Перезапустите и проверьте."},
+        "16": {"name": "F16", "description": "GFCI_Failure", "solution": "Leakage current fault. 1. Check the PV side cable ground connection. 2. Restart the system 2-3 times.", "description_ru": "Ошибка утечки (GFCI)", "solution_ru": "Проверьте заземление PV и перезапустите систему 2–3 раза."},
+        "17": {"name": "F17", "description": "Tz_PV_OverCurr_Fault", "solution": "1. Check the PV connection and whether the PV is unstable. 2. Restart the inverter 3 times.", "description_ru": "Перегрузка PV", "solution_ru": "Проверьте подключение PV и стабильность. Перезапустите."},
+        "18": {"name": "F18", "description": "Tz_AC_OverCurr_Fault", "solution": "AC side over current fault. 1. Please check whether the backup load power and common load power are within the range. 2. Restart and check whether it is normal.", "description_ru": "Перегрузка AC", "solution_ru": "Проверьте нагрузку и перезапустите."},
+        "19": {"name": "F19", "description": "Tz_Integ_Fault", "solution": "Restart the inverter 3 times and restore the factory settings.", "description_ru": "Внутренняя ошибка", "solution_ru": "Перезапустите и выполните сброс."},
+        "20": {"name": "F20", "description": "Tz_Dc_OverCurr_Fault", "solution": "DC side over current fault 1. Check PV module connection and battery connection; 2. When in the off-grid mode, starting the inverter under a high power load may report F20. Please reduce the load power connected. 3. If it remains the same, turn off DC and AC switches for one minute, then turn on the DC and AC switches.", "description_ru": "Перегрузка по току DC", "solution_ru": "Проверьте PV и батарею, уменьшите нагрузку, перезапустите."},
+        "21": {"name": "F21", "description": "Tz_HV_Overcurr_Fault", "solution": "BUS over current 1. Check the PV input current and battery current setting. 2. Restart the system 2~3 times.", "description_ru": "Перегрузка шины (BUS)", "solution_ru": "Проверьте ток PV и батареи, перезапустите."},
+        "22": {"name": "F22", "description": "Tz_EmergStop_Fault", "solution": "Remotely shutdown It means the inverter is remotely controlled.", "description_ru": "Аварийная остановка", "solution_ru": "Инвертор остановлен удалённо."},
+        "23": {"name": "F23", "description": "Tz_GFCI_OC_Fault", "solution": "Leakage current fault 1. Check PV side cable ground connection. 2. Restart the system 2~3 times.", "description_ru": "Утечка тока", "solution_ru": "Проверьте заземление PV и перезапустите."},
+        "24": {"name": "F24", "description": "DC_Insulation_Fault", "solution": "PV isolation resistance is too low 1. Check the connection of PV panels and inverter is firm and correct. 2. Check whether the PE cable of inverter is connected to ground.", "description_ru": "Низкое сопротивление изоляции PV", "solution_ru": "Проверьте подключение панелей и заземление."},
+        "25": {"name": "F25", "description": "DC_Feedback_Fault", "solution": "Restart the inverter 3 times and restore the factory settings.", "description_ru": "Ошибка обратной связи DC", "solution_ru": "Перезапустите и выполните сброс."},
+        "26": {"name": "F26", "description": "BusUnbalance_Fault", "solution": "1. Please wait for a while and check whether it is normal. 2. When the load power of 3 phases has a big different, it will report the F26. 3. When there's DC leakage current, it will report F26. 4. Restart the system 2~3 times.", "description_ru": "Дисбаланс шины", "solution_ru": "Проверьте нагрузку фаз и утечки, перезапустите."},
+        "27": {"name": "F27", "description": "DC_Insulation_Fault", "solution": "Restart the inverter 3 times and restore the factory settings.", "description_ru": "Ошибка изоляции DC", "solution_ru": "Перезапустите и выполните сброс."},
+        "28": {"name": "F28", "description": "DCIOver_M1_Fault", "solution": "Restart the inverter 3 times and restore the factory settings.", "description_ru": "Ошибка DCIOver M1", "solution_ru": "Перезапустите и выполните сброс."},
+        "29": {"name": "F29", "description": "Parallel_Comm_Fault", "solution": "1. When inverters are connected in parallel, check the parallel communication cable connection and hybrid inverter communication address setting. 2. During the parallel system startup period, inverters will report F29. But when all inverters are in ON status, it will disappear automatically.", "description_ru": "Ошибка параллельной связи", "solution_ru": "Проверьте кабели и адреса. Обычно исчезает после запуска."},
+        "30": {"name": "F30", "description": "AC_MainContactor_Fault", "solution": "Restart the inverter 3 times and restore the factory settings.", "description_ru": "Ошибка контактора AC", "solution_ru": "Перезапустите и выполните сброс."},
+        "31": {"name": "F31", "description": "AC_SlaveContactor_Fault", "solution": "1. Check whether the grid orientation is correct, 2. Restart the inverter 3 times and restore the factory settings", "description_ru": "Ошибка вспомогательного контактора AC", "solution_ru": "Проверьте фазировку и перезапустите."},
+        "32": {"name": "F32", "description": "DCIOver_M2_Fault", "solution": "Restart the inverter 3 times and restore the factory settings.", "description_ru": "Ошибка DCIOver M2", "solution_ru": "Перезапустите и выполните сброс."},
+        "33": {"name": "F33", "description": "AC_OverCurr_Fault", "solution": "1. Check whether the grid current is too large. 2. Restart the inverter 3 times and restore the factory settings.", "description_ru": "Перегрузка по току AC", "solution_ru": "Проверьте ток сети и перезапустите."},
+        "34": {"name": "F34", "description": "AC_Overload_Fault", "solution": "Check the backup load connection, make sure it is within the allowed power range.", "description_ru": "Перегрузка", "solution_ru": "Проверьте подключенную нагрузку."},
+        "35": {"name": "F35", "description": "AC_NotUtility_Fault", "solution": "Check the grid voltage and frequency, whether the connection of the power grid is normal.", "description_ru": "Ошибка сети", "solution_ru": "Проверьте напряжение и частоту сети."},
+        "36": {"name": "F36", "description": "Reserved", "solution": "N/A", "description_ru": "Зарезервировано", "solution_ru": "N/A"},
+        "37": {"name": "F37", "description": "Reserved", "solution": "N/A", "description_ru": "Зарезервировано", "solution_ru": "N/A"},
+        "38": {"name": "F38", "description": "Reserved", "solution": "N/A", "description_ru": "Зарезервировано", "solution_ru": "N/A"},
+        "39": {"name": "F39", "description": "INT_AC_OverCurr_Fault", "solution": "Inverter AC overcurrent, restart the inverter.", "description_ru": "Перегрузка AC (внутренняя)", "solution_ru": "Перезапустите инвертор."},
+        "40": {"name": "F40", "description": "INT_DC_OverCurr_Fault", "solution": "Inverter DC overcurrent, restart the inverter.", "description_ru": "Перегрузка DC (внутренняя)", "solution_ru": "Перезапустите инвертор."},
+        "41": {"name": "F41", "description": "Parallel_system_Stop", "solution": "Check the hybrid inverter work status. If there is at least one hybrid inverter shutdown, all hybrid inverters will report F41 fault.", "description_ru": "Остановка параллельной системы", "solution_ru": "Проверьте состояние всех инверторов."},
+        "42": {"name": "F42", "description": "Parallel_Version_Fault", "solution": "1. Check whether the inverter version is consistent. 2. Please contact us to upgrade the software version.", "description_ru": "Несовпадение версий", "solution_ru": "Проверьте версии ПО, при необходимости обновите."},
+        "43": {"name": "F43", "description": "Reserved", "solution": "N/A", "description_ru": "Зарезервировано", "solution_ru": "N/A"},
+        "44": {"name": "F44", "description": "Reserved", "solution": "N/A", "description_ru": "Зарезервировано", "solution_ru": "N/A"},
+        "45": {"name": "F45", "description": "AC_UV_OverVolt_Fault", "solution": "Grid voltage out of range. 1. Check the voltage is in the range of specification or not. 2. Check whether AC cables are firmly and correctly connected.", "description_ru": "Перенапряжение сети", "solution_ru": "Проверьте напряжение и подключение кабелей."},
+        "46": {"name": "F46", "description": "AC_UV_UnderVolt_Fault", "solution": "Grid voltage out of range. 1. Check the voltage is in the range of specification or not. 2. Check whether AC cables are firmly and correctly connected.", "description_ru": "Пониженное напряжение сети", "solution_ru": "Проверьте напряжение и подключение кабелей."},
+        "47": {"name": "F47", "description": "AC_OverFreq_Fault", "solution": "Grid frequency out of range. 1. Check whether the frequency is in the range of the specification or not. 2. Check whether AC cables are firmly and correctly connected.", "description_ru": "Повышенная частота сети", "solution_ru": "Проверьте частоту и подключение."},
+        "48": {"name": "F48", "description": "AC_UnderFreq_Fault", "solution": "Grid frequency out of range. 1. Check whether the frequency is in the range of the specification or not. 2. Check whether AC cables are firmly and correctly connected.", "description_ru": "Пониженная частота сети", "solution_ru": "Проверьте частоту и подключение."},
+        "49": {"name": "F49", "description": "AC_U_GridCurr_DcHigh_Fault", "solution": "Restart the inverter 3 times and restore the factory settings.", "description_ru": "DC составляющая тока фазы U", "solution_ru": "Перезапустите инвертор."},
+        "50": {"name": "F50", "description": "AC_V_GridCurr_DcHigh_Fault", "solution": "Restart the inverter 3 times and restore the factory settings.", "description_ru": "DC составляющая тока фазы V", "solution_ru": "Перезапустите инвертор."},
+        "51": {"name": "F51", "description": "Battery_Temp_High_Fault", "solution": "Check whether the temperature data of BMS is too high.", "description_ru": "Перегрев батареи", "solution_ru": "Проверьте температуру по BMS."},
+        "52": {"name": "F52", "description": "DC_VoltHigh_Fault", "solution": "BUS voltage is too high. 1. Check whether battery voltage is too high. 2. Check the PV input voltage, make sure if it is within the allowed range.", "description_ru": "Перенапряжение DC шины", "solution_ru": "Проверьте напряжение батареи и PV."},
+        "53": {"name": "F53", "description": "DC_VoltLow_Fault", "solution": "BUS voltage is too low. 1. Check whether battery voltage is too low. 2. If the battery voltage is too low, use PV or grid to charge the battery.", "description_ru": "Пониженное напряжение DC шины", "solution_ru": "Проверьте батарею, при необходимости зарядите."},
+        "54": {"name": "F54", "description": "BAT2_VoltHigh_Fault", "solution": "1. Check the battery 2 terminal voltage is high. 2. Restart the inverter 2 times and restore the factory settings.", "description_ru": "Высокое напряжение батареи 2", "solution_ru": "Проверьте батарею и перезапустите."},
+        "55": {"name": "F55", "description": "BAT1_VoltHigh_Fault", "solution": "1. Check the battery 1 terminal voltage is high. 2. Restart the inverter 2 times and restore the factory settings.", "description_ru": "Высокое напряжение батареи 1", "solution_ru": "Проверьте батарею и перезапустите."},
+        "56": {"name": "F56", "description": "BAT1_VoltLow_Fault", "solution": "1. Check the battery 1 terminal voltage is low. 2. Restart the inverter 2 times and restore the factory settings.", "description_ru": "Низкое напряжение батареи 1", "solution_ru": "Проверьте батарею и перезапустите."},
+        "57": {"name": "F57", "description": "BAT2_VoltLow_Fault", "solution": "1. Check the battery 2 terminal voltage is low. 2. Restart the inverter 2 times and restore the factory settings.", "description_ru": "Низкое напряжение батареи 2", "solution_ru": "Проверьте батарею и перезапустите."},
+        "58": {"name": "F58", "description": "Battery_Comm_Lose", "solution": "1. It means that the communication between the hybrid inverter and the battery BMS is disconnected when 'BMS_Err-Stop' is active. 2. To avoid this error, disable 'BMS_Err-Stop' item on the LCD.", "description_ru": "Потеря связи с батареей", "solution_ru": "Проверьте связь с BMS или отключите BMS_Err-Stop."},
+        "59": {"name": "F59", "description": "Reserved", "solution": "N/A", "description_ru": "Зарезервировано", "solution_ru": "N/A"},
+        "60": {"name": "F60", "description": "GEN_FAULT", "solution": "Check whether the voltage and frequency of the generator are normal, and then restart.", "description_ru": "Ошибка генератора", "solution_ru": "Проверьте напряжение и частоту генератора."},
+        "61": {"name": "F61", "description": "INVERTER_Manual_OFF", "solution": "Check whether the switch of the inverter is turned on, restart the inverter, and restore the factory settings.", "description_ru": "Инвертор выключен вручную", "solution_ru": "Проверьте выключатель и перезапустите."},
+        "62": {"name": "F62", "description": "DRMs_Stop", "solution": "Check the DRM function is active or not.", "description_ru": "Остановка DRM", "solution_ru": "Проверьте активность DRM."},
+        "63": {"name": "F63", "description": "ARC_Fault", "solution": "1. ARC fault detection is only for US market. 2. Check PV module cable connection and clear the fault.", "description_ru": "Дуговая ошибка (ARC)", "solution_ru": "Проверьте кабели PV и устраните неисправность."},
+        "64": {"name": "F64", "description": "Heatsink_HighTemp_Fault", "solution": "Heat sink temperature is too high. 1. Check whether the working environment temperature is too high. 2. Turn off the inverter for 10 minutes and restart.", "description_ru": "Перегрев радиатора", "solution_ru": "Проверьте температуру окружающей среды и перезапустите через 10 минут."}
+    },
+    "warning_info": {
+        "1": {"name": "W01", "description": "Reserved", "solution": "1. Check the operating status of the fan. 2. If the fan is running abnormally, open the cover of the inverter to check the connection of the fan.", "description_ru": "Зарезервировано", "solution_ru": "1. Проверьте работу вентилятора. 2. Если вентилятор работает некорректно, откройте крышку инвертора и проверьте подключение вентилятора."},
+        "2": {"name": "W02", "description": "FAN_IN_Warn", "solution": "1. Check the operating status of the fan. 2. If the fan is running abnormally, open the cover of the inverter to check the connection of the fan.", "description_ru": "Предупреждение: входной вентилятор", "solution_ru": "1. Проверьте работу вентилятора. 2. Если вентилятор работает некорректно, откройте крышку инвертора и проверьте подключение вентилятора."},
+        "3": {"name": "W03", "description": "Grid_phase_warn", "solution": "1. Check the phase sequence connection of the power grid. 2. Try to change the grid type, 0, 240/120. 3. If there is still no solution to check the wiring at the grid end.", "description_ru": "Предупреждение: фазы сети", "solution_ru": "1. Проверьте последовательность фаз в сети. 2. Попробуйте изменить тип сети (0, 240/120). 3. Если не помогло — проверьте подключение на стороне сети."},
+        "4": {"name": "W04", "description": "Meter_offline_warn", "solution": "Meter communication failure. Check whether the meter has successful communication and whether the wiring is normal.", "description_ru": "Предупреждение: счетчик не в сети", "solution_ru": "Ошибка связи со счётчиком. Проверьте наличие связи и корректность подключения."},
+        "5": {"name": "W05", "description": "CT_WRONG_direction_warn", "solution": "Check whether the arrow on CT's case point to the inverter or not, and check if the installation location of CTs are correct.", "description_ru": "Предупреждение: неверное направление CT", "solution_ru": "Проверьте, направлена ли стрелка на корпусе трансформатора тока к инвертору и правильно ли установлены CT."},
+        "6": {"name": "W06", "description": "CT_Notconnect_warn", "solution": "Check whether the wires of CTs are connected correctly or not.", "description_ru": "Предупреждение: CT не подключен", "solution_ru": "Проверьте правильность подключения проводов трансформаторов тока."},
+        "7": {"name": "W07", "description": "FAN_OUT1_Warn", "solution": "Check whether the FAN are connected correctly and operating normally.", "description_ru": "Предупреждение: вентилятор выход 1", "solution_ru": "Проверьте правильность подключения и работу вентилятора."},
+        "8": {"name": "W08", "description": "FAN_OUT2_Warn", "solution": "Check whether the FAN are connected correctly and operating normally.", "description_ru": "Предупреждение: вентилятор выход 2", "solution_ru": "Проверьте правильность подключения и работу вентилятора."},
+        "9": {"name": "W09", "description": "FAN_OUT3_Warn", "solution": "1. Measure whether the grid port voltage is too high. 2. Check whether the AC cable is too thin to carry current.", "description_ru": "Предупреждение: вентилятор выход 3", "solution_ru": "1. Проверьте, не слишком ли высокое напряжение сети. 2. Убедитесь, что AC-кабель достаточного сечения."},
+        "10": {"name": "W10", "description": "VW_activate", "solution": "Check whether the FAN are connected correctly and operating normally.", "description_ru": "Активация VW", "solution_ru": "Проверьте правильность подключения и работу вентилятора."},
+        "11": {"name": "W11", "description": "DC_Bus_Leakage_Warn", "solution": "This is a critical warning that requires checking the solar panel or battery connections. Main causes and actions: Check panel/battery voltage: Make sure that the PV (solar panel) or battery voltage is within the inverter's operating range. Reboot: Try to completely turn off the inverter (AC and DC), wait 10-15 minutes until the screen turns off, and then turn it on again. Check cables: Inspect the terminals for looseness or oxidation. Service center: If the W11/F11 error persists after reboot, contact the installer or service center.", "description_ru": "Предупреждение: утечка DC шины", "solution_ru": "Критическое предупреждение. Проверьте подключение солнечных панелей или батареи. Основные действия: проверьте напряжение PV/АКБ (должно быть в диапазоне работы инвертора); выполните перезапуск (полностью отключите AC и DC, подождите 10–15 минут, затем включите); проверьте кабели на ослабление и окисление; если ошибка не исчезает — обратитесь в сервис."},
+        "31": {"name": "W31", "description": "Battery_comm_warn", "solution": "Abnormal battery communication. 1. Check whether the BMS connection is stable. 2. Check whether the BMS data is abnormal.", "description_ru": "Предупреждение: связь с батареей", "solution_ru": "Ошибка связи с батареей. 1. Проверьте стабильность соединения BMS. 2. Проверьте корректность данных BMS."},
+        "32": {"name": "W32", "description": "Parallel_comm_warn", "solution": "Unstable parallel communication. 1. Check the connection of the parallel communication line. Please do not wind the parallel communication line with other cables. 2. Check whether the parallel dip switch is on.", "description_ru": "Предупреждение: параллельная связь", "solution_ru": "Нестабильная параллельная связь. 1. Проверьте кабель параллельной связи (не прокладывайте вместе с силовыми). 2. Проверьте DIP-переключатели."}
+    },
+    "polling_presets": {
+        "frontend_realtime_full": {
+            "description": "Полный набор групп под текущие запросы фронта Deye",
+            "groups": [
+                "grid_phase_voltage_power",
+                "grid_current",
+                "battery",
+                "inverter",
+                "generator_extended",
+                "load",
+                "solar",
+                "solar_high",
+                "power32_v104",
+                "service_extended",
+                "energy_service",
+                "faults_warnings",
+                "gen_relay_status"
+            ],
+            "interval_ms": 3000
+        },
+        "frontend_relay_io": {
+            "description": "Опрос релейного модуля (coils/discrete inputs)",
+            "groups": [
+                "relay_coils_status",
+                "relay_discrete_inputs_status"
+            ],
+            "interval_ms": 10000
+        },
+        "full_monitoring": {
+            "description": "Полный мониторинг всех параметров Deye",
+            "groups": [
+                "grid_phase_voltage_power",
+                "grid_current",
+                "battery",
+                "solar",
+                "gen_relay_status",
+                "generator",
+                "inverter",
+                "faults_warnings"
+            ],
+            "interval_ms": 5000
+        },
+        "grid_monitoring": {
+            "description": "Мониторинг сети (напряжения, мощности, токи)",
+            "groups": [
+                "grid_phase_voltage_power",
+                "grid_current"
+            ],
+            "interval_ms": 3000
+        },
+        "battery_solar": {
+            "description": "Батарея и солнечные панели",
+            "groups": [
+                "battery",
+                "solar"
+            ],
+            "interval_ms": 5000
+        },
+        "power_sources": {
+            "description": "Все источники питания (сеть, солнце, генератор, батарея)",
+            "groups": [
+                "grid_phase_voltage_power",
+                "solar",
+                "generator",
+                "battery"
+            ],
+            "interval_ms": 5000
+        }
+    }
+}

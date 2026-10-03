@@ -1,0 +1,32 @@
+{
+  "title": "Daxtromn COR Bridge polling",
+  "description": "PI30 polling preset for Daxtromn inverters via COR Bridge.",
+  "interval_ms": 3000,
+   "commands": [
+    {
+      "suffix": "QPIGS",
+      "label": "General status values",
+      "command_type": "pi30",
+      "pi30_command": "QPIGS"
+    },
+    {
+      "suffix": "QPIWS",
+      "label": "Warning status bits",
+      "command_type": "pi30",
+      "pi30_command": "QPIWS"
+    },
+    {
+      "suffix": "QMOD",
+      "label": "Device mode",
+      "command_type": "pi30",
+      "pi30_command": "QMOD"
+    },
+    {
+      "suffix": "Clear",
+      "label": "Clear buffer",
+      "command_type": "pi30",
+      "pi30_hex": "0D"
+    }
+
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "title": "Deye default COR Bridge polling",
+  "description": "Standard Modbus register groups polling for Deye inverters via COR Bridge. Covers grid, battery, PV panels 1-8, and load.",
+  "interval_ms": 5000,
+  "commands": [
+    {
+      "suffix": "grid",
+      "label": "Grid",
+      "function_code": 3,
+      "start_address": 598,
+      "count": 23
+    },
+    {
+      "suffix": "batt",
+      "label": "Battery",
+      "function_code": 3,
+      "start_address": 586,
+      "count": 11
+    },
+    {
+      "suffix": "pv_1_4",
+      "label": "PV panels 1-4",
+      "function_code": 3,
+      "start_address": 672,
+      "count": 12
+    },
+    {
+      "suffix": "pv_5_8",
+      "label": "PV panels 5-8",
+      "function_code": 3,
+      "start_address": 718,
+      "count": 13
+    },
+    {
+      "suffix": "load",
+      "label": "Load",
+      "function_code": 3,
+      "start_address": 644,
+      "count": 17
+    }
+  ]
+}

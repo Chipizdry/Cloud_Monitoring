@@ -1,0 +1,536 @@
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+      <!-- Fallback для старых браузеров -->
+    <link rel="alternate icon" href="/static/favicon.png" type="image/png">
+      
+      <!-- Для Safari -->
+    <link rel="mask-icon" href="/static/favicon.svg" color="#291161">
+    <link rel="stylesheet" href="/static/COR_ID_css/styles.css">
+    <link rel="stylesheet" href="/static/COR_Energy/energy.css">
+    <link rel="stylesheet" type="text/css" href="/static/COR_ID_css/modal.css">
+    <link rel="stylesheet" href="/static/COR_Energy/monitoring.css">
+    <link rel="stylesheet" href="/static/COR_Energy/flywheel.css">
+
+
+    <title>COR-Energy</title>
+    
+
+
+</head>
+<body>
+    <div class="energy-container">
+     <button class="link-button" onclick="goBack('/static/COR_Energy/objects.html')" data-translate="back-link-text"><<<назад<<<</button>
+      <div class="object-header">
+        <h3 id="objectTitle" style="margin:0px">   </h3>
+
+        <div class="connection-status">
+            <span id="connectionIndicator" class="status-indicator"></span>
+            Соединение с сервером 
+        </div>
+      </div>      
+       
+       
+
+        <!-- Вкладки -->
+        <div class="tabs">
+            <div class="tab active" onclick="openTab(event, 'control')">Управление</div>
+            <div class="tab" onclick="openTab(event, 'monitor')">Мониторинг</div>
+            <div class="tab" onclick="openTab(event, 'timetable')">Расписание</div>        
+            <div class="tab" onclick="openTab(event, 'settings')">Настройки</div>
+        </div>
+
+		 <!-- Вкладка Управление -->
+          
+            <div id="control" class="tabcontent active">
+               <div id="LoadingOverlay" class="chart-loading-overlay" 
+                    style="display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                    <div class="chart-loading-spinner" style="margin: 80px auto 40px auto;"></div>
+                    <span  class="icon-label">Загрузка...</span>
+                </div>
+            </div>        
+
+       <!-- Контент вкладки Мониторинг -->
+        <div id="monitor" class="tabcontent">
+            <!-- Контейнер для графика -->
+            <div id="chartContainer">
+                <canvas id="powerChart"></canvas>
+
+                <div id="chartLoadingOverlay" class="chart-loading-overlay" style="display: none;">
+                    <div class="chart-loading-spinner"></div>
+                    <span>Загрузка...</span>
+                </div>
+            </div>
+            
+            <!-- Блок управления периодом -->
+            <div class="chart-controls">
+                <div class="time-range-control">
+                    <div class="chart-type-control">
+                        <select id="chartTypeSelect">
+                            <option value="line">Мощности (линия)</option>
+                            <option value="bar">Энергия (столбцы)</option>
+                        </select>
+                    </div>
+
+                    <label>Период:</label>
+                    <select id="timeRangeSelect">
+                        <option value="realtime">В реальном времени</option>
+                        <option value="1h">Последний час</option>
+                        <option value="3h">Последние 3 часа</option>
+                        <option value="6h">Последние 6 часов</option>
+                        <option value="12h">Последние 12 часов</option>
+                        <option value="24h">Последние 24 часа</option>
+                        <option value="3d">Последние 3 дня</option>
+                        <option value="7d">Последние 7 дней</option>
+                        <option value="30d">Последние 30 дней</option>
+                        <option value="custom">Выбрать даты...</option>  
+                    </select>
+                    <div id="customDateRange" style="display: none;">
+                        <input type="datetime-local" id="startDate">
+                        <input type="datetime-local" id="endDate">
+                        <button id="applyCustomRange" class="apply-button">Применить</button>
+                    </div>
+
+                    
+                    <!-- Блок пагинации (только для реального времени) -->
+                    <div class="pages-control" style="display: none;">
+                        <label>Страниц на экран:</label>
+                        <select id="pagesPerScreenSelect">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>  
+                </div>
+                
+                <!-- Контейнер для суммарных энергий -->
+                <div id="energyTotals" class="totals-container">
+                    <div class="total-box">
+                        <label>Солнечная генерация:</label>
+                        <span id="totalSolar">0</span>
+                    </div>
+                    <div class="total-box">
+                        <label>Нагрузка:</label>
+                        <span id="totalLoad">0</span>
+                    </div>
+                    <div class="total-box">
+                        <label>Импорт сети:</label>
+                        <span id="totalGridImport">0</span>
+                    </div>
+                    <div class="total-box">
+                        <label>Экспорт сети:</label>
+                        <span id="totalGridExport">0</span>
+                    </div>
+                </div>
+               
+                
+                <div class="time-range-slider-container" style="display: none;">
+                    <input type="range" id="pageSlider" min="1" max="100" value="1" class="time-range-slider">
+                    <div class="slider-labels">
+                        <span>Страница 100</span>
+                        <span>Страница 1</span>
+                    </div>
+                </div>
+                
+                <div class="time-display" style="display: none;">
+                    <span id="currentPageDisplay">Текущая страница: 1</span>
+                    <span id="loadingIndicator" style="display:none; margin-left:10px;">Загрузка...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Контент вкладки Расписание -->
+        <div id="timetable" class="tabcontent">
+            <div class="schedule-controls">
+                <button onclick="toggleSchedule()" id="toggleScheduleBtn" class="btn">Отключить расписание</button>
+                <button onclick="addSchedulePeriod()" class="btn">+ Добавить период</button>
+            </div>
+            
+            <div class="schedule-table-container">
+                <table id="scheduleTable" class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Начало</th>
+                            <th>Длительность</th>
+                            <th>Конец</th>
+                            <th>Отдача в сеть (Вт)</th>
+                            <th>Уровень батареи (%)</th>
+                            <th>Ток заряда(А)</th>
+                            <th>Активен</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scheduleTableBody">
+                        <!-- Строки будут добавляться динамически -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="timeline-container">
+                <div class="timeline">
+                    <div class="timeline-ruler"></div>
+                    <div class="timeline-periods" id="timelinePeriods"></div>
+                </div>
+                <div class="timeline-hours" id="timelineHours"></div>
+            </div>
+            
+
+        </div>
+
+       <!-- Контент вкладки Настройки -->
+        <div id="settings" class="tabcontent">
+            <div class="relay-block">
+                <div class="relay-control">
+                    <label class="ios-switch">
+                        <input type="checkbox" id="relayStart">
+                        <span class="slider"></span>
+                    </label>
+                    <span class="label-text">Блокировка генератора</span>
+                </div>
+
+                <div class="relay-control">
+                    <label class="ios-switch">
+                        <input type="checkbox" id="relayBlock">
+                        <span class="slider"></span>
+                    </label>
+                    <span class="label-text">Пуск генератора</span>
+                </div>
+            </div>
+     
+         
+                <div id="settingsContainer"></div>
+            
+             
+             
+        </div>
+        
+    </div>
+
+       <!-- Модальные окна -->
+
+        <!-- Модальное окно настроек батареи -->
+        <div id="batteryModal" class="modal"  data-entity="batterySettings" style="display:none;">
+             <div class="modal-header">
+                <div class="modal-buttons">
+                    <button class="modal-button close" data-action="close" id="closeBattery">✖</button>
+                </div>
+                <h3 style="margin-top:30; color:#291161;font-size: 17px;">Информация о батарее</h3>
+            </div>   
+        </div>
+
+            <!-- Модальное окно параметров нагрузки -->
+        <div id="loadSettingsModal" class="modal" data-entity="loadSettings" style="display:none;">
+            <div class="modal-header">
+              <div class="modal-buttons">
+                <button class="modal-button close" data-action="close" id="closeLoadSettings">✖</button>
+               </div>
+               <h3 style="margin-top:30; color:#291161;font-size: 17px;">Параметры нагрузки</h3>
+            </div>                             
+        </div>
+
+  
+        <!-- Модальное окно параметров сети -->
+        <div id="GridSettingsModal" class="modal" data-entity="gridSettings" style="display:none;">
+            <div class="modal-header">
+                <div class="modal-buttons">
+                <button class="modal-button close" data-action="close" id="closeGridSettings">✖</button>
+                </div>
+                <h3 style="margin-top:30; color:#291161;font-size: 17px;">Параметры сети</h3>
+            </div>                                
+        </div>
+
+          <!--Модальное окно инвертора --> 
+        <div id="inverterModal" class="modal" data-entity="inverterSettings" style="display:none;">
+            <div class="modal-header">
+                <div class="modal-buttons">
+                  <button class="modal-button close" data-action="close" id="closeInverterModal">✖</button>
+                 </div>
+                 <h3 style="margin-top:30; color:#291161;font-size: 17px;">Информация о инверторе</h3>
+            </div> 
+           
+        </div>
+
+        <!-- Модальное окно генератора -->
+        <div id="GeneratorModal" class="modal" data-entity="generatorSettings" style="display:none;">
+            <div class="modal-header">
+                <div class="modal-buttons">
+                    <button class="modal-button close" data-action="close" id="closeGeneratorModal">✖</button>
+                </div>
+                <h3 style="margin-top:30; color:#291161;font-size: 17px;">Параметры генератора</h3>
+            </div> 
+        </div>
+
+        <!-- Модальное окно Солнечных панелей -->
+            <div id="SolarModal" class="modal" data-entity="solarSettings" style="display:none; ">
+
+                <!-- Фиксированный заголовок -->
+                <div class="modal-header" style=" padding: 1px;  position: sticky; top: 0; z-index: 10;">
+                    <div class="modal-buttons" style="float: right;">
+                        <button class="modal-button close" data-action="close" id="closeSolarModal">✖</button>
+                    </div>
+                    <h3 style="margin: 0; color:#291161; font-size: 17px;">Параметры панелей</h3>
+                </div>
+              
+            <!-- Тело модалки (сюда будет рендерить buildModals) -->
+                <div class="modal-body" style="max-height: 400px; overflow-y: auto; padding: 10px;">
+                    <!-- Динамические блоки таблиц и полей -->
+                </div>
+               
+            </div>
+
+                    <!-- Модальное окно чтения регистров -->
+            <div id="RegistersModal" class="modal" style="display:none;">
+                <div class="modal-header">
+                    <div class="modal-buttons">
+                        <button class="modal-button close" data-action="close" id="closeRegistersModal">✖</button>
+                    </div>
+                    <h3>Тестирование регистров Modbus</h3>
+                </div>
+                
+                <div style="padding: 20px; display: flex; flex-direction: column; gap: 15px;">
+                    <!-- Первая строка с тремя полями -->
+                    <div style="display: flex; gap: 20px; width: 100%;">
+                        <div style="flex: 1; min-width: 0;">
+                            <label for="slave_id" style="display: block; margin-bottom: 5px;">Slave UID:</label>
+                            <input type="number" id="slave_id" value="100" min="1" max="247" style="width: 100%; box-sizing: border-box;">
+                        </div>
+                        <div style="flex: 1; min-width: 0;">
+                            <label for="start_reg" style="display: block; margin-bottom: 5px;">Начальный:</label>
+                            <input type="number" id="start_reg" value="800" min="0" max="65535" style="width: 100%; box-sizing: border-box;">
+                        </div>
+                        <div style="flex: 1; min-width: 0;">
+                            <label for="end_reg" style="display: block; margin-bottom: 5px;">Конечный:</label>
+                            <input type="number" id="end_reg" value="830" min="0" max="65535" style="width: 100%; box-sizing: border-box;">
+                        </div>
+                    </div>
+                    
+                    <!-- Кнопка тестирования по центру -->
+                    <div style="display: flex; justify-content: center;">
+                        <button onclick="testRegisters()" class="btn" style="margin: 0 auto;">Тестировать</button>
+                    </div>
+                    
+                    <!-- Вторая строка с двумя полями -->
+                    <div style="display: flex; gap: 10px; width: 100%;">
+                        <div style="flex: 1; min-width: 0;">
+                            <label for="register_to_write" style="display: block; margin-bottom: 5px;">Регистр:</label>
+                            <input type="number" id="register_to_write" min="0" max="65535" style="width: 100%; box-sizing: border-box;">
+                        </div>
+                        <div style="flex: 1; min-width: 0;">
+                            <label for="register_value" style="display: block; margin-bottom: 5px;">Значение:</label>
+                            <input type="number" id="register_value" min="0" max="65535" style="width: 100%; box-sizing: border-box;">
+                        </div>
+                    </div>
+                    
+                    <!-- Кнопка записи по центру -->
+                    <div style="display: flex; justify-content: center;">
+                        <button onclick="writeRegister()" class="btn" style="margin: 0 auto;">Записать</button>
+                    </div>
+                    <div id="register_results_output" class="modal-results" style="display: none;"></div>
+                </div>
+               
+            </div>
+
+
+                    <!-- Модальное окно карты регистров-->
+            <div id="ExcelModal" class="modal"  style="display:none;">
+
+                <div class="modal-header">
+                    <div class="modal-buttons">
+                        <button class="modal-button close" data-action="close" id="closeExelModal">✖</button>
+                    </div>
+                    <h3>Регистры Modbus</h3>
+                </div>
+                <div class="modal-content">
+                    <div id="modal-loader" class="loader"></div>
+                    <div id="excel-modal-content"></div>
+                </div>
+            </div>
+
+         
+
+  <!--  <script type="module" src="/static/COR_Energy/object.js"></script> -->
+    <script src="/static/COR_Energy/protocols/cor.js"></script>
+    <script src="/static/COR_Energy/protocols/deye.js"></script>
+    <script src="/static/COR_Energy/protocols/relay.js"></script>
+    <script src="/static/COR_Energy/protocols/axioma.js"></script>
+    <script src="/static/COR_Energy/protocols/victron.js"></script>
+    <script src="/static/COR_Energy/protocols/daxtromn.js"></script>
+    <script src="/static/COR_Energy/protocols/bluesun.js"></script>
+    <script src="/static/COR_Energy/protocols/TAC4300CT.js"></script>
+    <script src="/static/COR_Energy/protocols/VictronMultiPlus.js"></script>
+    <script src="/static/COR_ID_Js/general_fun.js"></script>
+    <script src="/static/COR_Energy/xlsx.full.min.js"></script>
+    <script src="/static/COR_Energy/chart.min.js"></script>
+    <script src="/static/COR_ID_Js/config.js"></script>
+    <script src="/static/COR_Energy/chart.js"></script>
+    <script src="/static/COR_Energy/line_chart.js"></script>
+    <script src="/static/COR_Energy/chart_settings.js"></script>
+    <script type="module" src="/static/COR_Energy/object.js"></script>
+        <script>
+
+// ============================
+// Глобальные переменные
+// ============================
+ window.lastData = {};   // все последние данные
+ window.battData = {};
+ window.gridData = {};
+ window.solarData = {};
+ window.genData = {};
+ window.LoadData = {};
+ window.InvGridOut = {};
+ window.gridDataPower = {};
+ window.deyeMonitorRunning = false;
+
+	 window.activeModals = {};
+
+     let currentPage = 1;
+     let pagesPerScreen = 1;
+     let isLoading = false;
+     let allMeasurements = [];
+     let isSliderMoving = false;
+     let powerChart = null;
+     let chartUpdateInterval = null;
+
+     let energyChart = null;
+     let currentChartType = 'line';
+     let currentBarTimeRange = '1d';
+
+     const lineTimeRanges = [
+        { value: 'realtime', label: 'В реальном времени' },
+        { value: '1h', label: 'Последний час' },
+        { value: '3h', label: 'Последние 3 часа' },
+        { value: '6h', label: 'Последние 6 часов' },
+        { value: '12h', label: 'Последние 12 часов' },
+        { value: '24h', label: 'Последние 24 часа' },
+        { value: '3d', label: 'Последние 3 дня' },
+        { value: '7d', label: 'Последние 7 дней' },
+        { value: '30d', label: 'Последние 30 дней' },
+        { value: 'custom', label: 'Выбрать даты...' }
+     ];
+
+     const barTimeRanges = [
+        { value: 'today', label: 'За сегодня' },
+        { value: 'this_week', label: 'За эту неделю' },
+        { value: '1d', label: 'За сутки' },
+        { value: '7d', label: 'За неделю' },
+        { value: '30d', label: 'За месяц ' },
+        { value: 'custom', label: 'Выбрать даты...' }
+     ];
+
+	document.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    const objectId = params.get("object_Id");
+
+    if (!objectId) {
+        console.error("objectId не найден в URL");
+        return;
+    }
+
+    makeModalDraggable('batteryModal');
+    makeModalDraggable('RegistersModal');
+    makeModalDraggable('loadSettingsModal');
+    makeModalDraggable('GridSettingsModal');
+    makeModalDraggable('SolarModal');
+    makeModalDraggable('inverterModal');
+    makeModalDraggable('GeneratorModal');
+    makeModalDraggable('ExcelModal');
+
+    setIconStatus("Grid", "offline"); 
+    setIconStatus("Battery", "offline");
+    setIconStatus("Inverter", "offline");
+    setIconStatus("Load", "offline");
+    setIconStatus("Solar", "offline"); 
+    setIconStatus("Generator", "offline");
+    // Загружаем настройки объекта
+    loadObjectSettings(objectId);
+});
+
+   
+            // Закрытие модального окна (если нужно)
+            document.getElementById("closeBattery").onclick = function() {
+            document.getElementById("batteryModal").style.display = "none";
+                }
+
+        </script>
+
+
+
+<script>
+  
+
+function openTab(event, tabName) {
+    var i, tabcontent, tabs;
+
+    // Скрываем все вкладки
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].classList.remove("active");
+    }
+
+    // Убираем активный класс с вкладок
+    tabs = document.getElementsByClassName("tab");
+    for (i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove("active");
+    }
+
+    // Показываем текущую вкладку
+    document.getElementById(tabName).classList.add("active");
+    event.currentTarget.classList.add("active");
+
+    // 🔹 Если открыта вкладка Мониторинг → обновляем графики
+    if (tabName === "monitor") {
+        console.log("Обновление графика (вкладка Мониторинг)");
+        if (typeof window.initializeMonitoringCharts === 'function') {
+            window.initializeMonitoringCharts();
+        }
+    } else if (typeof window.stopChartUpdates === 'function') {
+        window.stopChartUpdates();
+    }
+}
+	
+
+// Функция для получения текущего времени в формате HH:MM:SS
+function getCurrentTimeFormatted() {
+    var now = new Date(); // Получаем текущее время
+
+    var hours = now.getHours();   // Часы
+    var minutes = now.getMinutes(); // Минуты
+    var seconds = now.getSeconds(); // Секунды
+
+    // Форматируем часы, минуты и секунды так, чтобы всегда было 2 цифры
+    hours = hours < 10 ? '0' + hours : hours;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    seconds = seconds < 10 ? '0' + seconds : seconds;
+
+    // Возвращаем строку в формате HH:MM:SS
+    return hours + ':' + minutes + ':' + seconds;
+}
+
+
+
+  
+        // Функция для открытия модального окна подтверждения переключения режима
+        function openModeConfirmation(mode) {
+            var modal = document.getElementById('modeConfirmationModal');
+            modal.style.display = 'flex';
+            modal.dataset.mode = mode; // Сохраняем режим переключения
+        }
+
+ 
+    </script>
+    
+</body>
+</html>

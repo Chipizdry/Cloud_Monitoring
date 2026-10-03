@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Приглашение в COR-Energy</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .header h1 {
+            color: #2563eb;
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .content {
+            margin-bottom: 30px;
+        }
+
+        .content p {
+            margin: 15px 0;
+            color: #555;
+        }
+
+        .email-highlight {
+            font-weight: 600;
+            color: #2563eb;
+        }
+
+        .button-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 14px 32px;
+            background-color: #2563eb;
+            color: #ffffff !important;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #1d4ed8;
+        }
+
+        .info-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #2563eb;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .info-box p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+            color: #888;
+            font-size: 14px;
+        }
+
+        .link-text {
+            word-break: break-all;
+            color: #2563eb;
+            font-size: 12px;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎉 Приглашение в COR-Energy</h1>
+        </div>
+
+        <div class="content">
+            <p>Здравствуйте!</p>
+
+            <p>Вы получили приглашение для регистрации в системе <strong>COR-Energy</strong>.</p>
+
+            <p>Пользователь <span class="email-highlight">{{invited_by}}</span> пригласил вас присоединиться к
+                платформе.</p>
+
+            <div class="info-box">
+                <p><strong>📧 Ваш email:</strong> {{email}}</p>
+                <p><strong>⏰ Приглашение действует до:</strong> {{expires_at}}</p>
+            </div>
+
+            <p>Для завершения регистрации нажмите на кнопку ниже:</p>
+        </div>
+
+        <div class="button-container">
+            <a href="{{invitation_link}}" class="button">Зарегистрироваться</a>
+        </div>
+
+        <div class="content">
+            <p style="font-size: 14px; color: #666;">
+                Или скопируйте и вставьте эту ссылку в браузер:
+            </p>
+            <div class="link-text">
+                {{invitation_link}}
+            </div>
+
+            <p style="margin-top: 25px; font-size: 14px; color: #888;">
+                <strong>Примечание:</strong> Эта ссылка одноразовая и действительна до указанной даты.
+                После регистрации она станет недействительной.
+            </p>
+        </div>
+
+        <div class="footer">
+            <p>Если вы не ожидали этого приглашения, просто проигнорируйте это письмо.</p>
+            <p style="margin-top: 10px;">
+                <strong>COR-ID Team</strong><br>
+                <a href="https://cor-medical.ua" style="color: #2563eb; text-decoration: none;">cor-medical.ua</a>
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>
