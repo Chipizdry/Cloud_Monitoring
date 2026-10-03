@@ -305,6 +305,8 @@ function parseAxiomaByCmd(cmd, hexResponse) {
 
         case "QPIWS":
             return parseQPIWS(ascii);    
+        case "QPIRI": 
+            return parseAxiomaQPIRI(ascii); 
 
         default:
             console.warn("❌ Неизвестная команда:", cmd);
@@ -366,6 +368,135 @@ function parseQFLAG(hexOrAscii) {
     console.log("✅ QFLAG parsed:", result);
     return result;
 }
+
+
+// ============================================================
+// QPIRI — Device Rating Information
+//
+// ( BBB.B CC.C DDD.D EE.E FF.F HHHH IIII JJ.J KK.K JJ.J KK.K LL.L
+//   O PP Q0 O P Q R SS T U VV.V W X <CRC><cr>
+//
+// 25 полей после удаления скобок.
+// ============================================================
+function parseAxiomaQPIRI(asciiResponse) {
+
+    if (!asciiResponse) return null;
+
+    const clean = asciiResponse
+        .replace(/[()\r\n]/g, "")
+        .trim();
+
+    const parts = clean.split(/\s+/);
+
+    if (parts.length < 25) {
+        console.warn("❌ QPIRI: недостаточно полей:", parts.length, parts);
+        return null;
+    }
+
+    const num = (v, fb = 0) => {
+        const n = parseFloat(v);
+        return Number.isFinite(n) ? n : fb;
+    };
+    const int = (v, fb = 0) => {
+        const n = parseInt(v, 10);
+        return Number.isFinite(n) ? n : fb;
+    };
+
+    const batteryType        = int(parts[12]);
+    const inputVoltageRange  = int(parts[15]);
+    const outputPriority     = int(parts[16]);
+    const chargerPriority    = int(parts[17]);
+    const topology           = int(parts[20]);
+    const machineTypeRaw     = String(parts[19] ?? "").padStart(2, "0");  // '01'  → '01'
+    const outputModeRaw      = String(parts[21] ?? "").padStart(2, "0");  // '0'   → '00'
+    const pvOkCond           = int(parts[23]);
+    const pvPowerBalance     = int(parts[24]);
+
+    const result = {
+
+        // ─── Сеть (Grid rating) ───
+        gridRatingVoltage:        num(parts[0]),
+        gridRatingCurrent:        num(parts[1]),
+
+        // ─── AC output rating ───
+        acOutputRatingVoltage:    num(parts[2]),
+        acOutputRatingFrequency:  num(parts[3]),
+        acOutputRatingCurrent:    num(parts[4]),
+        acOutputRatingApparentPower: int(parts[5]),
+        acOutputRatingActivePower:   int(parts[6]),
+
+        // ─── Батарея ───
+        batteryRatingVoltage:     num(parts[7]),
+        batteryRechargeVoltage:   num(parts[8]),
+        batteryUnderVoltage:      num(parts[9]),
+        batteryBulkVoltage:       num(parts[10]),
+        batteryFloatVoltage:      num(parts[11]),
+        batteryType:              batteryType,
+        batteryTypeLabel:         ["AGM", "Flooded", "User"][batteryType] || "Unknown",
+
+        // ─── Токи зарядки ───
+        maxAcChargingCurrent:     int(parts[13]),
+        maxChargingCurrent:       int(parts[14]),
+
+        // ─── Конфигурация ───
+        inputVoltageRange:        inputVoltageRange,
+        inputVoltageRangeLabel:   inputVoltageRange === 0 ? "Appliance" : "UPS",
+
+        outputSourcePriority:     outputPriority,
+        outputSourcePriorityLabel:
+            ["Utility first", "Solar first", "SBU first"][outputPriority] || "Unknown",
+
+        chargerSourcePriority:    chargerPriority,
+        chargerSourcePriorityLabel:
+            ["Utility first", "Solar first", "Solar + Utility", "Only solar"][chargerPriority]
+            || "Unknown",
+
+        parallelMaxNum:           int(parts[18]),
+
+        // ─── Тип машины / топология / режим ───
+        machineType:              machineTypeRaw,
+        machineTypeLabel:
+            ({ "00": "Grid tie", "01": "Off Grid", "10": "Hybrid" })[machineTypeRaw]
+            || "Unknown",
+
+        topology:                 topology,
+        topologyLabel:            topology === 0 ? "Transformerless" : "Transformer",
+
+        outputMode:               outputModeRaw,
+        outputModeLabel:
+            ({
+                "00": "Single machine",
+                "01": "Parallel",
+                "02": "Phase 1 of 3",
+                "03": "Phase 2 of 3",
+                "04": "Phase 3 of 3"
+            })[outputModeRaw] || "Unknown",
+
+        // ─── Разряд / PV ───
+        batteryReDischargeVoltage: num(parts[22]),
+
+        pvOkCondition:            pvOkCond,
+        pvOkConditionLabel:       pvOkCond === 0
+            ? "Достаточно одной единицы с PV"
+            : "Только все единицы с PV",
+
+        pvPowerBalance:           pvPowerBalance,
+        pvPowerBalanceLabel:      pvPowerBalance === 0
+            ? "Макс. ток зарядки"
+            : "Макс. мощность = зарядка + нагрузка",
+
+        // ─── RAW для отладки ───
+        qpiriRaw:    clean,
+        qpiriFields: parts
+    };
+
+    console.log("✅ QPIRI (Axioma) parsed:", result);
+    return result;
+}
+
+
+
+
 
 function parseQPGSn(cmd, asciiResponse) {
 

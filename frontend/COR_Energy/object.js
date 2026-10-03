@@ -21,12 +21,13 @@ const MONITORING_HANDLERS = {
 
 // Словарь соответствия layout → URL шаблона
 const LAYOUT_TEMPLATES = {
-    'flywheel': '/static/COR_Energy/layouts/flywheel.html',
+    'flywheel':        '/static/COR_Energy/layouts/flywheel.html',
     'hybrid_inverter': '/static/COR_Energy/layouts/hybrid_inverter.html',
-    'energy_meter': '/static/COR_Energy/layouts/energy_meter.html',
-    'UPS': '/static/COR_Energy/layouts/UPS.html',
-    'default': '/static/COR_Energy/layouts/inverter.html'  // fallback
+    'energy_meter':    '/static/COR_Energy/layouts/energy_meter.html',
+    'UPS':             '/static/COR_Energy/layouts/UPS.html',
+    'default':         '/static/COR_Energy/layouts/inverter.html'  // fallback
 };
+
 
 async function applyControlLayout(layout) {
     const controlDiv = document.getElementById('control');
@@ -240,28 +241,29 @@ async function loadObjectSettings(objectId) {
         console.log("Объект:", data);
         // Установка заголовка
         document.getElementById("objectTitle").textContent = data.name || "    ";
-        
         const modalSchema = await resolveModalSchema(data.vendor, data.model_name);
         const settingsSchema = resolveSettingsSchema(data.vendor, data.model_name);
         console.log("Schema:", modalSchema);
         window.currentModalSchema = modalSchema;
+
+
+        // --- Управление ---
         window.currentLayout = modalSchema.layout || "default";
-        console.log("🎨 Layout:", window.currentLayout);
+        console.log("🎨 Control layout:", window.currentLayout);
         await applyControlLayout(window.currentLayout);
 
         window.deviceMaxPower = {
-            Battery: modalSchema?.battery?.maxPower,
-            Grid: modalSchema?.grid?.maxPower,
-            Load: modalSchema?.load?.maxPower,
-            Solar: modalSchema?.solar?.maxPower,
+            Battery:   modalSchema?.battery?.maxPower,
+            Grid:      modalSchema?.grid?.maxPower,
+            Load:      modalSchema?.load?.maxPower,
+            Solar:     modalSchema?.solar?.maxPower,
             Generator: modalSchema?.generator?.maxPower,
-            Inverter: modalSchema?.inverter?.maxPower
+            Inverter:  modalSchema?.inverter?.maxPower
         };
         console.log("⚡ deviceMaxPower:", window.deviceMaxPower);
 
-        // 🔥 СТРОИМ МОДАЛКИ ПО СХЕМЕ
         buildModals(modalSchema);
-        buildSettings(settingsSchema);
+        await buildSettings(settingsSchema || modalSchema);
       //  initIconModalHandlers(modalSchema);
 
         window.currentObject = data;

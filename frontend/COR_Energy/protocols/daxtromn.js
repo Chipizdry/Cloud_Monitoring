@@ -11,8 +11,8 @@ let daxtromnCorFailCount = 0;
 let daxtromnIsFirstDataReceived = false;
 
 const DAXTROMN_FAIL_COR_BRIDGE = 5;
-const DAXTROMN_FAIL_RS_BUS = 4;
-const DAXTROMN_FAIL_NAK = 9;
+const DAXTROMN_FAIL_RS_BUS = 10;
+const DAXTROMN_FAIL_NAK = 10;
 
 let daxtromnOfflineTimer = null;
 const DAXTROMN_OFFLINE_DELAY = 10000;
@@ -980,8 +980,10 @@ function parseDaxtromnByCmd(
             return parseDaxtromnQFLAG(ascii);
 
         case "QPIWS":
-
             return parseDaxtromnQPIWS(ascii);
+
+        case "QPIRI":  
+            return parseDaxtromnQPIRI(ascii);    
 
         default:
 
@@ -1084,6 +1086,131 @@ function parseDaxtromnQMOD(asciiResponse) {
     return result;
 }
 
+// ============================================================
+// Daxtromn QPIRI — Device Rating Information
+//
+// Формат AGH-10.2KW-PLUS:
+// ( BBB.B CC.C DDD.D EE.E FF.F HHHH IIII JJ.J KK.K JJ.J KK.K LL.L
+//   O PP Q0 O P Q R SS T U VV.V W X <CRC><cr>
+//
+// Возвращает те же ключи, что и Axioma-версия,
+// чтобы настройки (data-source) заполнялись единообразно.
+// ============================================================
+function parseDaxtromnQPIRI(asciiResponse) {
+
+    if (!asciiResponse) return null;
+
+    const clean = asciiResponse
+        .replace(/[()\r\n]/g, "")
+        .trim();
+
+    const parts = clean.split(/\s+/);
+
+    if (parts.length < 25) {
+        console.warn("❌ Daxtromn QPIRI: недостаточно полей:", parts.length, parts);
+        return null;
+    }
+
+    const num = (v, fb = 0) => {
+        const n = parseFloat(v);
+        return Number.isFinite(n) ? n : fb;
+    };
+    const int = (v, fb = 0) => {
+        const n = parseInt(v, 10);
+        return Number.isFinite(n) ? n : fb;
+    };
+
+    const batteryType       = int(parts[12]);
+    const inputVoltageRange = int(parts[15]);
+    const outputPriority    = int(parts[16]);
+    const chargerPriority   = int(parts[17]);
+    const topology          = int(parts[20]);
+    const machineTypeRaw    = String(parts[19] ?? "").padStart(2, "0");  // '01'  → '01'
+    const outputModeRaw     = String(parts[21] ?? "").padStart(2, "0");  // '0'   → '00'
+    const pvOkCond          = int(parts[23]);
+    const pvPowerBalance    = int(parts[24]);
+
+    const result = {
+
+        // Сеть
+        gridRatingVoltage:        num(parts[0]),
+        gridRatingCurrent:        num(parts[1]),
+
+        // AC output rating
+        acOutputRatingVoltage:    num(parts[2]),
+        acOutputRatingFrequency:  num(parts[3]),
+        acOutputRatingCurrent:    num(parts[4]),
+        acOutputRatingApparentPower: int(parts[5]),
+        acOutputRatingActivePower:   int(parts[6]),
+
+        // Батарея
+        batteryRatingVoltage:     num(parts[7]),
+        batteryRechargeVoltage:   num(parts[8]),
+        batteryUnderVoltage:      num(parts[9]),
+        batteryBulkVoltage:       num(parts[10]),
+        batteryFloatVoltage:      num(parts[11]),
+        batteryType:              batteryType,
+        batteryTypeLabel:         ["AGM", "Flooded", "User"][batteryType] || "Unknown",
+
+        // Токи зарядки
+        maxAcChargingCurrent:     int(parts[13]),
+        maxChargingCurrent:       int(parts[14]),
+
+        // Конфигурация
+        inputVoltageRange:        inputVoltageRange,
+        inputVoltageRangeLabel:   inputVoltageRange === 0 ? "Appliance" : "UPS",
+
+        outputSourcePriority:     outputPriority,
+        outputSourcePriorityLabel:
+            ["Utility first", "Solar first", "SBU first"][outputPriority] || "Unknown",
+
+        chargerSourcePriority:    chargerPriority,
+        chargerSourcePriorityLabel:
+            ["Utility first", "Solar first", "Solar + Utility", "Only solar"][chargerPriority]
+            || "Unknown",
+
+        parallelMaxNum:           int(parts[18]),
+
+        // Тип машины / топология / режим
+        machineType:              machineTypeRaw,
+        machineTypeLabel:
+            ({ "00": "Grid tie", "01": "Off Grid", "10": "Hybrid" })[machineTypeRaw]
+            || "Unknown",
+
+        topology:                 topology,
+        topologyLabel:            topology === 0 ? "Transformerless" : "Transformer",
+
+        outputMode:               outputModeRaw,
+        outputModeLabel:
+            ({
+                "00": "Single machine",
+                "01": "Parallel",
+                "02": "Phase 1 of 3",
+                "03": "Phase 2 of 3",
+                "04": "Phase 3 of 3"
+            })[outputModeRaw] || "Unknown",
+
+        // Разряд / PV
+        batteryReDischargeVoltage: num(parts[22]),
+
+        pvOkCondition:            pvOkCond,
+        pvOkConditionLabel:       pvOkCond === 0
+            ? "Достаточно одной единицы с PV"
+            : "Только все единицы с PV",
+
+        pvPowerBalance:           pvPowerBalance,
+        pvPowerBalanceLabel:      pvPowerBalance === 0
+            ? "Макс. ток зарядки"
+            : "Макс. мощность = зарядка + нагрузка",
+
+        // RAW
+        qpiriRaw:    clean,
+        qpiriFields: parts
+    };
+
+    console.log("✅ QPIRI (Daxtromn) parsed:", result);
+    return result;
+}
 
 function parseDaxtromnQPIGS(asciiResponse) {
 
@@ -1103,19 +1230,10 @@ function parseDaxtromnQPIGS(asciiResponse) {
 
     const parts = clean.split(/\s+/);
 
-    console.log(
-        "🧩 Daxtromn QPIGS fields:",
-        parts
-    );
+    console.log("🧩 Daxtromn QPIGS fields:",parts);
 
     if (parts.length < 17) {
-
-        console.warn(
-            "❌ Daxtromn QPIGS: недостаточно полей",
-            parts.length,
-            parts
-        );
-
+        console.warn( "❌ Daxtromn QPIGS: недостаточно полей",parts.length, parts);
         return null;
     }
 
@@ -1137,53 +1255,22 @@ function parseDaxtromnQPIGS(asciiResponse) {
     // --------------------------------------------------------
 
     const inputVoltage =num(parts[0]);
-
     const inputFrequency = num(parts[1]);
-
-    const outputVoltage =
-        num(parts[2]);
-
-    const outputFrequency =
-        num(parts[3]);
-
-    const apparentPower =
-        num(parts[4]);
-
-    const activePower =
-        num(parts[5]);
-
-    const loadPercent =
-        num(parts[6]);
-
-    const busVoltage =
-        num(parts[7]);
-
-    const batteryVoltage =
-        num(parts[8]);
-
-    const batteryChargeCurrent =
-        num(parts[9]);
-
-    const batterySOC =
-        num(parts[10]);
-
-    const inverterTemp =
-        num(parts[11]);
-
-    const pvChargeCurrent =
-        num(parts[12]);
-
-    const pvVoltage =
-        num(parts[13]);
-
-    const batteryVoltageSCC =
-        num(parts[14]);
-
-    const batteryDischargeCurrent =
-        num(parts[15]);
-
-    const statusBits =
-        parts[16] || "";
+    const outputVoltage = num(parts[2]);
+    const outputFrequency =num(parts[3]);
+    const apparentPower =num(parts[4]);
+    const activePower = num(parts[5]);
+    const loadPercent = num(parts[6]);
+    const busVoltage = num(parts[7]);
+    const batteryVoltage = num(parts[8]);
+    const batteryChargeCurrent = num(parts[9]);
+    const batterySOC = num(parts[10]);
+    const inverterTemp = num(parts[11]);
+    const pvChargeCurrent = num(parts[12]);
+    const pvVoltage = num(parts[13]);
+    const batteryVoltageSCC = num(parts[14]);
+    const batteryDischargeCurrent = num(parts[15]);
+    const statusBits = parts[16] || "";
 
     // --------------------------------------------------------
     // Output current
@@ -1198,10 +1285,7 @@ function parseDaxtromnQPIGS(asciiResponse) {
     let outputCurrent = 0;
 
     if (outputVoltage > 0) {
-
-        outputCurrent =
-            apparentPower / outputVoltage;
-
+        outputCurrent = apparentPower / outputVoltage;
     }
 
     // --------------------------------------------------------
@@ -1617,12 +1701,7 @@ function parseDaxtromnQFLAG(
     }
 
 
-    console.log(
-        "✅ Daxtromn QFLAG:",
-        result
-    );
-
-
+    console.log( "✅ Daxtromn QFLAG:", result);
     return result;
 }
 
@@ -1650,12 +1729,7 @@ function parseDaxtromnQPIWS(
 
 
     if (clean.length < 32) {
-
-        console.warn(
-            "❌ Daxtromn QPIWS: недостаточно бит",
-            clean
-        );
-
+        console.warn( "❌ Daxtromn QPIWS: недостаточно бит", clean);
         return null;
     }
 
@@ -2109,28 +2183,12 @@ function resetDaxtromnFails() {
 
 function resetDaxtromnOfflineTimer() {
 
-    if (
-        daxtromnOfflineTimer
-    ) {
-
-        clearTimeout(
-            daxtromnOfflineTimer
-        );
-    }
-
-
+    if ( daxtromnOfflineTimer) { clearTimeout( daxtromnOfflineTimer);}
     daxtromnOfflineTimer =
         setTimeout(() => {
 
-            console.warn(
-                "⚠️ Daxtromn: нет валидных данных > 5 сек → OFFLINE"
-            );
-
-
-            setDeviceVisibility(
-                "ErrorIcon",
-                "visible"
-            );
+            console.warn( "⚠️ Daxtromn: нет валидных данных > 5 сек → OFFLINE");
+            setDeviceVisibility("ErrorIcon","visible");
 
         }, DAXTROMN_OFFLINE_DELAY);
 }
@@ -2157,85 +2215,19 @@ function debugDaxtromnRawFrame(
         typeof hex !== "string"
     ) {
 
-        console.log(
-            "📡 DAXTROMN RAW:",
-            {
-                cmd,
-                hex,
-                type: typeof hex
-            }
-        );
-
+        console.log( "📡 DAXTROMN RAW:", { cmd, hex,type: typeof hex });
         return;
     }
 
 
-    const normalized =
-        hex
-            .replace(
-                /\s+/g,
-                ""
-            )
-            .toUpperCase();
-
-
-    console.log(
-        "============================================================"
-    );
-
-
-    console.log(
-        "📡 DAXTROMN RAW FRAME"
-    );
-
-
-    console.log(
-        "CMD:",
-        cmd
-    );
-
-
-    // --------------------------------------------------------
-    // Что реально пришло от COR-Bridge
-    // --------------------------------------------------------
-
-    console.log(
-        "RAW hex_response:",
-        hex
-    );
-
-
-    // --------------------------------------------------------
-    // HEX без пробелов
-    // --------------------------------------------------------
-
-    console.log(
-        "RAW HEX normalized:",
-        normalized
-    );
-
-
-    // --------------------------------------------------------
-    // Длина
-    // --------------------------------------------------------
-
-    console.log(
-        "HEX length:",
-        normalized.length,
-        "chars"
-    );
-
-
-    console.log(
-        "BYTE length:",
-        normalized.length / 2
-    );
-
-
-    // --------------------------------------------------------
-    // Полный HEX по байтам
-    // --------------------------------------------------------
-
+    const normalized = hex.replace( /\s+/g, "") .toUpperCase();
+    console.log("============================================================");
+    console.log("📡 DAXTROMN RAW FRAME");
+    console.log("CMD:", cmd);
+    console.log("RAW hex_response:",hex);
+    console.log("RAW HEX normalized:",normalized);
+    console.log("HEX length:", normalized.length, "chars");
+    console.log( "BYTE length:",normalized.length / 2); 
     const bytes = [];
 
 
@@ -2245,68 +2237,16 @@ function debugDaxtromnRawFrame(
         i += 2
     ) {
 
-        bytes.push(
-            normalized.slice(
-                i,
-                i + 2
-            )
-        );
+        bytes.push(normalized.slice( i, i + 2));
     }
 
 
-    console.log(
-        "RAW bytes:",
-        bytes
-    );
-
-
-    // --------------------------------------------------------
-    // ASCII ВСЕГО FRAME
-    // --------------------------------------------------------
-
-    console.log(
-        "RAW ASCII:",
-        daxtromnHexToAscii(
-            normalized
-        )
-    );
-
-
-    // --------------------------------------------------------
-    // Последние 10 байт
-    // --------------------------------------------------------
-
-    console.log(
-        "LAST 10 bytes:",
-        bytes.slice(-10)
-    );
-
-
-    // --------------------------------------------------------
-    // TAIL HEX
-    // --------------------------------------------------------
-
-    console.log(
-        "TAIL HEX:",
-        normalized.slice(-10)
-    );
-
-
-    // --------------------------------------------------------
-    // TAIL ASCII
-    // --------------------------------------------------------
-
-    console.log(
-        "TAIL ASCII:",
-        daxtromnHexToAscii(
-            normalized.slice(-10)
-        )
-    );
-
-
-    console.log(
-        "============================================================"
-    );
+    console.log("RAW bytes:", bytes);
+    console.log("RAW ASCII:",daxtromnHexToAscii(normalized));
+    console.log("LAST 10 bytes:", bytes.slice(-10));
+    console.log( "TAIL HEX:",normalized.slice(-10));
+    console.log("TAIL ASCII:",daxtromnHexToAscii( normalized.slice(-10)));
+    console.log("============================================================");
 }
 
 

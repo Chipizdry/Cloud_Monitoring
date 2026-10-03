@@ -28,5 +28,13 @@
       "pi30_hex": "0D"
     }
 
+  ],
+  "on_demand_commands": [
+    {
+      "name": "QPIRI",
+      "label": "Device rating information",
+      "command_type": "pi30",
+      "pi30_command": "QPIRI"
+    }
   ]
 }

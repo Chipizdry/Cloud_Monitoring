@@ -2,6 +2,15 @@
 
 
 {       "layout": "hybrid_inverter",
+
+        "settings_layout": "hybrid_inverter_settings",
+        "settings_sections": [
+            { "id": "general",    "builder": "generalSection",    "title": "Основные" },
+            { "id": "grid",       "builder": "gridSection",       "title": "Сеть" },
+            { "id": "battery",    "builder": "batterySection",    "title": "Батарея" },
+            { "id": "pv",         "builder": "pvSection",         "title": "PV входы" },
+            { "id": "protection", "builder": "protectionSection", "title": "Защита" }
+        ],
         "battery": {
             "enabled": true,
             "modalId": "batteryModal",
